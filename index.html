@@ -69,29 +69,26 @@
 <body>
 
     <header>
-        <h1>🚨 EmergencyKit PWA v5.8 Foot</h1>
+        <h1>🚨 EmergencyKit PWA v5.9 Splint</h1>
         <button onclick="toggleTacticalHUD()" class="btn btn-yellow" style="width:auto; padding:0.3rem 0.5rem; font-size:0.75rem; margin:0;">🖥️ HUD</button>
     </header>
 
-    <!-- Tab 0: Tactical Trench Foot & Immersion Foot Prevention Guide (Self-Evolving #18) -->
-    <section id="trenchfoot-tab" class="tab-content active">
+    <!-- Tab 0: Emergency Field Splinting & Traction Guide (Self-Evolving #19) -->
+    <section id="splinting-tab" class="tab-content active">
         <div class="card">
-            <h2>🦶 دليل الوقاية وإسعافات قدم الخنادق والبلل (Trench Foot & Immersion Foot)</h2>
-            <p style="color:var(--text-sub); font-size:0.85rem; margin-bottom:1rem;">إسعافات والوقاية من تلف الأنسجة الناتجة عن تعريض القدمين للبلل والرطوبة الباردة لفترات طويلة.</p>
+            <h2>🦴 دليل الجباير الميدانية والتثبيت العظمي (Field Splinting & Traction Guide)</h2>
+            <p style="color:var(--text-sub); font-size:0.85rem; margin-bottom:1rem;">طرق تشكيل الجباير المرنة (Sam Splint) وسحب كسور الفخذ لتثبيت العظام ومنع الشلل.</p>
 
             <details style="background:var(--bg-inner); padding:0.85rem; border-radius:8px; margin-bottom:0.5rem;" open>
-                <summary style="font-weight:bold; color:var(--accent-blue); cursor:pointer;">1. أعراض قدم الخنادق (Trench Foot Symptoms)</summary>
-                <ul style="margin-top:0.5rem; padding-right:1.25rem; color:var(--text-sub); font-size:0.9rem;">
-                    <li>شحوب وتخشب الجلد مع انتفاخ وخدران في أصابع القدم.</li>
-                    <li>ظهور فقاعات جلدية وآلام حرقة شديدة أثناء إعادة التدفئة.</li>
-                </ul>
+                <summary style="font-weight:bold; color:var(--accent-blue); cursor:pointer;">1. فحص الدورة الدموية والأعصاب (PMS Check)</summary>
+                <p style="font-size:0.85rem; color:var(--text-sub); margin-top:0.3rem;">افحص النبض الطرفي (Pulse)، الحركة (Motor)، والإحساس (Sensory) قبل وبعد تركيب أي جبيرة على الطرف المصاب.</p>
             </details>
 
             <details style="background:var(--bg-inner); padding:0.85rem; border-radius:8px; margin-bottom:0.5rem;">
-                <summary style="font-weight:bold; color:var(--accent-green); cursor:pointer;">2. إجراءات الإسعاف الميداني (Field Treatment)</summary>
+                <summary style="font-weight:bold; color:var(--accent-yellow); cursor:pointer;">2. تشكيل الجبيرة المرنة (Sam Splint Shapes)</summary>
                 <ol style="margin-top:0.5rem; padding-right:1.25rem; color:var(--text-sub); font-size:0.9rem;">
-                    <li>جفف القدمين تماماً وغير الجوارب المبتلة بجوارب صوفية جافة 3 مرات يومياً.</li>
-                    <li>ارفع القدمين لأعلى وجففهما بالهواء الدافئ دون تعريضهما للحرارة المباشرة.</li>
+                    <li>انحنِ الجبيرة على شكل حرف (C) لإعطائها صلابة هندسية عالية لكسور الساعد والرسغ.</li>
+                    <li>شكل الانحناء المزدوج (Sugar-Tong) لتثبيت الكوع والكتف دون السماح بالالتفاف.</li>
                 </ol>
             </details>
         </div>
@@ -99,9 +96,9 @@
 
     <!-- Bottom Navigation -->
     <nav>
-        <button class="active" onclick="switchTab('trenchfoot-tab', this)">
-            <span>🦶</span>
-            <span>قدم الخنادق</span>
+        <button class="active" onclick="switchTab('splinting-tab', this)">
+            <span>🦴</span>
+            <span>الجباير</span>
         </button>
     </nav>
 
