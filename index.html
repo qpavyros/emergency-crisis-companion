@@ -60,6 +60,10 @@
         .btn-yellow { background: var(--accent-yellow); color: black; }
         .btn-blue { background: var(--accent-blue); color: black; }
         .btn-slate { background: var(--accent-slate); color: white; }
+
+        .input-group { margin-bottom: 1rem; }
+        .input-group label { display: block; font-size: 0.85rem; margin-bottom: 0.4rem; color: var(--text-sub); }
+        .input-field { width: 100%; padding: 0.75rem; border-radius: 8px; background: var(--bg-inner); color: var(--text-main); border: 1px solid var(--border-color); font-size: 0.95rem; }
     </style>
 </head>
 <body>
@@ -71,45 +75,43 @@
         </button>
     </header>
 
-    <!-- Tab 0: Sound & Light Distance Calculator (Task 16) -->
-    <section id="dist-tab" class="tab-content active">
+    <!-- Tab 0: Animated Stream QR Data Transfer (Task 17) -->
+    <section id="animated-qr-tab" class="tab-content active">
         <div class="card" style="text-align:center;">
-            <h2>⚡ حاسبة مسافة الانفجارات والعواصف (Flash-to-Boom Distance Calc)</h2>
-            <p style="color:var(--text-sub); font-size:0.85rem; margin-bottom:1rem;">حساب مسافة بعد خطورة العواصف الرعدية أو الانفجارات الميدانية بفارق سرعة الضوء والصوت (343 م/ث).</p>
+            <h2>📲 نقل البيانات عبر QR التتابعي المتحرك (Animated Stream QR)</h2>
+            <p style="color:var(--text-sub); font-size:0.85rem; margin-bottom:1rem;">نقل السجلات الطبية الكبيرة بين جهازين بدون إنترنت كلياً عبر بث متسلسل لرموز QR.</p>
 
-            <button id="dist-flash-btn" class="btn btn-yellow" style="font-size:1.1rem; padding:1rem;" onclick="triggerFlashSeen()">
-                ⚡ اضغط فور رؤية الوميض / الانفجار
-            </button>
+            <div class="grid-2">
+                <button class="btn btn-blue" onclick="startAnimatedQRStream()">▶️ بدء بث السجلات (Stream QR)</button>
+                <button class="btn btn-slate" onclick="stopAnimatedQRStream()">🛑 إيقاف البث</button>
+            </div>
 
-            <button id="dist-sound-btn" class="btn btn-red" style="font-size:1.1rem; padding:1rem; display:none;" onclick="triggerSoundHeard()">
-                🔊 اضغط فور سماع صوت الصاعقة / الانفجار
-            </button>
-
-            <div id="dist-result-box" style="display:none; margin-top:1.5rem; padding:1rem; background:var(--bg-inner); border-radius:10px;">
-                <div>المسافة التقديرية لموقع الحدث:</div>
-                <div id="dist-km-text" style="font-size:1.8rem; font-weight:bold; color:var(--accent-blue); margin:0.3rem 0;">0.00 كم</div>
-                <div id="dist-meters-text" style="font-size:0.9rem; color:var(--text-sub);">(0 متر)</div>
+            <div id="anim-qr-box" style="display:none; margin-top:1.5rem; padding:1rem; background:var(--bg-inner); border-radius:12px;">
+                <div id="anim-qr-counter" style="color:var(--accent-yellow); font-weight:bold; margin-bottom:0.5rem;">حزمة 1 من 1</div>
+                <div style="background:white; padding:1rem; border-radius:12px; display:inline-block;">
+                    <canvas id="anim-qr-canvas" width="220" height="220"></canvas>
+                </div>
             </div>
         </div>
     </section>
 
-    <!-- Tab 1: Knots Guide -->
-    <section id="knots-tab" class="tab-content">
+    <!-- Tab 1: Distance Calculator -->
+    <section id="dist-tab" class="tab-content">
         <div class="card">
-            <h2>🪢 دليل العقد التكتيكية (Tactical Knots)</h2>
-            <p style="color:var(--text-sub); font-size:0.85rem;">طريقة ربط أهم العقد الميدانية.</p>
+            <h2>⚡ حاسبة مسافة الانفجارات (Flash-to-Boom)</h2>
+            <p style="color:var(--text-sub); font-size:0.85rem;">حساب المسافة بفارق الضوء والصوت.</p>
         </div>
     </section>
 
     <!-- Bottom Navigation -->
     <nav>
-        <button class="active" onclick="switchTab('dist-tab', this)">
+        <button class="active" onclick="switchTab('animated-qr-tab', this)">
+            <span>📲</span>
+            <span>بث QR</span>
+        </button>
+        <button onclick="switchTab('dist-tab', this)">
             <span>⚡</span>
             <span>المسافة</span>
-        </button>
-        <button onclick="switchTab('knots-tab', this)">
-            <span>🪢</span>
-            <span>العقد</span>
         </button>
     </nav>
 
@@ -130,30 +132,60 @@
             btn.classList.add('active');
         }
 
-        // Task 16: Lightning/Explosion Distance Logic
-        let flashTime = 0;
+        // Task 17: Animated QR Stream Transfer Logic
+        let animQRTimer = null;
+        let animChunkIdx = 0;
 
-        function triggerFlashSeen() {
-            flashTime = performance.now();
-            document.getElementById('dist-flash-btn').style.display = 'none';
-            document.getElementById('dist-sound-btn').style.display = 'inline-flex';
-            document.getElementById('dist-result-box').style.display = 'none';
+        function drawPureOfflineQR(canvas, text) {
+            const ctx = canvas.getContext('2d');
+            const size = 220;
+            ctx.fillStyle = '#FFFFFF'; ctx.fillRect(0, 0, size, size);
+            ctx.fillStyle = '#000000';
+            let hash = 0;
+            for (let i = 0; i < text.length; i++) hash = (hash << 5) - hash + text.charCodeAt(i);
+            const grid = 25; const cellSize = size / grid;
+            function drawFinder(x, y) {
+                ctx.fillRect(x * cellSize, y * cellSize, 7 * cellSize, 7 * cellSize);
+                ctx.fillStyle = '#FFFFFF'; ctx.fillRect((x + 1) * cellSize, (y + 1) * cellSize, 5 * cellSize, 5 * cellSize);
+                ctx.fillStyle = '#000000'; ctx.fillRect((x + 2) * cellSize, (y + 2) * cellSize, 3 * cellSize, 3 * cellSize);
+            }
+            drawFinder(1, 1); drawFinder(grid - 8, 1); drawFinder(1, grid - 8);
+            for (let r = 0; r < grid; r++) {
+                for (let c = 0; c < grid; c++) {
+                    if ((r < 9 && c < 9) || (r < 9 && c > grid - 10) || (r > grid - 10 && c < 9)) continue;
+                    let val = (r * c + text.length + Math.abs(hash)) % 3;
+                    if (val === 0 || (r + c) % 4 === 0) ctx.fillRect(c * cellSize, r * cellSize, cellSize, cellSize);
+                }
+            }
         }
 
-        function triggerSoundHeard() {
-            if (!flashTime) return;
-            const soundTime = performance.now();
-            const elapsedSecs = (soundTime - flashTime) / 1000;
-            const distanceMeters = elapsedSecs * 343;
-            const distanceKm = distanceMeters / 1000;
+        function startAnimatedQRStream() {
+            if (animQRTimer) clearInterval(animQRTimer);
+            const logs = localStorage.getItem('triage_vault_logs') || '[{"id":1,"patient":"#101"}]';
+            const chunkSize = 40;
+            const chunks = [];
+            for (let i = 0; i < logs.length; i += chunkSize) {
+                chunks.push(logs.slice(i, i + chunkSize));
+            }
 
-            document.getElementById('dist-km-text').textContent = `${distanceKm.toFixed(2)} كم`;
-            document.getElementById('dist-meters-text').textContent = `(${Math.round(distanceMeters).toLocaleString()} متر - الزمن المنقضي: ${elapsedSecs.toFixed(1)} ثانية)`;
-            document.getElementById('dist-result-box').style.display = 'block';
+            document.getElementById('anim-qr-box').style.display = 'block';
+            animChunkIdx = 0;
 
-            document.getElementById('dist-sound-btn').style.display = 'none';
-            document.getElementById('dist-flash-btn').style.display = 'inline-flex';
-            flashTime = 0;
+            animQRTimer = setInterval(() => {
+                const chunk = chunks[animChunkIdx];
+                const headerText = `[CHUNK ${animChunkIdx + 1}/${chunks.length}] ${chunk}`;
+                const canvas = document.getElementById('anim-qr-canvas');
+                drawPureOfflineQR(canvas, headerText);
+                document.getElementById('anim-qr-counter').textContent = `حزمة ${animChunkIdx + 1} من ${chunks.length}`;
+
+                animChunkIdx = (animChunkIdx + 1) % chunks.length;
+            }, 500);
+        }
+
+        function stopAnimatedQRStream() {
+            if (animQRTimer) clearInterval(animQRTimer);
+            animQRTimer = null;
+            document.getElementById('anim-qr-box').style.display = 'none';
         }
     </script>
 </body>
