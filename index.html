@@ -69,36 +69,39 @@
 <body>
 
     <header>
-        <h1>🚨 EmergencyKit PWA v4.8 Blast</h1>
+        <h1>🚨 EmergencyKit PWA v4.9 Altitude</h1>
         <button onclick="toggleTacticalHUD()" class="btn btn-yellow" style="width:auto; padding:0.3rem 0.5rem; font-size:0.75rem; margin:0;">🖥️ HUD</button>
     </header>
 
-    <!-- Tab 0: Blast Injury Overpressure Calculator (Cycle 8) -->
-    <section id="blast-tab" class="tab-content active">
+    <!-- Tab 0: High-Altitude Sickness & HAPE/HACE Protocol (Cycle 9) -->
+    <section id="altitude-tab" class="tab-content active">
         <div class="card">
-            <h2>💥 حاسبة صدمات وموجات الضغط العصفية (Blast Overpressure Calc)</h2>
-            <p style="color:var(--text-sub); font-size:0.85rem; margin-bottom:1rem;">حساب المخاطر الضغطية لموجة الانفجار على طبلة الأذن، الرئة، والأعضاء الأحشائية.</p>
+            <h2>🏔️ بروتوكول مرض المرتفعات واستسقاء الرئة/الدماغ (HAPE & HACE Protocol)</h2>
+            <p style="color:var(--text-sub); font-size:0.85rem; margin-bottom:1rem;">إسعافات انخفاض الأكسجين والوذمة الرئوية والدماغية في الجبال المرتفعة (> 2500م).</p>
 
-            <div class="input-group">
-                <label>تقدير ضغط الموجة العصفية الزائد (Peak Overpressure in PSI):</label>
-                <input type="number" id="blast-psi" class="input-field" value="10" oninput="calcBlastTrauma()">
-            </div>
+            <details style="background:var(--bg-inner); padding:0.85rem; border-radius:8px; margin-bottom:0.5rem;" open>
+                <summary style="font-weight:bold; color:var(--accent-red); cursor:pointer;">1. استسقاء الرئة الجبلي الحاد (HAPE - High Altitude Pulmonary Edema)</summary>
+                <ul style="margin-top:0.5rem; padding-right:1.25rem; color:var(--text-sub); font-size:0.9rem;">
+                    <li>العلامات: ضيق تنفس شديد أثناء الراحة، بلغم وردي رغوي، وزراق الشفاه.</li>
+                    <li>الإجراء القاتل الفوري: الهبوط الفوري لمستوى أدنى (> 500-1000م) وإعطاء الأكسجين.</li>
+                </ul>
+            </details>
 
-            <div id="blast-result-box" style="background:var(--bg-inner); padding:1rem; border-radius:10px;">
-                <h4 style="color:var(--accent-red); margin-bottom:0.5rem;">📊 تقييم صدمة العصف المتوقع:</h4>
-                <div style="font-size:0.9rem; display:grid; gap:0.4rem;">
-                    <div>👂 طبلة الأذن (Tympanic Membrane): <strong id="blast-ear" style="color:var(--accent-yellow);">خطر تمزق طبلة الأذن مرتفع (> 5 PSI)</strong></div>
-                    <div>🫁 الرئة العصفية (Blast Lung Injury): <strong id="blast-lung" style="color:var(--accent-blue);">نزيف ورضي روي محتمل متوسط</strong></div>
-                </div>
-            </div>
+            <details style="background:var(--bg-inner); padding:0.85rem; border-radius:8px; margin-bottom:0.5rem;">
+                <summary style="font-weight:bold; color:var(--accent-yellow); cursor:pointer;">2. استسقاء الدماغ الجبلي الحاد (HACE - High Altitude Cerebral Edema)</summary>
+                <ul style="margin-top:0.5rem; padding-right:1.25rem; color:var(--text-sub); font-size:0.9rem;">
+                    <li>العلامات: فقدان التوازن والترنح في المشي (Ataxia)، الذهول، والهلوسة.</li>
+                    <li>الإجراء: الهبوط الفوري واستخدام حقيبة الضغط العالي المحمولة (Gamow Bag).</li>
+                </ul>
+            </details>
         </div>
     </section>
 
     <!-- Bottom Navigation -->
     <nav>
-        <button class="active" onclick="switchTab('blast-tab', this)">
-            <span>💥</span>
-            <span>صدمة الانفجار</span>
+        <button class="active" onclick="switchTab('altitude-tab', this)">
+            <span>🏔️</span>
+            <span>المرتفعات</span>
         </button>
     </nav>
 
@@ -117,29 +120,6 @@
         }
 
         function toggleTacticalHUD() { document.body.classList.toggle('hud-mode'); }
-
-        // Cycle 8: Blast Trauma Math
-        function calcBlastTrauma() {
-            const psi = parseFloat(document.getElementById('blast-psi').value) || 0;
-            const ear = document.getElementById('blast-ear');
-            const lung = document.getElementById('blast-lung');
-
-            if (psi >= 5) {
-                ear.textContent = '🚨 تمزق مؤكد بطبلة الأذن مع طنين وفقدان سمع مؤقت';
-                ear.style.color = '#ef4444';
-            } else {
-                ear.textContent = '✅ طبلة الأذن سليمة وسليمة من التمزق الضغطي';
-                ear.style.color = '#22c55e';
-            }
-
-            if (psi >= 15) {
-                lung.textContent = '🚨 خطر إصابة الرئة العصفية القاتلة (Blast Lung) - ضيق تنفس ونزيف رئوي حاد';
-                lung.style.color = '#ef4444';
-            } else {
-                lung.textContent = '✅ طفيفة - مراقبة كدمات الصدر والتنفس';
-                lung.style.color = '#38bdf8';
-            }
-        }
     </script>
 </body>
 </html>
