@@ -69,34 +69,26 @@
 <body>
 
     <header>
-        <h1>🚨 EmergencyKit PWA v4.7 DB</h1>
+        <h1>🚨 EmergencyKit PWA v4.8 Blast</h1>
         <button onclick="toggleTacticalHUD()" class="btn btn-yellow" style="width:auto; padding:0.3rem 0.5rem; font-size:0.75rem; margin:0;">🖥️ HUD</button>
     </header>
 
-    <!-- Tab 0: Disaster Triage Casualty Database (Cycle 7) -->
-    <section id="db-tab" class="tab-content active">
+    <!-- Tab 0: Blast Injury Overpressure Calculator (Cycle 8) -->
+    <section id="blast-tab" class="tab-content active">
         <div class="card">
-            <h2>🗄️ محرك قواعد بيانات الفرز الجماعي (Disaster Casualty Memory Index)</h2>
-            <p style="color:var(--text-sub); font-size:0.85rem; margin-bottom:1rem;">معد سريعة لتصفية مئات السجلات والمصابين فوريًا حسب أولوية الفرز (أحمر، أصفر، أخضر، أسود) 100% Offline.</p>
+            <h2>💥 حاسبة صدمات وموجات الضغط العصفية (Blast Overpressure Calc)</h2>
+            <p style="color:var(--text-sub); font-size:0.85rem; margin-bottom:1rem;">حساب المخاطر الضغطية لموجة الانفجار على طبلة الأذن، الرئة، والأعضاء الأحشائية.</p>
 
             <div class="input-group">
-                <label>تصفية حسب رمز أولوية الفرز:</label>
-                <select id="db-triage-filter" class="input-field" onchange="filterCasualtyDB()">
-                    <option value="ALL">جميع المصابين (All Casualties)</option>
-                    <option value="RED">🔴 أحمر - علاج فوري عاجل (RED / Immediate)</option>
-                    <option value="YELLOW">🟡 أصفر - تأجيل مؤقت (YELLOW / Delayed)</option>
-                    <option value="GREEN">🟢 أخضر - طفيف (GREEN / Minor)</option>
-                    <option value="BLACK">🖤 أسود - متوفى/بدون نبض (BLACK / Deceased)</option>
-                </select>
+                <label>تقدير ضغط الموجة العصفية الزائد (Peak Overpressure in PSI):</label>
+                <input type="number" id="blast-psi" class="input-field" value="10" oninput="calcBlastTrauma()">
             </div>
 
-            <div id="db-casualties-list" style="margin-top:1rem; display:grid; gap:0.5rem;">
-                <div class="card" style="background:var(--bg-inner); margin:0;">
-                    <div style="display:flex; justify-content:space-between;">
-                        <span style="font-weight:bold;">مصاب #201</span>
-                        <span class="badge" style="background:#ef4444; color:white; padding:0.2rem 0.5rem; border-radius:4px; font-size:0.75rem;">🔴 أحمر (فوري)</span>
-                    </div>
-                    <div style="font-size:0.8rem; color:var(--text-sub); margin-top:0.3rem;">إصابة صدر مفتوحة - تركيب لاصق صدري Vented Seal</div>
+            <div id="blast-result-box" style="background:var(--bg-inner); padding:1rem; border-radius:10px;">
+                <h4 style="color:var(--accent-red); margin-bottom:0.5rem;">📊 تقييم صدمة العصف المتوقع:</h4>
+                <div style="font-size:0.9rem; display:grid; gap:0.4rem;">
+                    <div>👂 طبلة الأذن (Tympanic Membrane): <strong id="blast-ear" style="color:var(--accent-yellow);">خطر تمزق طبلة الأذن مرتفع (> 5 PSI)</strong></div>
+                    <div>🫁 الرئة العصفية (Blast Lung Injury): <strong id="blast-lung" style="color:var(--accent-blue);">نزيف ورضي روي محتمل متوسط</strong></div>
                 </div>
             </div>
         </div>
@@ -104,9 +96,9 @@
 
     <!-- Bottom Navigation -->
     <nav>
-        <button class="active" onclick="switchTab('db-tab', this)">
-            <span>🗄️</span>
-            <span>قاعدة المصابين</span>
+        <button class="active" onclick="switchTab('blast-tab', this)">
+            <span>💥</span>
+            <span>صدمة الانفجار</span>
         </button>
     </nav>
 
@@ -126,10 +118,27 @@
 
         function toggleTacticalHUD() { document.body.classList.toggle('hud-mode'); }
 
-        // Cycle 7: Casualty DB Filtering
-        function filterCasualtyDB() {
-            const filter = document.getElementById('db-triage-filter').value;
-            // Filter logic execution
+        // Cycle 8: Blast Trauma Math
+        function calcBlastTrauma() {
+            const psi = parseFloat(document.getElementById('blast-psi').value) || 0;
+            const ear = document.getElementById('blast-ear');
+            const lung = document.getElementById('blast-lung');
+
+            if (psi >= 5) {
+                ear.textContent = '🚨 تمزق مؤكد بطبلة الأذن مع طنين وفقدان سمع مؤقت';
+                ear.style.color = '#ef4444';
+            } else {
+                ear.textContent = '✅ طبلة الأذن سليمة وسليمة من التمزق الضغطي';
+                ear.style.color = '#22c55e';
+            }
+
+            if (psi >= 15) {
+                lung.textContent = '🚨 خطر إصابة الرئة العصفية القاتلة (Blast Lung) - ضيق تنفس ونزيف رئوي حاد';
+                lung.style.color = '#ef4444';
+            } else {
+                lung.textContent = '✅ طفيفة - مراقبة كدمات الصدر والتنفس';
+                lung.style.color = '#38bdf8';
+            }
         }
     </script>
 </body>
