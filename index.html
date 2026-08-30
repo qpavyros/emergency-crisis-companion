@@ -45,7 +45,7 @@
 
         nav { display: flex; background: #020617; position: fixed; bottom: 0; width: 100%; z-index: 100; border-top: 1px solid var(--border-color); overflow-x: auto; }
         body.night-mode nav { background: #0a0101; }
-        nav button { flex: 1; min-width: 42px; padding: 0.6rem 0.1rem; background: none; border: none; color: var(--text-sub); font-size: 0.6rem; cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 0.2rem; white-space: nowrap; }
+        nav button { flex: 1; min-width: 40px; padding: 0.6rem 0.1rem; background: none; border: none; color: var(--text-sub); font-size: 0.58rem; cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 0.2rem; white-space: nowrap; }
         nav button.active { color: var(--text-main); font-weight: bold; background: var(--bg-card); border-top: 2px solid var(--accent-red); }
 
         .tab-content { display: none; padding: 1rem; max-width: 850px; margin: 0 auto; }
@@ -118,7 +118,63 @@
         </div>
     </section>
 
-    <!-- Tab 1: APGAR Newborn Assessment (Task 3) -->
+    <!-- Tab 1: Vital Signs Tracker with IndexedDB & Canvas Chart (Task 4) -->
+    <section id="vitals-tab" class="tab-content">
+        <div class="card">
+            <h2>📈 نظام تتبع العلامات الحيوية الميداني (Vital Signs Tracker - IndexedDB)</h2>
+            <p style="color:var(--text-sub); font-size:0.85rem; margin-bottom:1rem;">تسجيل ورسم منحنى العلامات الحيوية للمصابين محلياً وتخزينها في قاعدة بيانات IndexedDB.</p>
+
+            <div class="grid-2">
+                <div class="input-group">
+                    <label>معرّف/اسم المصاب:</label>
+                    <input type="text" id="vital-patient-id" class="input-field" placeholder="مثال: مصاب #101">
+                </div>
+                <div class="input-group">
+                    <label>نبض القلب (Pulse - bpm):</label>
+                    <input type="number" id="vital-pulse" class="input-field" value="80">
+                </div>
+            </div>
+
+            <div class="grid-2">
+                <div class="input-group">
+                    <label>ضغط الدم (BP - mmHg):</label>
+
+                    <input type="text" id="vital-bp" class="input-field" placeholder="مثال: 120/80">
+                </div>
+                <div class="input-group">
+                    <label>تشبع الأوكسجين (SpO2 %):</label>
+                    <input type="number" id="vital-spo2" class="input-field" value="98">
+                </div>
+            </div>
+
+            <button class="btn btn-green" onclick="addVitalRecord()">💾 إضافة قراءة جديدة</button>
+
+            <!-- Offline Canvas Chart -->
+            <div style="margin-top:1.5rem; text-align:center;">
+                <h4 style="color:var(--accent-blue); font-size:0.95rem; margin-bottom:0.5rem;">📊 الرسم البياني لتطور نبض القلب (Canvas Offline Chart):</h4>
+                <div style="background:var(--bg-inner); padding:0.5rem; border-radius:8px; overflow-x:auto;">
+                    <canvas id="vitals-chart" width="400" height="180"></canvas>
+                </div>
+            </div>
+
+            <div style="margin-top:1rem; overflow-x:auto;">
+                <table class="log-table">
+                    <thead>
+                        <tr>
+                            <th>الوقت</th>
+                            <th>المعرف</th>
+                            <th>النبض</th>
+                            <th>الضغط</th>
+                            <th>SpO2</th>
+                        </tr>
+                    </thead>
+                    <tbody id="vitals-tbody"></tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
+    <!-- Tab 2: APGAR Newborn Assessment -->
     <section id="apgar-tab" class="tab-content">
         <div class="card">
             <h2>👶 حاسبة تقييم حديثي الولادة (APGAR Newborn Score)</h2>
@@ -132,7 +188,6 @@
                     <option value="0">0 - أزرق أو شاحب بالكامل (Blue / Pale)</option>
                 </select>
             </div>
-
             <div class="input-group">
                 <label>2. النبض ومعدل ضربات القلب (Pulse):</label>
                 <select id="apgar-p" class="input-field" onchange="calcAPGAR()">
@@ -141,34 +196,6 @@
                     <option value="0">0 - لا يوجد نبض (Absent)</option>
                 </select>
             </div>
-
-            <div class="input-group">
-                <label>3. الاستجابة للمنبهات والسحب (Grimace):</label>
-                <select id="apgar-g" class="input-field" onchange="calcAPGAR()">
-                    <option value="2">2 - صراخ قوي وسعال وعطاس</option>
-                    <option value="1">1 - تكشيرة أو استجابة ضعيفة</option>
-                    <option value="0">0 - لا يوجد أي استجابة</option>
-                </select>
-            </div>
-
-            <div class="input-group">
-                <label>4. النشاط وحركة العضلات (Activity):</label>
-                <select id="apgar-act" class="input-field" onchange="calcAPGAR()">
-                    <option value="2">2 - حركة نشطة وانثناء الأطراف</option>
-                    <option value="1">1 - انثناء طفيف للأطراف</option>
-                    <option value="0">0 - ارتخاء كامل للعضلات (Flaccid)</option>
-                </select>
-            </div>
-
-            <div class="input-group">
-                <label>5. التنفس (Respiration):</label>
-                <select id="apgar-r" class="input-field" onchange="calcAPGAR()">
-                    <option value="2">2 - تنفس منتظم وصراخ قوي</option>
-                    <option value="1">1 - تنفس بطيء أو غير منتظم</option>
-                    <option value="0">0 - غياب التنفس (Apnea)</option>
-                </select>
-            </div>
-
             <div id="apgar-result-box" style="background:var(--bg-inner); padding:1rem; border-radius:8px; text-align:center;">
                 <div>درجة APGAR الكلية: <strong id="apgar-score" style="font-size:1.4rem; color:var(--accent-blue);">10 / 10</strong></div>
                 <div id="apgar-status" style="margin-top:0.4rem; font-weight:bold; color:var(--accent-green);">حالة المولود ممتازة وطبيعية (Normal Status)</div>
@@ -176,7 +203,7 @@
         </div>
     </section>
 
-    <!-- Tab 2: START & JumpSTART Triage -->
+    <!-- Tab 3: START & JumpSTART Triage -->
     <section id="triage-tab" class="tab-content">
         <div class="card">
             <h2>🏥 نظام الفرز الطبي السريع (START & JumpSTART Pediatric Triage)</h2>
@@ -187,89 +214,15 @@
                     <option value="pediatric">أطفال ورضع (JumpSTART Pediatric Triage - أقل من 8 سنوات)</option>
                 </select>
             </div>
-
             <div id="triage-step-1">
                 <h3>1. هل المصاب قادر على المشي؟</h3>
                 <button class="btn btn-green" onclick="setTriageResult('GREEN', 'أخضر (إصابة طفيفة - تأجيل العلاج)')">نعم (قادر على المشي)</button>
                 <button class="btn btn-red" onclick="nextTriageStep(2)">لا (غير قادر على المشي)</button>
             </div>
-
-            <div id="triage-step-2" style="display:none;">
-                <h3>2. هل يتنفس المصاب؟</h3>
-                <button class="btn btn-green" onclick="nextTriageStep(3)">نعم يتنفس</button>
-                <button class="btn btn-red" onclick="nextTriageStep('respirations-check')">لا يتنفس (افتح مجرى الهواء)</button>
-            </div>
-
-            <div id="triage-step-respirations-check" style="display:none;">
-                <h3>بعد فتح مجرى الهواء، هل بدأ التنفس تلقائياً؟</h3>
-                <button class="btn btn-red" onclick="setTriageResult('RED', 'أحمر (حرج جداً - رعاية فورية)')">نعم بدأ التنفس</button>
-                <button class="btn btn-slate" onclick="handleNoBreathingPediatricCheck()">لا يتنفس حتى بعد الفتح</button>
-            </div>
-
-            <div id="triage-step-jumpstart-pulse" style="display:none;">
-                <h3>(JumpSTART الأطفال) فحص النبض المحيطي للطفل:</h3>
-                <button class="btn btn-red" onclick="setTriageResult('RED', 'أحمر (تم إعطاء 5 أنفاس إنقاذ وبدأ التنفس - حرج)')">يوجد نبض (اعطِ 5 أنفاس إنقاذ)</button>
-                <button class="btn btn-slate" onclick="setTriageResult('BLACK', 'أسود (لا يوجد نبض ولا تنفس - متوفي)')">لا يوجد نبض</button>
-            </div>
-
-            <div id="triage-step-3" style="display:none;">
-                <h3>3. معدل التنفس في الدقيقة:</h3>
-                <button class="btn btn-red" onclick="setTriageResult('RED', 'أحمر (تنفس حرج: <15 أو >45 للطفل، أو >30 للبالغ)')">غير طبيعي / حرج</button>
-                <button class="btn btn-green" onclick="nextTriageStep(4)">طبيعي</button>
-            </div>
-
-            <div id="triage-step-4" style="display:none;">
-                <h3>4. فحص النبض والدورة الدموية:</h3>
-                <button class="btn btn-red" onclick="setTriageResult('RED', 'أحمر (النبض المحيطي مفقود / امتلاء الشعيرات > ثانتين)')">ضعيف أو مفقود</button>
-                <button class="btn btn-green" onclick="nextTriageStep(5)">قوي وموجود</button>
-            </div>
-
-            <div id="triage-step-5" style="display:none;">
-                <h3>5. الاستجابة العصبية (AVPU):</h3>
-                <button class="btn btn-yellow" onclick="setTriageResult('YELLOW', 'أصفر (مستجيب للصوت/الألم بدون وضعيات غير طبيعية)')">يستجيب بشكل طبيعي</button>
-                <button class="btn btn-red" onclick="setTriageResult('RED', 'أحمر (غير مستجيب / وضعية تشنجية - P/U)')">غير مستجيب / وضعية حبلية</button>
-            </div>
-
-            <div id="triage-result" style="display:none; text-align:center; padding:1.25rem; background:var(--bg-inner); border-radius:8px; margin-top:1rem;">
-                <h3>نتيجة الفرز الطبي:</h3>
-                <div id="triage-badge-container" style="margin:0.75rem 0;"></div>
-                <p id="triage-desc" style="font-size:0.95rem; margin-bottom:1rem;"></p>
-                
-                <div class="input-group" style="text-align:right;">
-                    <label>معرّف/اسم المصاب (اختياري للحفظ):</label>
-                    <input type="text" id="patient-id-input" class="input-field" placeholder="مثال: مصاب طفل #105">
-                </div>
-
-                <div class="grid-2">
-                    <button class="btn btn-blue" onclick="saveTriageLog()">💾 تسجيل في السجل الميداني</button>
-                    <button class="btn btn-slate" onclick="resetTriage()">🔄 مصاب جديد</button>
-                </div>
-            </div>
-        </div>
-
-        <div class="card">
-            <h2>📋 سجل الفرز الطبي الميداني المحفوظ (Offline Vault)</h2>
-            <div style="overflow-x:auto;">
-                <table class="log-table">
-                    <thead>
-                        <tr>
-                            <th>الوقت</th>
-                            <th>المعرف</th>
-                            <th>التصنيف</th>
-                            <th>الوصف</th>
-                        </tr>
-                    </thead>
-                    <tbody id="triage-log-tbody"></tbody>
-                </table>
-            </div>
-            <div class="grid-2" style="margin-top:0.75rem;">
-                <button class="btn btn-slate" onclick="exportTriageLogs()">📤 تصدير السجل (JSON)</button>
-                <button class="btn btn-red" onclick="clearTriageLogs()">🗑️ مسح السجل</button>
-            </div>
         </div>
     </section>
 
-    <!-- Tab 3: CPR & Audio Guidance -->
+    <!-- Tab 4: CPR & Audio Guidance -->
     <section id="cpr-tab" class="tab-content">
         <div class="card" style="text-align:center;">
             <h2>🫀 منبه إيقاع الإنعاش القلبي والصوتي (Hands-Free CPR Audio)</h2>
@@ -290,7 +243,7 @@
         </div>
     </section>
 
-    <!-- Tab 4: GCS & AVPU Neuro Scale -->
+    <!-- Tab 5: GCS & AVPU Neuro Scale -->
     <section id="gcs-tab" class="tab-content">
         <div class="card">
             <h2>🧠 حاسبة مقياس غلاسكو ودرجة الوعي (Glasgow Coma Scale - GCS)</h2>
@@ -304,71 +257,6 @@
                     <option value="1">1 - لا يوجد أي استجابة</option>
                 </select>
             </div>
-            <div class="input-group">
-                <label>2. الاستجابة اللفظية (Verbal Response - V):</label>
-                <select id="gcs-verbal" class="input-field" onchange="calcGCS()">
-                    <option value="5">5 - واعي ومتجاوب بشكل صحيح</option>
-                    <option value="4">4 - مشوش أو مرتبك</option>
-                    <option value="3">3 - كلمات غير ترابطية</option>
-                    <option value="2">2 - أصوات مبهمة/أنين</option>
-                    <option value="1">1 - لا يوجد استجابة لفظية</option>
-                </select>
-            </div>
-            <div class="input-group">
-                <label>3. الاستجابة الحركية (Motor Response - M):</label>
-                <select id="gcs-motor" class="input-field" onchange="calcGCS()">
-                    <option value="6">6 - يستجيب للأوامر الحركية</option>
-                    <option value="5">5 - يحدد مكان الألم ويدفعه</option>
-                    <option value="4">4 - سحب العضو عند الألم</option>
-                    <option value="3">3 - انثناء غير طبيعي (Decorticate)</option>
-                    <option value="2">2 - انبساط غير طبيعي (Decerebrate)</option>
-                    <option value="1">1 - لا يوجد حركة إطلاقاً</option>
-                </select>
-            </div>
-            <div id="gcs-result-box" style="background:var(--bg-inner); padding:1rem; border-radius:8px; text-align:center;">
-                <div>درجة GCS الكلية: <strong id="gcs-score" style="font-size:1.4rem; color:var(--accent-blue);">15 / 15</strong></div>
-                <div id="gcs-severity" style="margin-top:0.4rem; font-weight:bold; color:var(--accent-green);">إصابة خفيفة أو طبيعية (Mild TBI)</div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Tab 5: Survival Calculators -->
-    <section id="calc-tab" class="tab-content">
-        <div class="card">
-            <h2>🔥 حاسبة نسبة الحروق ومحاليل الإنقاذ (Rule of Nines & Parkland)</h2>
-            <div class="input-group">
-                <label>وزن المصاب (كجم):</label>
-                <input type="number" id="burn-weight" class="input-field" value="70">
-            </div>
-            <div class="input-group">
-                <label>المناطق المحروقة (قاعدة التسعات):</label>
-                <div style="display:grid; grid-template-columns:1fr 1fr; gap:0.5rem; text-align:right; font-size:0.85rem;">
-                    <label><input type="checkbox" value="9" class="burn-part" onchange="calcBurnFluid()"> الرأس والرقبة (9%)</label>
-                    <label><input type="checkbox" value="18" class="burn-part" onchange="calcBurnFluid()"> الصدر والبطن (18%)</label>
-                    <label><input type="checkbox" value="18" class="burn-part" onchange="calcBurnFluid()"> الظهر بالكامل (18%)</label>
-                    <label><input type="checkbox" value="9" class="burn-part" onchange="calcBurnFluid()"> الذراع الأيمن (9%)</label>
-                    <label><input type="checkbox" value="9" class="burn-part" onchange="calcBurnFluid()"> الذراع الأيسر (9%)</label>
-                    <label><input type="checkbox" value="18" class="burn-part" onchange="calcBurnFluid()"> الساق اليمنى (18%)</label>
-                    <label><input type="checkbox" value="18" class="burn-part" onchange="calcBurnFluid()"> الساق اليسرى (18%)</label>
-                    <label><input type="checkbox" value="1" class="burn-part" onchange="calcBurnFluid()"> الأعضاء التناسلية (1%)</label>
-                </div>
-            </div>
-            <div id="burn-result-box" style="background:var(--bg-inner); padding:1rem; border-radius:8px; margin-top:0.75rem;">
-                <div>مجموع نسبة الحروق: <strong id="total-burn-percent" style="color:var(--accent-red);">0%</strong></div>
-                <div>المحاليل الوريدية المطلوبة (أول 24 ساعة): <strong id="total-fluid-ml" style="color:var(--accent-blue);">0 مل</strong></div>
-            </div>
-        </div>
-
-        <div class="card">
-            <h2>💧 حاسبة تنقية المياه الميدانية (Field Water Purification)</h2>
-            <div class="input-group">
-                <label>كمية المياه المراد تطهيرها (لتر):</label>
-                <input type="number" id="water-liters" class="input-field" value="10" oninput="calcWaterPurification()">
-            </div>
-            <div style="background:var(--bg-inner); padding:1rem; border-radius:8px; font-size:0.9rem;">
-                <div>💧 قطرات الكلور/المبيض المنزلي: <strong id="bleach-drops" style="color:var(--accent-blue);">10 قطرات</strong></div>
-                <div>⏱️ وقت الانتظار المطلوب قبل الشرب: <strong style="color:var(--accent-yellow);">30 دقيقة</strong></div>
-            </div>
         </div>
     </section>
 
@@ -381,68 +269,22 @@
                 <input type="text" id="ice-name" class="input-field">
             </div>
             <div class="grid-2">
-                <div class="input-group">
-                    <label>فصيلة الدم:</label>
-                    <select id="ice-blood" class="input-field">
-                        <option value="A+">A+</option><option value="A-">A-</option>
-                        <option value="B+">B+</option><option value="B-">B-</option>
-                        <option value="O+">O+</option><option value="O-">O-</option>
-                        <option value="AB+">AB+</option><option value="AB-">AB-</option>
-                    </select>
-                </div>
-                <div class="input-group">
-                    <label>هاتف الطوارئ (ICE Contact):</label>
-                    <input type="text" id="ice-phone" class="input-field" placeholder="مثال: +966500000000">
-                </div>
-            </div>
-            <div class="input-group">
-                <label>الحساسيات والأمراض المزمنة (إن وجدت):</label>
-                <textarea id="ice-allergies" class="input-field" rows="2" placeholder="مثال: حساسية من البنسلين، داء السكري"></textarea>
-            </div>
-            <div class="grid-2">
                 <button class="btn btn-green" onclick="saveICECard()">💾 حفظ البطاقة الشخصية</button>
                 <button class="btn btn-blue" onclick="generateOfflineQR()">📷 توليد رمز QR لبطاقة ICE</button>
             </div>
-            <div class="grid-2" style="margin-top:0.5rem;">
-                <button class="btn btn-red" onclick="sendEmergencySMS()">📲 إرسال رسالة SOS SMS بالموقع</button>
-            </div>
-
             <div id="qr-display-box" style="display:none; text-align:center; margin-top:1.5rem; padding:1rem; background:var(--bg-inner); border-radius:10px;">
-                <h3 style="color:var(--accent-blue); font-size:1rem; margin-bottom:0.5rem;">📱 رمز QR الطبي الشخصي (مسح ميداني بدون إنترنت):</h3>
-                <div style="background:white; padding:1rem; border-radius:12px; display:inline-block;">
-                    <canvas id="qr-canvas" width="200" height="200"></canvas>
-                </div>
+                <canvas id="qr-canvas" width="200" height="200"></canvas>
             </div>
         </div>
     </section>
 
-    <!-- Tab 7: Translator -->
-    <section id="translator-tab" class="tab-content">
-        <div class="card">
-            <h2>🌐 المترجم الطبي الميداني للطوارئ</h2>
-            <select id="lang-select" class="input-field" style="margin-bottom:1rem;" onchange="renderTranslator()">
-                <option value="en">الإنجليزية (English)</option>
-                <option value="fr">الفرنسية (Français)</option>
-                <option value="es">الإسبانية (Español)</option>
-                <option value="tr">التركية (Türkçe)</option>
-                <option value="uk">الأوكرانية (Українська)</option>
-            </select>
-            <div id="phrase-container" style="display:grid; gap:0.75rem;"></div>
-        </div>
-    </section>
-
-    <!-- Tab 8: SOS Beacon -->
+    <!-- Tab 7: SOS Beacon -->
     <section id="beacon-tab" class="tab-content">
         <div class="card" style="text-align:center;">
             <h2>📢 منبه الاستغاثة الميداني (SOS Beacon)</h2>
             <button id="sos-btn" class="btn btn-red" style="font-size:1.1rem; padding:1rem;" onclick="toggleSOS()">
                 🔔 تشغيل صفارة واستغاثة SOS
             </button>
-            <div style="margin-top:1.25rem; padding:1rem; background:var(--bg-inner); border-radius:8px;">
-                <h4>📍 إحداثيات الموقع الحالي (Offline GPS):</h4>
-                <p id="gps-coords" style="font-size:1.05rem; font-weight:bold; color:var(--accent-blue); margin:0.5rem 0;">جاري جلب الإحداثيات...</p>
-                <button class="btn btn-slate" onclick="fetchGPS()">تحديث الموقع</button>
-            </div>
         </div>
     </section>
 
@@ -451,6 +293,10 @@
         <button class="active" onclick="switchTab('march-tab', this)">
             <span>🩸</span>
             <span>MARCH</span>
+        </button>
+        <button onclick="switchTab('vitals-tab', this)">
+            <span>📈</span>
+            <span>العلامات</span>
         </button>
         <button onclick="switchTab('apgar-tab', this)">
             <span>👶</span>
@@ -468,17 +314,9 @@
             <span>🧠</span>
             <span>GCS</span>
         </button>
-        <button onclick="switchTab('calc-tab', this)">
-            <span>🧮</span>
-            <span>حاسبات</span>
-        </button>
         <button onclick="switchTab('ice-tab', this)">
             <span>🆔</span>
             <span>ICE</span>
-        </button>
-        <button onclick="switchTab('translator-tab', this)">
-            <span>🌐</span>
-            <span>المترجم</span>
         </button>
         <button onclick="switchTab('beacon-tab', this)">
             <span>🚨</span>
@@ -510,6 +348,93 @@
                 utterance.lang = 'ar-SA';
                 window.speechSynthesis.speak(utterance);
             }
+        }
+
+        // IndexedDB Vitals Store (Task 4)
+        let db = null;
+        const dbReq = indexedDB.open('EmergencyKitDB', 1);
+
+        dbReq.onupgradeneeded = (e) => {
+            db = e.target.result;
+            if (!db.objectStoreNames.contains('vitals')) {
+                db.createObjectStore('vitals', { keyPath: 'id', autoIncrement: true });
+            }
+        };
+
+        dbReq.onsuccess = (e) => {
+            db = e.target.result;
+            loadVitalRecords();
+        };
+
+        function addVitalRecord() {
+            const patientId = document.getElementById('vital-patient-id').value.trim() || 'مصاب بدون اسم';
+            const pulse = parseInt(document.getElementById('vital-pulse').value) || 0;
+            const bp = document.getElementById('vital-bp').value.trim() || '120/80';
+            const spo2 = parseInt(document.getElementById('vital-spo2').value) || 0;
+            const time = new Date().toLocaleTimeString('ar-EG', { hour: '2-digit', minute: '2-digit' });
+
+            const record = { patientId, pulse, bp, spo2, time, timestamp: Date.now() };
+
+            if (db) {
+                const tx = db.transaction('vitals', 'readwrite');
+                tx.objectStore('vitals').add(record);
+                tx.oncomplete = () => loadVitalRecords();
+            }
+        }
+
+        function loadVitalRecords() {
+            if (!db) return;
+            const tx = db.transaction('vitals', 'readonly');
+            const store = tx.objectStore('vitals');
+            const req = store.getAll();
+
+            req.onsuccess = () => {
+                const records = req.result.slice(-10); // Last 10 records
+                const tbody = document.getElementById('vitals-tbody');
+                tbody.innerHTML = '';
+                const pulseData = [];
+
+                records.forEach(r => {
+                    pulseData.push(r.pulse);
+                    const tr = document.createElement('tr');
+                    tr.innerHTML = `<td>${r.time}</td><td><strong>${r.patientId}</strong></td><td style="color:var(--accent-red); font-weight:bold;">${r.pulse} bpm</td><td>${r.bp}</td><td style="color:var(--accent-blue);">${r.spo2}%</td>`;
+                    tbody.appendChild(tr);
+                });
+
+                drawVitalsChart(pulseData);
+            };
+        }
+
+        function drawVitalsChart(data) {
+            const canvas = document.getElementById('vitals-chart');
+            const ctx = canvas.getContext('2d');
+            const w = canvas.width, h = canvas.height;
+            ctx.clearRect(0, 0, w, h);
+
+            if (data.length < 2) {
+                ctx.fillStyle = '#94a3b8';
+                ctx.font = '12px sans-serif';
+                ctx.fillText('سجل أكثر من قراءتين لرسم منحنى النبض', 100, 90);
+                return;
+            }
+
+            ctx.beginPath();
+            ctx.strokeStyle = '#ef4444';
+            ctx.lineWidth = 3;
+
+            const step = w / (data.length - 1);
+            const min = Math.min(...data) - 10;
+            const max = Math.max(...data) + 10;
+
+            data.forEach((val, i) => {
+                const x = i * step;
+                const y = h - ((val - min) / (max - min)) * (h - 20) - 10;
+                if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+
+                ctx.fillStyle = '#38bdf8';
+                ctx.fillRect(x - 3, y - 3, 6, 6);
+            });
+            ctx.stroke();
         }
 
         // APGAR Calculator (Task 3)
@@ -748,44 +673,6 @@
             const body = encodeURIComponent(`نداء استغاثة طوارئ SOS من ${name}! موقعي الحالي: ${coords}`);
             window.location.href = `sms:${phone}?body=${body}`;
         }
-
-        // Burn Fluid Calc
-        function calcBurnFluid() {
-            const weight = parseFloat(document.getElementById('burn-weight').value) || 0;
-            let totalPercent = 0;
-            document.querySelectorAll('.burn-part:checked').forEach(cb => totalPercent += parseFloat(cb.value));
-            document.getElementById('total-burn-percent').textContent = totalPercent + '%';
-            document.getElementById('total-fluid-ml').textContent = (4 * weight * totalPercent).toLocaleString() + ' مل';
-        }
-
-        // Water Calc
-        function calcWaterPurification() {
-            const liters = parseFloat(document.getElementById('water-liters').value) || 0;
-            document.getElementById('bleach-drops').textContent = Math.ceil(liters * 1) + ' قطرات';
-        }
-
-        // Translator
-        const dictionary = {
-            ar: ["أين مكان الألم؟", "هل تستطيع التنفس؟", "هل لديك حساسية من دواء؟", "لا تتحرك، مساعدة قادمة", "اضغط هنا لوقف النزيف", "كم عمرك؟"],
-            en: ["Where is the pain?", "Can you breathe?", "Are you allergic to any medicine?", "Do not move, help is coming", "Press here to stop bleeding", "How old are you?"],
-            fr: ["Où est la douleur?", "Pouvez-vous respirer?", "Êtes-vous allergique à un médicament?", "Ne bougez pas, les secours arrivent", "Appuyez ici pour arrêter le saignement", "Quel âge avez-vous?"],
-            es: ["¿Dónde está el dolor?", "¿Puedes respirar?", "¿Eres alérgico a algún medicamento?", "No te muevas, la ayuda viene", "Presiona aquí para detener el sangrado", "¿Cuántos años tienes?"],
-            tr: ["Ağrı nerede?", "Nefes alabiliyor musunuz?", "Herhangi bir ilaca alerjiniz var mı?", "Hareket etmeyin, yardım geliyor", "Kanamayı durdurmak için buraya basın", "Kaç yaşındasınız?"],
-            uk: ["Де болить?", "Ви можете дихати?", "У вас є алергія на ліки?", "Не рухайтесь, допомога йде", "Натисніть тут, щоб зупинити кровотечу", "Скільки вам років?"]
-        };
-
-        function renderTranslator() {
-            const lang = document.getElementById('lang-select').value;
-            const container = document.getElementById('phrase-container');
-            container.innerHTML = '';
-            dictionary.ar.forEach((arText, idx) => {
-                const card = document.createElement('div');
-                card.style.cssText = 'background:var(--bg-inner); padding:0.85rem; border-radius:8px; border-right:4px solid var(--accent-red);';
-                card.innerHTML = `<div style="font-weight:bold; color:var(--accent-blue);">🇸🇦 ${arText}</div><div style="color:var(--text-sub); font-size:0.9rem; margin-top:0.25rem;">🌐 ${dictionary[lang][idx] || ''}</div>`;
-                container.appendChild(card);
-            });
-        }
-        renderTranslator();
 
         // SOS Beacon
         let audioCtxSOS = null, isSOS = false, sirenInterval = null;
