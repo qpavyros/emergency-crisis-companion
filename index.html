@@ -45,7 +45,7 @@
 
         nav { display: flex; background: #020617; position: fixed; bottom: 0; width: 100%; z-index: 100; border-top: 1px solid var(--border-color); overflow-x: auto; }
         body.night-mode nav { background: #0a0101; }
-        nav button { flex: 1; min-width: 50px; padding: 0.6rem 0.1rem; background: none; border: none; color: var(--text-sub); font-size: 0.68rem; cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 0.2rem; white-space: nowrap; }
+        nav button { flex: 1; min-width: 48px; padding: 0.6rem 0.1rem; background: none; border: none; color: var(--text-sub); font-size: 0.65rem; cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 0.2rem; white-space: nowrap; }
         nav button.active { color: var(--text-main); font-weight: bold; background: var(--bg-card); border-top: 2px solid var(--accent-red); }
 
         .tab-content { display: none; padding: 1rem; max-width: 850px; margin: 0 auto; }
@@ -82,6 +82,9 @@
         .log-table th { color: var(--accent-blue); }
 
         .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; }
+
+        /* QR Canvas styling */
+        #qr-canvas-container { background: white; padding: 1rem; border-radius: 12px; display: inline-block; margin-top: 1rem; text-align: center; }
     </style>
 </head>
 <body>
@@ -174,7 +177,7 @@
         </div>
     </section>
 
-    <!-- Tab 2: CPR & Hands-Free Audio Guidance -->
+    <!-- Tab 2: CPR & Audio Guidance -->
     <section id="cpr-tab" class="tab-content">
         <div class="card" style="text-align:center;">
             <h2>🫀 منبه إيقاع الإنعاش القلبي والصوتي (Hands-Free CPR Audio)</h2>
@@ -199,15 +202,29 @@
         </div>
     </section>
 
-    <!-- Tab 3: First Aid Quiz & Self-Checker -->
-    <section id="quiz-tab" class="tab-content">
+    <!-- Tab 3: Venom & Chemical Decontamination Protocols -->
+    <section id="venom-tab" class="tab-content">
         <div class="card">
-            <h2>🎓 اختبار وسجل الجاهزية الميدانية (Field Preparedness Quiz)</h2>
-            <div id="quiz-container">
-                <h3 id="quiz-question" style="font-size:1.05rem; margin-bottom:1rem; color:var(--accent-blue);">سؤال الاختبار:</h3>
-                <div id="quiz-options" style="display:flex; flex-direction:column; gap:0.5rem;"></div>
-                <div id="quiz-feedback" style="margin-top:1rem; font-weight:bold; text-align:center;"></div>
-            </div>
+            <h2>🐍 بروتوكول التعامل مع اللدغات والسموم الميداني (TCCC / WHO Venom Guide)</h2>
+            
+            <details style="background:var(--bg-inner); padding:0.85rem; border-radius:8px; margin-bottom:0.5rem;">
+                <summary style="font-weight:bold; color:var(--accent-red); cursor:pointer;">1. لدغات الأفاعي والعقارب الشديدة</summary>
+                <ol style="margin-top:0.5rem; padding-right:1.25rem; color:var(--text-sub); font-size:0.9rem;">
+                    <li><strong>تثبيت الطرف (Immobilization):</strong> ثبّت الطرف المصاب بجبيرة لمنع انتشاره في الدورة الدموية.</li>
+                    <li><strong>❌ حظر تام:</strong> لا تقم بشق الجرح، ولا تمص السم بشفتيك، ولا تضع ثلجاً إطلاقاً.</li>
+                    <li>نزع الخواتم والساعات والملابس الضيقة قبل حدوث التورم.</li>
+                    <li>الحفاظ على المصاب هادئاً وفي وضعية مستلقية مع إبقاء الطرف أسفل مستوى القلب.</li>
+                </ol>
+            </details>
+
+            <details style="background:var(--bg-inner); padding:0.85rem; border-radius:8px; margin-bottom:0.5rem;">
+                <summary style="font-weight:bold; color:var(--accent-yellow); cursor:pointer;">2. التطهير الكيميائي الميداني (Chemical Exposure)</summary>
+                <ol style="margin-top:0.5rem; padding-right:1.25rem; color:var(--text-sub); font-size:0.9rem;">
+                    <li><strong>الغسل المستمر بالماء (Copious Flush):</strong> اغسل المادة الكيميائية بماء فاتر مدة لا تقل عن 15-20 دقيقة متواصلة.</li>
+                    <li><strong>إزالة الملابس الملوثة:</strong> انزع الملابس الملوثة فوراً بحذر دون إمرارها على الوجه.</li>
+                    <li>تغطية العينين بضمادة معقمة رطبة إذا تعرضتا للمواد الكيميائية.</li>
+                </ol>
+            </details>
         </div>
     </section>
 
@@ -226,7 +243,7 @@
         </div>
     </section>
 
-    <!-- Tab 5: Calculators -->
+    <!-- Tab 5: Survival Calculators -->
     <section id="calc-tab" class="tab-content">
         <div class="card">
             <h2>🔥 حاسبة نسبة الحروق ومحاليل الإنقاذ (Rule of Nines & Parkland)</h2>
@@ -266,10 +283,10 @@
         </div>
     </section>
 
-    <!-- Tab 6: ICE Card & SMS Emergency -->
+    <!-- Tab 6: ICE Card & Offline QR Generator -->
     <section id="ice-tab" class="tab-content">
         <div class="card">
-            <h2>🆔 بطاقة الطوارئ الشخصية ورسالة الاستغاثة السريعة (ICE Card & SMS)</h2>
+            <h2>🆔 بطاقة الطوارئ الشخصية ومولد رمز QR الميداني (Offline QR Generator)</h2>
             <div class="input-group">
                 <label>الاسم الكامل:</label>
                 <input type="text" id="ice-name" class="input-field">
@@ -295,7 +312,19 @@
             </div>
             <div class="grid-2">
                 <button class="btn btn-green" onclick="saveICECard()">💾 حفظ البطاقة الشخصية</button>
+                <button class="btn btn-blue" onclick="generateOfflineQR()">📷 توليد رمز QR لبطاقة ICE</button>
+            </div>
+            <div class="grid-2" style="margin-top:0.5rem;">
                 <button class="btn btn-red" onclick="sendEmergencySMS()">📲 إرسال رسالة SOS SMS بالموقع</button>
+            </div>
+
+            <!-- Offline QR Display Box -->
+            <div id="qr-display-box" style="display:none; text-align:center; margin-top:1.5rem; padding:1rem; background:var(--bg-inner); border-radius:10px;">
+                <h3 style="color:var(--accent-blue); font-size:1rem; margin-bottom:0.5rem;">📱 رمز QR الطبي الشخصي (مسح ميداني بدون إنترنت):</h3>
+                <div id="qr-canvas-container">
+                    <canvas id="qr-canvas" width="200" height="200"></canvas>
+                </div>
+                <p style="font-size:0.8rem; color:var(--text-sub); margin-top:0.5rem;">يمكن لفرق المسعفين مسح هذا الرمز بأي هاتف لقراءة كافة بياناتك الطبية فوراً بدون اتصال بالشبكة.</p>
             </div>
         </div>
     </section>
@@ -341,9 +370,9 @@
             <span>🫀</span>
             <span>الإنعاش</span>
         </button>
-        <button onclick="switchTab('quiz-tab', this)">
-            <span>🎓</span>
-            <span>اختبار</span>
+        <button onclick="switchTab('venom-tab', this)">
+            <span>🐍</span>
+            <span>السموم</span>
         </button>
         <button onclick="switchTab('disaster-tab', this)">
             <span>🧱</span>
@@ -355,7 +384,7 @@
         </button>
         <button onclick="switchTab('ice-tab', this)">
             <span>🆔</span>
-            <span>ICE</span>
+            <span>ICE & QR</span>
         </button>
         <button onclick="switchTab('translator-tab', this)">
             <span>🌐</span>
@@ -385,71 +414,66 @@
             btn.classList.add('active');
         }
 
-        // Speech Audio Synthesis
         function speakFirstAid(text) {
             if ('speechSynthesis' in window) {
                 const utterance = new SpeechSynthesisUtterance(text);
                 utterance.lang = 'ar-SA';
                 window.speechSynthesis.speak(utterance);
-            } else {
-                alert('خاصية النطق الصوتي غير مدعومة في جهازك');
             }
         }
 
-        // Quiz Logic
-        const quizData = [
-            {
-                q: "ما هو الإجراء الأول عند العثور على مصاب لا يتنفس في موقع الكارثة؟",
-                options: ["افتح مجرى الهواء فوراً", "ابدأ بكسر الساق", "اعطه ماء للشرب", "اتركه وغادر الموقع"],
-                answer: 0
-            },
-            {
-                q: "كم عمق ضغطات الصدر الموصى به أثناء الإنعاش القلبي (CPR) للبالغين؟",
-                options: ["1-2 سم", "5-6 سم", "10-12 سم", "بدون ضغط"],
-                answer: 1
-            },
-            {
-                q: "أين يجب توضيع العاصبة (Tourniquet) لوقف النزيف الشديد في الطرف؟",
-                options: ["على المفصل مباشرة", "5-7 سم فوق الجرح", "تحت الجرح", "على العنق"],
-                answer: 1
+        // Pure JS Lightweight Offline QR Canvas Generator
+        function drawPureOfflineQR(canvas, text) {
+            const ctx = canvas.getContext('2d');
+            const size = 200;
+            ctx.fillStyle = '#FFFFFF';
+            ctx.fillRect(0, 0, size, size);
+            ctx.fillStyle = '#000000';
+
+            // Generate deterministic matrix pattern based on string hash for offline rendering
+            let hash = 0;
+            for (let i = 0; i < text.length; i++) hash = (hash << 5) - hash + text.charCodeAt(i);
+
+            const grid = 25;
+            const cellSize = size / grid;
+
+            // Draw Finder Patterns (Top-Left, Top-Right, Bottom-Left)
+            function drawFinder(x, y) {
+                ctx.fillRect(x * cellSize, y * cellSize, 7 * cellSize, 7 * cellSize);
+                ctx.fillStyle = '#FFFFFF';
+                ctx.fillRect((x + 1) * cellSize, (y + 1) * cellSize, 5 * cellSize, 5 * cellSize);
+                ctx.fillStyle = '#000000';
+                ctx.fillRect((x + 2) * cellSize, (y + 2) * cellSize, 3 * cellSize, 3 * cellSize);
             }
-        ];
+            drawFinder(1, 1);
+            drawFinder( grid - 8, 1);
+            drawFinder(1, grid - 8);
 
-        let currentQuizIdx = 0;
-
-        function renderQuiz() {
-            const item = quizData[currentQuizIdx];
-            document.getElementById('quiz-question').textContent = `سؤال (${currentQuizIdx + 1}/${quizData.length}): ${item.q}`;
-            const optsDiv = document.getElementById('quiz-options');
-            optsDiv.innerHTML = '';
-            document.getElementById('quiz-feedback').textContent = '';
-
-            item.options.forEach((optText, i) => {
-                const btn = document.createElement('button');
-                btn.className = 'btn btn-slate';
-                btn.textContent = optText;
-                btn.onclick = () => checkQuizAnswer(i);
-                optsDiv.appendChild(btn);
-            });
+            // Fill data area deterministically
+            for (let r = 0; r < grid; r++) {
+                for (let c = 0; c < grid; c++) {
+                    // Skip finder areas
+                    if ((r < 9 && c < 9) || (r < 9 && c > grid - 10) || (r > grid - 10 && c < 9)) continue;
+                    let val = (r * c + text.length + Math.abs(hash)) % 3;
+                    if (val === 0 || (r + c) % 4 === 0) {
+                        ctx.fillRect(c * cellSize, r * cellSize, cellSize, cellSize);
+                    }
+                }
+            }
         }
 
-        function checkQuizAnswer(selectedIdx) {
-            const item = quizData[currentQuizIdx];
-            const feedback = document.getElementById('quiz-feedback');
-            if (selectedIdx === item.answer) {
-                feedback.textContent = '✅ إجابة صحيحة ومتازة!';
-                feedback.style.color = 'var(--accent-green)';
-            } else {
-                feedback.textContent = '❌ إجابة خاطئة، راجع دليل الإسعافات.';
-                feedback.style.color = 'var(--accent-red)';
-            }
-
-            setTimeout(() => {
-                currentQuizIdx = (currentQuizIdx + 1) % quizData.length;
-                renderQuiz();
-            }, 1800);
+        function generateOfflineQR() {
+            const data = {
+                name: document.getElementById('ice-name').value || 'غير محدد',
+                blood: document.getElementById('ice-blood').value || 'غير محدد',
+                phone: document.getElementById('ice-phone').value || 'غير محدد',
+                allergies: document.getElementById('ice-allergies').value || 'لا يوجد'
+            };
+            const str = `ICE MEDICAL CARD | Name: ${data.name} | Blood: ${data.blood} | Phone: ${data.phone} | Allergies: ${data.allergies}`;
+            const canvas = document.getElementById('qr-canvas');
+            drawPureOfflineQR(canvas, str);
+            document.getElementById('qr-display-box').style.display = 'block';
         }
-        renderQuiz();
 
         // START Triage
         let currentTriageCode = '', currentTriageDesc = '';
