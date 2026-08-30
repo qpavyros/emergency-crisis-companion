@@ -1,15 +1,14 @@
-// EmergencyKit PWA Service Worker v3.5 - 100% Offline Master Cache
-const CACHE_NAME = 'emergency-kit-v3.5';
+const CACHE_NAME = 'emergency-kit-v6.5';
 const ASSETS_TO_CACHE = [
     './',
     './index.html',
-    './manifest.json'
+    './manifest.json',
+    './audit.md'
 ];
 
 self.addEventListener('install', (event) => {
     event.waitUntil(
         caches.open(CACHE_NAME).then((cache) => {
-            console.log('[SW v3.5] Caching Master Emergency Kit Assets...');
             return cache.addAll(ASSETS_TO_CACHE);
         })
     );
@@ -22,7 +21,6 @@ self.addEventListener('activate', (event) => {
             return Promise.all(
                 cacheNames.map((cache) => {
                     if (cache !== CACHE_NAME) {
-                        console.log('[SW v3.5] Clearing Old Cache:', cache);
                         return caches.delete(cache);
                     }
                 })
@@ -38,18 +36,10 @@ self.addEventListener('fetch', (event) => {
             if (cachedResponse) {
                 return cachedResponse;
             }
-            return fetch(event.request).then((networkResponse) => {
-                if (!networkResponse || networkResponse.status !== 200 || networkResponse.type !== 'basic') {
-                    return networkResponse;
+            return fetch(event.request).catch(() => {
+                if (event.request.headers.get('accept').includes('text/html')) {
+                    return caches.match('./index.html');
                 }
-                const responseToCache = networkResponse.clone();
-                caches.open(CACHE_NAME).then((cache) => {
-                    cache.put(event.request, responseToCache);
-                });
-                return networkResponse;
-            }).catch(() => {
-                // Network failed, fallback to root index.html offline
-                return caches.match('./index.html');
             });
         })
     );
