@@ -22,29 +22,36 @@
             --accent-slate: #475569;
         }
 
-        body.night-mode {
-            --bg-primary: #050000;
-            --bg-card: #180303;
-            --bg-inner: #0a0101;
-            --text-main: #ff4d4d;
-            --text-sub: #991b1b;
-            --border-color: #7f1d1d;
-            --accent-red: #ff0000;
-            --accent-yellow: #b91c1c;
-            --accent-green: #991b1b;
-            --accent-blue: #ef4444;
-            --accent-slate: #450a0a;
+        body.extreme-battery {
+            --bg-primary: #000000 !important;
+            --bg-card: #000000 !important;
+            --bg-inner: #000000 !important;
+            --text-main: #ffffff !important;
+            --text-sub: #aaaaaa !important;
+            --border-color: #ffffff !important;
+            --accent-red: #ffffff !important;
+            --accent-yellow: #ffffff !important;
+            --accent-green: #ffffff !important;
+            --accent-blue: #ffffff !important;
+            --accent-slate: #000000 !important;
+        }
+
+        body.extreme-battery * {
+            animation: none !important;
+            transition: none !important;
+            box-shadow: none !important;
+            text-shadow: none !important;
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: system-ui, -apple-system, sans-serif; }
         body { background: var(--bg-primary); color: var(--text-main); line-height: 1.5; padding-bottom: 75px; transition: background 0.3s, color 0.3s; }
         
         header { background: #b91c1c; padding: 0.75rem 1rem; text-align: center; font-weight: bold; position: sticky; top: 0; z-index: 100; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.3); display: flex; align-items: center; justify-content: space-between; }
-        body.night-mode header { background: #450a0a; }
+        body.extreme-battery header { background: #000000 !important; border-bottom: 1px solid #ffffff; }
         header h1 { font-size: 1.2rem; display: flex; align-items: center; gap: 0.5rem; }
 
         nav { display: flex; background: #020617; position: fixed; bottom: 0; width: 100%; z-index: 100; border-top: 1px solid var(--border-color); overflow-x: auto; }
-        body.night-mode nav { background: #0a0101; }
+        body.extreme-battery nav { background: #000000 !important; border-top: 1px solid #ffffff; }
         nav button { flex: 1; min-width: 40px; padding: 0.6rem 0.1rem; background: none; border: none; color: var(--text-sub); font-size: 0.58rem; cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 0.2rem; white-space: nowrap; }
         nav button.active { color: var(--text-main); font-weight: bold; background: var(--bg-card); border-top: 2px solid var(--accent-red); }
 
@@ -60,62 +67,50 @@
         .btn-yellow { background: var(--accent-yellow); color: black; }
         .btn-blue { background: var(--accent-blue); color: black; }
         .btn-slate { background: var(--accent-slate); color: white; }
-
-        .input-group { margin-bottom: 1rem; }
-        .input-group label { display: block; font-size: 0.85rem; margin-bottom: 0.4rem; color: var(--text-sub); }
-        .input-field { width: 100%; padding: 0.75rem; border-radius: 8px; background: var(--bg-inner); color: var(--text-main); border: 1px solid var(--border-color); font-size: 0.95rem; }
     </style>
 </head>
 <body>
 
     <header>
         <h1>🚨 EmergencyKit PWA</h1>
-        <button onclick="toggleNightMode()" class="btn btn-slate" style="width:auto; padding:0.3rem 0.6rem; font-size:0.8rem; margin:0;">🌙</button>
+        <div style="display:flex; gap:0.4rem;">
+            <button onclick="toggleExtremeBatterySaver()" class="btn btn-slate" style="width:auto; padding:0.3rem 0.6rem; font-size:0.8rem; margin:0;" title="وضع توفير البطارية الأقصى">🔋 توفير البطارية</button>
+        </div>
     </header>
 
-    <!-- Tab 0: Tactical Silent Hand Signals Guide (Task 22) -->
-    <section id="handsignals-tab" class="tab-content active">
-        <div class="card">
-            <h2>🖐️ دليل الإشارات اليدوية التكتيكية الصامتة (Tactical Hand Signals)</h2>
-            <p style="color:var(--text-sub); font-size:0.85rem; margin-bottom:1rem;">لغة الإشارات الصامتة الميدانية للتواصل بين أفراد الفرق في حالات التهديد الأمني أو الصخب.</p>
+    <!-- Tab 0: Extreme Battery Saver Module (Task 23) -->
+    <section id="battery-tab" class="tab-content active">
+        <div class="card" style="text-align:center;">
+            <h2>🔋 وضع توفير الطاقة وتوفير البطارية الأقصى (Extreme Battery Saver)</h2>
+            <p style="color:var(--text-sub); font-size:0.85rem; margin-bottom:1rem;">تحويل الشاشة إلى السواد التام (Monochrome Pitch Black) وتعطيل الحركة لإبقاء الهاتف يعمل على 1% بطارية لأطول فترة.</p>
 
-            <details style="background:var(--bg-inner); padding:0.85rem; border-radius:8px; margin-bottom:0.5rem;" open>
-                <summary style="font-weight:bold; color:var(--accent-red); cursor:pointer;">1. توقف / تجمد مكانك (Freeze / Stop)</summary>
-                <div style="font-size:2rem; text-align:center; margin:0.3rem 0;">✊</div>
-                <p style="font-size:0.85rem; color:var(--text-sub);">رفع قبضة اليد المغلقة إلى أعلى مستوى الرأس: أمر مباشر لجميع أفراد الفريق بالتوقف والتجمد فوراً.</p>
-            </details>
+            <button class="btn btn-green" style="font-size:1.1rem; padding:1rem;" onclick="toggleExtremeBatterySaver()">
+                ⚡ تفعيل / إيقاف وضع توفير البطارية الخارق (OLED Monochrome)
+            </button>
 
-            <details style="background:var(--bg-inner); padding:0.85rem; border-radius:8px; margin-bottom:0.5rem;">
-                <summary style="font-weight:bold; color:var(--accent-yellow); cursor:pointer;">2. احتمِ / انخفض (Take Cover / Get Down)</summary>
-                <div style="font-size:2rem; text-align:center; margin:0.3rem 0;">🫱⬇️</div>
-                <p style="font-size:0.85rem; color:var(--text-sub);">بسط كف اليد والدفع بها نحو الأسفل بشكل متكرر: أمر بالانخفاض والتخفي فوراً خلف السواتر.</p>
-            </details>
-
-            <details style="background:var(--bg-inner); padding:0.85rem; border-radius:8px; margin-bottom:0.5rem;">
-                <summary style="font-weight:bold; color:var(--accent-blue); cursor:pointer;">3. طلب مساعدة طبية (Medical Emergency Signal)</summary>
-                <div style="font-size:2rem; text-align:center; margin:0.3rem 0;">🙅‍♂️</div>
-                <p style="font-size:0.85rem; color:var(--text-sub);">تقاطع الذراعين على شكل حرف (X) فوق الرأس: إشارة نداء للمسعف الميداني بوجود مصاب.</p>
-            </details>
+            <div id="battery-status-box" style="margin-top:1rem; padding:1rem; background:var(--bg-inner); border-radius:8px;">
+                <div style="color:var(--accent-blue);">حالة الوضع: <strong id="battery-mode-state">معطل (العادي)</strong></div>
+            </div>
         </div>
     </section>
 
-    <!-- Tab 1: Encryption -->
-    <section id="crypto-tab" class="tab-content">
+    <!-- Tab 1: Hand Signals -->
+    <section id="handsignals-tab" class="tab-content">
         <div class="card">
-            <h2>🔐 التشفير المحلي للبيانات الحساسة (Web Crypto AES)</h2>
-            <p style="color:var(--text-sub); font-size:0.85rem;">تشفير البيانات الطبية بالسجلات.</p>
+            <h2>🖐️ دليل الإشارات اليدوية التكتيكية (Hand Signals)</h2>
+            <p style="color:var(--text-sub); font-size:0.85rem;">لغة الإشارات الصامتة الميدانية.</p>
         </div>
     </section>
 
     <!-- Bottom Navigation -->
     <nav>
-        <button class="active" onclick="switchTab('handsignals-tab', this)">
+        <button class="active" onclick="switchTab('battery-tab', this)">
+            <span>🔋</span>
+            <span>البطارية</span>
+        </button>
+        <button onclick="switchTab('handsignals-tab', this)">
             <span>🖐️</span>
             <span>إشارات</span>
-        </button>
-        <button onclick="switchTab('crypto-tab', this)">
-            <span>🔐</span>
-            <span>التشفير</span>
         </button>
     </nav>
 
@@ -124,16 +119,24 @@
             navigator.serviceWorker.register('sw.js').catch(err => console.log('SW failed', err));
         }
 
-        function toggleNightMode() {
-            document.body.classList.toggle('night-mode');
-            localStorage.setItem('night_mode', document.body.classList.contains('night-mode') ? 'true' : 'false');
-        }
-
         function switchTab(tabId, btn) {
             document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
             document.querySelectorAll('nav button').forEach(b => b.classList.remove('active'));
             document.getElementById(tabId).classList.add('active');
             btn.classList.add('active');
+        }
+
+        // Task 23: Extreme Battery Saver Logic
+        function toggleExtremeBatterySaver() {
+            document.body.classList.toggle('extreme-battery');
+            const isExtreme = document.body.classList.contains('extreme-battery');
+            document.getElementById('battery-mode-state').textContent = isExtreme ? 'مفعل (أسود وأبيض OLED دون إضاءة زائدة)' : 'معطل (العادي)';
+            document.getElementById('battery-mode-state').style.color = isExtreme ? '#22c55e' : '#38bdf8';
+            localStorage.setItem('extreme_battery', isExtreme ? 'true' : 'false');
+        }
+
+        if (localStorage.getItem('extreme_battery') === 'true') {
+            document.body.classList.add('extreme-battery');
         }
     </script>
 </body>
