@@ -78,54 +78,39 @@
         .input-group { margin-bottom: 1rem; }
         .input-group label { display: block; font-size: 0.85rem; margin-bottom: 0.4rem; color: var(--text-sub); }
         .input-field { width: 100%; padding: 0.75rem; border-radius: 8px; background: var(--bg-inner); color: var(--text-main); border: 1px solid var(--border-color); font-size: 0.95rem; }
-
-        .symptom-chip { display: inline-flex; align-items: center; gap: 0.4rem; background: var(--bg-inner); padding: 0.5rem 0.8rem; border-radius: 20px; border: 1px solid var(--border-color); margin: 0.25rem; font-size: 0.85rem; cursor: pointer; }
-        .symptom-chip.selected { border-color: var(--accent-red); background: #331010; color: var(--accent-red); font-weight: bold; }
     </style>
 </head>
 <body>
 
     <header>
-        <h1>🚨 EmergencyKit PWA v4.0 AI</h1>
+        <h1>🚨 EmergencyKit PWA v4.1 3D</h1>
         <div style="display:flex; gap:0.4rem;">
             <button onclick="toggleTacticalHUD()" class="btn btn-yellow" style="width:auto; padding:0.3rem 0.5rem; font-size:0.75rem; margin:0;">🖥️ HUD</button>
-            <button onclick="toggleExtremeBatterySaver()" class="btn btn-slate" style="width:auto; padding:0.3rem 0.5rem; font-size:0.75rem; margin:0;">🔋 OLED</button>
         </div>
     </header>
 
-    <!-- Tab 0: Offline AI Symptom Diagnostic Heuristics Engine (Self-Evolving #1) -->
-    <section id="ai-tab" class="tab-content active">
-        <div class="card">
-            <h2>🧠 المحرك الذكي لتشخيص الأعراض والحالات الحرجة (Offline AI Diagnostic Engine)</h2>
-            <p style="color:var(--text-sub); font-size:0.85rem; margin-bottom:1rem;">تحليل الاستنتاج الاحتمالي الميداني للأعراض الظاهرة لمعرفة التشخيص الأكثر خطورة فوراً 100% Offline.</p>
+    <!-- Tab 0: 3D Canvas Interactive Body Trauma Map (Self-Evolving #2) -->
+    <section id="bodymap-tab" class="tab-content active">
+        <div class="card" style="text-align:center;">
+            <h2>🧍 الخريطة التفاعلية لإصابات الجسم (Interactive Anatomy Trauma Map)</h2>
+            <p style="color:var(--text-sub); font-size:0.85rem; margin-bottom:1rem;">انقر على منطقة الإصابة في مجسم الجسم التفاعلي لاستدعاء بروتوكول الإسعاف الفوري.</p>
 
-            <label style="display:block; font-size:0.85rem; margin-bottom:0.5rem; color:var(--accent-blue);">اختر جميع الأعراض الظاهرة على المصاب:</label>
-            <div id="symptoms-container">
-                <div class="symptom-chip" onclick="toggleSymptom(this, 'dyspnea')">🫁 ضيق تنفس شديد (Dyspnea)</div>
-                <div class="symptom-chip" onclick="toggleSymptom(this, 'hemorrhage')">🩸 نزيف شرياني/خارجي (Hemorrhage)</div>
-                <div class="symptom-chip" onclick="toggleSymptom(this, 'chest_pain')">💔 ألم حاد بالصدر (Chest Pain)</div>
-                <div class="symptom-chip" onclick="toggleSymptom(this, 'cyanosis')">🟦 زراق الأطراف والشفاه (Cyanosis)</div>
-                <div class="symptom-chip" onclick="toggleSymptom(this, 'altered_mental')">🧠 تغيب أو تشوش الوعي (Altered Mental)</div>
-                <div class="symptom-chip" onclick="toggleSymptom(this, 'stridor')">🗣️ حشرجة/صفير الحلق (Stridor)</div>
-                <div class="symptom-chip" onclick="toggleSymptom(this, 'diaphoresis')">💧 تعرق بارد وتعرق شديد (Diaphoresis)</div>
+            <div style="background:var(--bg-inner); padding:1rem; border-radius:12px; display:inline-block; position:relative;">
+                <canvas id="body-canvas" width="220" height="320" style="cursor:pointer;" onclick="handleBodyClick(event)"></canvas>
             </div>
 
-            <button class="btn btn-red" style="margin-top:1rem;" onclick="runAIDiagnosis()">⚡ تحليل الأعراض وحساب مصفوفة الاحتمالات</button>
-
-            <div id="ai-result-box" style="display:none; margin-top:1rem; padding:1rem; background:var(--bg-inner); border-radius:10px;">
-                <h4 style="color:var(--accent-yellow); margin-bottom:0.5rem;">🔍 التقييم الاحتمالي الأكثر خطورة:</h4>
-                <div id="ai-matched-condition" style="font-size:1.3rem; font-weight:bold; color:var(--accent-red);"></div>
-                <div id="ai-matched-prob" style="font-size:0.9rem; color:var(--accent-blue); margin-top:0.25rem;"></div>
-                <div id="ai-matched-action" style="font-size:0.85rem; color:var(--text-main); margin-top:0.5rem; background:#200a0a; padding:0.75rem; border-radius:6px; border-right:3px solid var(--accent-red);"></div>
+            <div id="body-trauma-info" style="display:none; margin-top:1rem; padding:1rem; background:var(--bg-inner); border-radius:10px; text-align:right;">
+                <h4 id="body-region-title" style="color:var(--accent-red); margin-bottom:0.4rem;"></h4>
+                <p id="body-region-desc" style="font-size:0.85rem; color:var(--text-sub);"></p>
             </div>
         </div>
     </section>
 
     <!-- Bottom Navigation -->
     <nav>
-        <button class="active" onclick="switchTab('ai-tab', this)">
-            <span>🧠</span>
-            <span>التشخيص الذكي</span>
+        <button class="active" onclick="switchTab('bodymap-tab', this)">
+            <span>🧍</span>
+            <span>مجسم الجسم</span>
         </button>
     </nav>
 
@@ -144,56 +129,53 @@
         }
 
         function toggleTacticalHUD() { document.body.classList.toggle('hud-mode'); }
-        function toggleExtremeBatterySaver() { document.body.classList.toggle('extreme-battery'); }
 
-        // Self-Evolving #1: AI Diagnostic Rules Matrix
-        const activeSymptoms = new Set();
-
-        function toggleSymptom(el, symptomKey) {
-            el.classList.toggle('selected');
-            if (activeSymptoms.has(symptomKey)) activeSymptoms.delete(symptomKey);
-            else activeSymptoms.add(symptomKey);
+        // Self-Evolving #2: 3D Body Canvas Interactive Renderer
+        const canvas = document.getElementById('body-canvas');
+        if (canvas) {
+            const ctx = canvas.getContext('2d');
+            function drawBodyDiagram() {
+                ctx.fillStyle = '#0f172a'; ctx.fillRect(0, 0, 220, 320);
+                
+                // Head
+                ctx.fillStyle = '#38bdf8'; ctx.beginPath(); ctx.arc(110, 45, 25, 0, Math.PI * 2); ctx.fill();
+                
+                // Torso / Chest
+                ctx.fillStyle = '#ef4444'; ctx.fillRect(80, 80, 60, 90);
+                
+                // Arms
+                ctx.fillStyle = '#eab308'; ctx.fillRect(45, 80, 25, 100); ctx.fillRect(150, 80, 25, 100);
+                
+                // Legs
+                ctx.fillStyle = '#22c55e'; ctx.fillRect(80, 180, 25, 120); ctx.fillRect(115, 180, 25, 120);
+                
+                // Text labels
+                ctx.fillStyle = '#ffffff'; ctx.font = '12px system-ui'; ctx.textAlign = 'center';
+                ctx.fillText('الرأس', 110, 49); ctx.fillText('الصدر والبطن', 110, 130);
+                ctx.fillText('الذراعين', 57, 130); ctx.fillText('الساقين', 110, 240);
+            }
+            drawBodyDiagram();
         }
 
-        function runAIDiagnosis() {
-            if (activeSymptoms.size === 0) { alert('يرجى اختيار عرض واحد على الأقل للتحليل'); return; }
+        function handleBodyClick(e) {
+            const rect = canvas.getBoundingClientRect();
+            const y = e.clientY - rect.top;
+            
+            const infoBox = document.getElementById('body-trauma-info');
+            const title = document.getElementById('body-region-title');
+            const desc = document.getElementById('body-region-desc');
 
-            const conditions = [
-                {
-                    name: 'استرواح صدري ضاغط (Tension Pneumothorax)',
-                    symptoms: ['dyspnea', 'cyanosis', 'chest_pain', 'altered_mental'],
-                    action: 'تنفيس اللاصق الصدري فوراً ومراقبة القصبة الهوائية والصوت التنفسي.'
-                },
-                {
-                    name: 'صدمة نزفية حادة (Severe Hypovolemic Shock)',
-                    symptoms: ['hemorrhage', 'diaphoresis', 'altered_mental', 'cyanosis'],
-                    action: 'تركيب العاصبة الشريانية فوراً 5-7 سم فوق موقع النزيف وتدفئة المصاب.'
-                },
-                {
-                    name: 'صدمة تحسسية أو انسداد حاد (Anaphylaxis / Airway Obstruction)',
-                    symptoms: ['stridor', 'dyspnea', 'cyanosis'],
-                    action: 'حقن الإبينفرين بالحقن العضلي (EpiPen) أو إجراء مناورة هايملخ.'
-                }
-            ];
-
-            let bestMatch = null;
-            let maxScore = -1;
-
-            conditions.forEach(cond => {
-                let matchCount = 0;
-                cond.symptoms.forEach(s => { if (activeSymptoms.has(s)) matchCount++; });
-                const score = matchCount / cond.symptoms.length;
-                if (score > maxScore) {
-                    maxScore = score;
-                    bestMatch = cond;
-                }
-            });
-
-            const probPercent = Math.round(maxScore * 100);
-            document.getElementById('ai-matched-condition').textContent = bestMatch.name;
-            document.getElementById('ai-matched-prob').textContent = `نسبة التطابق الاحتمالي: ${probPercent}%`;
-            document.getElementById('ai-matched-action').textContent = `🚨 الإجراء الطارئ الفوري: ${bestMatch.action}`;
-            document.getElementById('ai-result-box').style.display = 'block';
+            if (y < 70) {
+                title.textContent = '🧠 إصابات الرأس والعنق (Head & Neck Trauma)';
+                desc.textContent = 'بروتوكول: تثبيت الفقرات العنقوية، تقييم مقياس غلاسكو GCS، وفحص اتساع الحدقتين.';
+            } else if (y >= 70 && y < 170) {
+                title.textContent = '🫁 إصابات الصدر والبطن (Chest & Abdomen Trauma)';
+                desc.textContent = 'بروتوكول: تركيب اللاصق الصدري ذي الصمام (Vented Chest Seal)، فحص استرواح الرئة والنزيف الداخلي.';
+            } else {
+                title.textContent = '🦵 إصابات الأطراف والساقين (Extremity Trauma)';
+                desc.textContent = 'بروتوكول: تركيب العاصبة الشريانية (Tourniquet) 5-7 سم فوق النزيف وتثبيت كسور عظمة الفخذ.';
+            }
+            infoBox.style.display = 'block';
         }
     </script>
 </body>
