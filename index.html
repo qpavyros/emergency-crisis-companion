@@ -45,7 +45,7 @@
 
         nav { display: flex; background: #020617; position: fixed; bottom: 0; width: 100%; z-index: 100; border-top: 1px solid var(--border-color); overflow-x: auto; }
         body.night-mode nav { background: #0a0101; }
-        nav button { flex: 1; min-width: 60px; padding: 0.6rem 0.2rem; background: none; border: none; color: var(--text-sub); font-size: 0.72rem; cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 0.2rem; }
+        nav button { flex: 1; min-width: 55px; padding: 0.6rem 0.15rem; background: none; border: none; color: var(--text-sub); font-size: 0.7rem; cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 0.2rem; white-space: nowrap; }
         nav button.active { color: var(--text-main); font-weight: bold; background: var(--bg-card); border-top: 2px solid var(--accent-red); }
 
         .tab-content { display: none; padding: 1rem; max-width: 850px; margin: 0 auto; }
@@ -199,16 +199,48 @@
         </div>
     </section>
 
-    <!-- Tab 3: Survival Calculators -->
+    <!-- Tab 3: Disaster Protocols -->
+    <section id="disaster-tab" class="tab-content">
+        <div class="card">
+            <h2>🧱 بروتوكولات حماية الكوارث والبقاء (Disaster Guides)</h2>
+
+            <details style="background:var(--bg-inner); padding:0.85rem; border-radius:8px; margin-bottom:0.5rem;">
+                <summary style="font-weight:bold; color:var(--accent-yellow); cursor:pointer;">🌋 الزلازل والانهيارات (Drop, Cover, Hold On)</summary>
+                <ol style="margin-top:0.5rem; padding-right:1.25rem; color:var(--text-sub); font-size:0.9rem;">
+                    <li><strong>انخفض (Drop):</strong> انزل فوراً على يديك وركبتيك لتجنب السقوط.</li>
+                    <li><strong>احتمِ (Cover):</strong> اختبئ تحت طاولة أو مكتب صلب، واحْمِ رأسك ورقبتك بصلابة.</li>
+                    <li><strong>تمسك (Hold On):</strong> تمسك بالطاولة حتى يتوقف الاهتزاز تماماً. لا تركض للخارج أثناء الاهتزاز.</li>
+                </ol>
+            </details>
+
+            <details style="background:var(--bg-inner); padding:0.85rem; border-radius:8px; margin-bottom:0.5rem;">
+                <summary style="font-weight:bold; color:var(--accent-red); cursor:pointer;">💥 الانفجارات وتغطية المأوى</summary>
+                <ol style="margin-top:0.5rem; padding-right:1.25rem; color:var(--text-sub); font-size:0.9rem;">
+                    <li>استلقِ على الأرض فجأة واجعل وجهك لأسفل وغَطّ رأسك بيديك لحماية نفسك من موجة الضغط والشظايا.</li>
+                    <li>ابتعد فوراً عن النوافذ والمرايا والواجهات الزجاجية.</li>
+                    <li>إذا تصاعد غبار/دخان كثيف، اغلق فمك بقماش مبلل وابقَ قريباً من الأرض حيث الهواء الأنقياء.</li>
+                </ol>
+            </details>
+
+            <details style="background:var(--bg-inner); padding:0.85rem; border-radius:8px; margin-bottom:0.5rem;">
+                <summary style="font-weight:bold; color:var(--accent-blue); cursor:pointer;">🌊 الفيضانات والسيول المباغتة</summary>
+                <ol style="margin-top:0.5rem; padding-right:1.25rem; color:var(--text-sub); font-size:0.9rem;">
+                    <li>انتقل فوراً إلى المرتفعات أو الطوابق العليا.</li>
+                    <li>لا تحاول المشي أو القيادة عبر المياه الجارية (15 سم من الماء الجاري قد تسقط الإنسان).</li>
+                    <li>افصل التيار الكهربائي الرئيسي إذا كانت المياه تقترب من لوحة الكهرباء.</li>
+                </ol>
+            </details>
+        </div>
+    </section>
+
+    <!-- Tab 4: Survival Calculators -->
     <section id="calc-tab" class="tab-content">
         <div class="card">
             <h2>🔥 حاسبة نسبة الحروق ومحاليل الإنقاذ (Rule of Nines & Parkland)</h2>
-            
             <div class="input-group">
                 <label>وزن المصاب (كجم):</label>
                 <input type="number" id="burn-weight" class="input-field" value="70">
             </div>
-
             <div class="input-group">
                 <label>المناطق المحروقة (قاعدة التسعات):</label>
                 <div style="display:grid; grid-template-columns:1fr 1fr; gap:0.5rem; text-align:right; font-size:0.85rem;">
@@ -222,7 +254,6 @@
                     <label><input type="checkbox" value="1" class="burn-part" onchange="calcBurnFluid()"> الأعضاء التناسلية (1%)</label>
                 </div>
             </div>
-
             <div id="burn-result-box" style="background:var(--bg-inner); padding:1rem; border-radius:8px; margin-top:0.75rem;">
                 <div>مجموع نسبة الحروق: <strong id="total-burn-percent" style="color:var(--accent-red);">0%</strong></div>
                 <div>المحاليل الوريدية المطلوبة (أول 24 ساعة): <strong id="total-fluid-ml" style="color:var(--accent-blue);">0 مل</strong></div>
@@ -242,12 +273,10 @@
         </div>
     </section>
 
-    <!-- Tab 4: ICE Medical Card -->
+    <!-- Tab 5: ICE Card & SMS Emergency -->
     <section id="ice-tab" class="tab-content">
         <div class="card">
-            <h2>🆔 بطاقة الطوارئ الطبية الشخصية (ICE Emergency Card)</h2>
-            <p style="color:var(--text-sub); font-size:0.85rem; margin-bottom:1rem;">احفظ بياناتك الطبية الحرجة على الجهاز للوصول إليها بدون إنترنت.</p>
-            
+            <h2>🆔 بطاقة الطوارئ الشخصية ورسالة الاستغاثة السريعة (ICE Card & SMS)</h2>
             <div class="input-group">
                 <label>الاسم الكامل:</label>
                 <input type="text" id="ice-name" class="input-field">
@@ -264,18 +293,21 @@
                 </div>
                 <div class="input-group">
                     <label>هاتف الطوارئ (ICE Contact):</label>
-                    <input type="text" id="ice-phone" class="input-field">
+                    <input type="text" id="ice-phone" class="input-field" placeholder="مثال: +966500000000">
                 </div>
             </div>
             <div class="input-group">
                 <label>الحساسيات والأمراض المزمنة (إن وجدت):</label>
-                <textarea id="ice-allergies" class="input-field" rows="3" placeholder="مثال: حساسية من البنسلين، داء السكري"></textarea>
+                <textarea id="ice-allergies" class="input-field" rows="2" placeholder="مثال: حساسية من البنسلين، داء السكري"></textarea>
             </div>
-            <button class="btn btn-green" onclick="saveICECard()">💾 حفظ البطاقة الشخصية</button>
+            <div class="grid-2">
+                <button class="btn btn-green" onclick="saveICECard()">💾 حفظ البطاقة الشخصية</button>
+                <button class="btn btn-red" onclick="sendEmergencySMS()">📲 إرسال رسالة SOS SMS بالموقع</button>
+            </div>
         </div>
     </section>
 
-    <!-- Tab 5: Translator -->
+    <!-- Tab 6: Translator -->
     <section id="translator-tab" class="tab-content">
         <div class="card">
             <h2>🌐 المترجم الطبي الميداني للطوارئ</h2>
@@ -290,7 +322,7 @@
         </div>
     </section>
 
-    <!-- Tab 6: SOS Beacon -->
+    <!-- Tab 7: SOS Beacon -->
     <section id="beacon-tab" class="tab-content">
         <div class="card" style="text-align:center;">
             <h2>📢 منبه الاستغاثة الميداني (SOS Beacon)</h2>
@@ -316,9 +348,13 @@
             <span>🫀</span>
             <span>الإنعاش</span>
         </button>
+        <button onclick="switchTab('disaster-tab', this)">
+            <span>🧱</span>
+            <span>الكوارث</span>
+        </button>
         <button onclick="switchTab('calc-tab', this)">
             <span>🧮</span>
-            <span>حاسبات البقاء</span>
+            <span>حاسبات</span>
         </button>
         <button onclick="switchTab('ice-tab', this)">
             <span>🆔</span>
@@ -330,7 +366,7 @@
         </button>
         <button onclick="switchTab('beacon-tab', this)">
             <span>🚨</span>
-            <span>استغاثة SOS</span>
+            <span>SOS</span>
         </button>
     </nav>
 
@@ -353,8 +389,7 @@
         }
 
         // START Triage
-        let currentTriageCode = '';
-        let currentTriageDesc = '';
+        let currentTriageCode = '', currentTriageDesc = '';
 
         function nextTriageStep(step) {
             document.querySelectorAll('#triage-tab [id^="triage-step-"]').forEach(el => el.style.display = 'none');
@@ -470,7 +505,7 @@
             document.getElementById('cpr-start-btn').classList.replace('btn-slate', 'btn-green');
         }
 
-        // ICE Card
+        // ICE & Emergency SMS
         function saveICECard() {
             const data = {
                 name: document.getElementById('ice-name').value,
@@ -479,7 +514,7 @@
                 allergies: document.getElementById('ice-allergies').value
             };
             localStorage.setItem('ice_card_data', JSON.stringify(data));
-            alert('تم حفظ بطاقة الطوارئ الشخصية بنجاح على الجهاز!');
+            alert('تم حفظ بطاقة الطوارئ الشخصية بنجاح!');
         }
 
         function loadICECard() {
@@ -490,6 +525,14 @@
             if (data.allergies) document.getElementById('ice-allergies').value = data.allergies;
         }
         loadICECard();
+
+        function sendEmergencySMS() {
+            const phone = document.getElementById('ice-phone').value.trim();
+            const coords = document.getElementById('gps-coords').textContent;
+            const name = document.getElementById('ice-name').value || 'أنا';
+            const body = encodeURIComponent(`نداء استغاثة طوارئ SOS من ${name}! موقعي الحالي: ${coords}`);
+            window.location.href = `sms:${phone}?body=${body}`;
+        }
 
         // Burn Fluid Calc
         function calcBurnFluid() {
@@ -542,7 +585,7 @@
                     if (!isSOS) return;
                     let osc = audioCtxSOS.createOscillator(); gain = audioCtxSOS.createGain();
                     osc.type = 'sawtooth'; osc.frequency.setValueAtTime(800, audioCtxSOS.currentTime);
-                    osc.frequency.exponentialRampToValueAtTime(1400, audioCtxSOS.currentTime + 0.3);
+                    osc.exponentialRampToValueAtTime(1400, audioCtxSOS.currentTime + 0.3);
                     gain.gain.setValueAtTime(0.3, audioCtxSOS.currentTime);
                     osc.connect(gain); gain.connect(audioCtxSOS.destination); osc.start(); osc.stop(audioCtxSOS.currentTime + 0.3);
                 }, 400);
