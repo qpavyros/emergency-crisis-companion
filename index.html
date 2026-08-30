@@ -69,44 +69,47 @@
         <button onclick="toggleTacticalHUD()" class="btn btn-yellow" style="width:auto; padding:0.3rem 0.6rem; font-size:0.8rem; margin:0;">🖥️ HUD</button>
     </header>
 
-    <!-- Tab 0: Crush Injury & Compartment Syndrome Guide (Task 33) -->
-    <section id="crush-tab" class="tab-content active">
+    <!-- Tab 0: Shock Assessment & Anaphylaxis Guide (Task 34) -->
+    <section id="shock-tab" class="tab-content active">
         <div class="card">
-            <h2>🏗️ متلازمة الهرس والضغط الميداني (Crush Syndrome Protocol)</h2>
-            <p style="color:var(--text-sub); font-size:0.85rem; margin-bottom:1rem;">إسعافات ضحايا الأنقاض والمحصورين لفترات طويلة لتجنب التوقف القلبي المفاجئ عند رفع الأنقاض.</p>
+            <h2>📉 تقييم وتصنيف حالات الصدمة (Hypovolemic & Anaphylactic Shock)</h2>
+            <p style="color:var(--text-sub); font-size:0.85rem; margin-bottom:1rem;">إسعافات الصدمة النزفية والصدمة التحسسية الحادة القاتلة.</p>
 
             <details style="background:var(--bg-inner); padding:0.85rem; border-radius:8px; margin-bottom:0.5rem;" open>
-                <summary style="font-weight:bold; color:var(--accent-red); cursor:pointer;">1. الإنعاش السائلي قبل رفع الأنقاض (Pre-Extrication Hydration)</summary>
-                <p style="font-size:0.85rem; color:var(--text-sub); margin-top:0.3rem;">إذا كان الطرف محصوراً لأكثر من ساعتين، يجب إعطاء محاليل ملحية وريدية قبل رفع وزن الأنقاض لمنع التوقف القلبي بسبب ارتفاع البوتاسيوم وتسمم البول المتدفق.</p>
+                <summary style="font-weight:bold; color:var(--accent-red); cursor:pointer;">1. الصدمة النزفية (Hypovolemic Shock)</summary>
+                <ul style="margin-top:0.5rem; padding-right:1.25rem; color:var(--text-sub); font-size:0.9rem;">
+                    <li>العلامات: برودة الجلد، شحوبة، نبض سريع ضعيف، تأخر الامتلاء الشعيري >2 ثانية.</li>
+                    <li>الإجراء: ارفع الساقين 30 سم لتنشيط التروية الدماغية، وغط المصاب ببطانية حرارية.</li>
+                </ul>
             </details>
 
             <details style="background:var(--bg-inner); padding:0.85rem; border-radius:8px; margin-bottom:0.5rem;">
-                <summary style="font-weight:bold; color:var(--accent-yellow); cursor:pointer;">2. علامات متلازمة الحجرة الفخذية (Compartment Syndrome)</summary>
-                <ul style="margin-top:0.5rem; padding-right:1.25rem; color:var(--text-sub); font-size:0.9rem;">
-                    <li>ألم شديد جداً غير متناسب مع الإصابة الظاهرة.</li>
-                    <li>تصلب خشب العضلات، خدران الأنسجة، وانعدام النبض الطرفي.</li>
-                </ul>
+                <summary style="font-weight:bold; color:var(--accent-yellow); cursor:pointer;">2. الصدمة التحسسية الحادة (Anaphylactic Shock & EpiPen)</summary>
+                <ol style="margin-top:0.5rem; padding-right:1.25rem; color:var(--text-sub); font-size:0.9rem;">
+                    <li>العلامات: طفح جلدي، تورم الشفاه، صفير الحلق، وهبوط الضغط المفاجئ.</li>
+                    <li>الحقن الطارئ: إبينفرين بالحقن العضلي (EpiPen 0.3 mg) في منتصف الفخذ الخارجي فوراً.</li>
+                </ol>
             </details>
         </div>
     </section>
 
-    <!-- Tab 1: CBRN Decon -->
-    <section id="cbrn-tab" class="tab-content">
+    <!-- Tab 1: Crush Syndrome -->
+    <section id="crush-tab" class="tab-content">
         <div class="card">
-            <h2>☣️ بروتوكول التطهير الكيميائي الميداني (CBRN Decon)</h2>
-            <p style="color:var(--text-sub); font-size:0.85rem;">إزالة الملوثات الكيميائية.</p>
+            <h2>🏗️ متلازمة الهرس والضغط الميداني (Crush Syndrome)</h2>
+            <p style="color:var(--text-sub); font-size:0.85rem;">إسعافات ضحايا الأنقاض والمحصورين.</p>
         </div>
     </section>
 
     <!-- Bottom Navigation -->
     <nav>
-        <button class="active" onclick="switchTab('crush-tab', this)">
+        <button class="active" onclick="switchTab('shock-tab', this)">
+            <span>📉</span>
+            <span>الصدمة</span>
+        </button>
+        <button onclick="switchTab('crush-tab', this)">
             <span>🏗️</span>
             <span>الهرس</span>
-        </button>
-        <button onclick="switchTab('cbrn-tab', this)">
-            <span>☣️</span>
-            <span>الكيميائي</span>
         </button>
     </nav>
 
