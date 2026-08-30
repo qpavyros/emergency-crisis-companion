@@ -80,36 +80,51 @@
         </div>
     </header>
 
-    <!-- Tab 0: Multi-lingual i18n Interface (Task 20) -->
-    <section id="i18n-tab" class="tab-content active">
+    <!-- Tab 0: Local Web Crypto AES-GCM Encryption (Task 21) -->
+    <section id="crypto-tab" class="tab-content active">
         <div class="card">
-            <h2 id="i18n-title">🌐 الدعم متعدد اللغات (Multi-Lingual i18n)</h2>
-            <p id="i18n-desc" style="color:var(--text-sub); font-size:0.85rem; margin-bottom:1rem;">تبديل لغة واجهة التطبيق بالكامل فورياً بدون الحاجة إلى اتصال بالإنترنت.</p>
+            <h2>🔐 التشفير المحلي للبيانات الحساسة (Web Crypto AES-GCM)</h2>
+            <p style="color:var(--text-sub); font-size:0.85rem; margin-bottom:1rem;">تشفير البيانات الطبية والسجلات بكلمة سر رئيسية على الجهاز 100% بدون إنترنت لحمايتها في حال فقدان الهاتف.</p>
 
-            <div style="background:var(--bg-inner); padding:1rem; border-radius:8px; text-align:center;">
-                <h3 id="i18n-status-title" style="color:var(--accent-blue);">اللغة الحالية: العربية</h3>
-                <p id="i18n-status-msg" style="font-size:0.9rem; color:var(--text-sub); margin-top:0.4rem;">التطبيق يعمل 100% بدون إنترنت بجميع اللغات.</p>
+            <div class="input-group">
+                <label>كلمة السر الرئيسية للتشفير (Master Passcode):</label>
+                <input type="password" id="crypto-passcode" class="input-field" placeholder="أدخل كلمة سر قوية">
+            </div>
+
+            <div class="input-group">
+                <label>النص/البيانات المراد تشفيرها:</label>
+                <textarea id="crypto-plaintext" class="input-field" rows="2" placeholder="أدخل بيانات سريّة لتشفيرها..."></textarea>
+            </div>
+
+            <div class="grid-2">
+                <button class="btn btn-green" onclick="encryptDataAES()">🔒 تشفير البيانات (Encrypt AES)</button>
+                <button class="btn btn-blue" onclick="decryptDataAES()">🔓 فك التشفير (Decrypt AES)</button>
+            </div>
+
+            <div id="crypto-output-box" style="display:none; margin-top:1rem; padding:1rem; background:var(--bg-inner); border-radius:8px;">
+                <label style="font-size:0.85rem; color:var(--text-sub);">النتيجة:</label>
+                <div id="crypto-output-text" style="font-family:monospace; font-size:0.9rem; word-break:break-all; color:var(--accent-yellow); margin-top:0.3rem;"></div>
             </div>
         </div>
     </section>
 
-    <!-- Tab 1: Audio Notes -->
-    <section id="audio-tab" class="tab-content">
+    <!-- Tab 1: i18n Interface -->
+    <section id="i18n-tab" class="tab-content">
         <div class="card">
-            <h2>🎙️ مسجل الملاحظات الصوتية (Audio Notes Vault)</h2>
-            <p style="color:var(--text-sub); font-size:0.85rem;">تسجيل ملاحظات صوتية لحالة المصابين.</p>
+            <h2 id="i18n-title">🌐 الدعم متعدد اللغات (Multi-Lingual i18n)</h2>
+            <p id="i18n-desc" style="color:var(--text-sub); font-size:0.85rem;">تبديل لغة واجهة التطبيق.</p>
         </div>
     </section>
 
     <!-- Bottom Navigation -->
     <nav>
-        <button class="active" onclick="switchTab('i18n-tab', this)">
+        <button class="active" onclick="switchTab('crypto-tab', this)">
+            <span>🔐</span>
+            <span>التشفير</span>
+        </button>
+        <button onclick="switchTab('i18n-tab', this)">
             <span>🌐</span>
             <span id="nav-lang">اللغة</span>
-        </button>
-        <button onclick="switchTab('audio-tab', this)">
-            <span>🎙️</span>
-            <span id="nav-audio">صوتيات</span>
         </button>
     </nav>
 
@@ -130,54 +145,55 @@
             btn.classList.add('active');
         }
 
-        // Task 20: Full Multi-Lingual i18n Translations Dictionary
-        const i18nDict = {
-            ar: {
-                dir: 'rtl',
-                title: '🌐 الدعم متعدد اللغات (Multi-Lingual i18n)',
-                desc: 'تبديل لغة واجهة التطبيق بالكامل فورياً بدون الحاجة إلى اتصال بالإنترنت.',
-                statusTitle: 'اللغة الحالية: العربية',
-                statusMsg: 'التطبيق يعمل 100% بدون إنترنت بجميع اللغات.',
-                navLang: 'اللغة', navAudio: 'صوتيات'
-            },
-            en: {
-                dir: 'ltr',
-                title: '🌐 Multi-Lingual Support (i18n)',
-                desc: 'Instantly switch the application language completely offline.',
-                statusTitle: 'Current Language: English',
-                statusMsg: 'The app works 100% offline in all supported languages.',
-                navLang: 'Language', navAudio: 'Audio'
-            },
-            fr: {
-                dir: 'ltr',
-                title: '🌐 Support Multilingue (i18n)',
-                desc: 'Changez la langue de l\'application instantanément hors ligne.',
-                statusTitle: 'Langue Actuelle: Français',
-                statusMsg: 'L\'application fonctionne à 100% hors ligne dans toutes les langues.',
-                navLang: 'Langue', navAudio: 'Audio'
-            }
-        };
-
-        function changeAppLanguage(lang) {
-            const t = i18nDict[lang] || i18nDict.ar;
-            const root = document.getElementById('html-root');
-            root.setAttribute('lang', lang);
-            root.setAttribute('dir', t.dir);
-
-            document.getElementById('i18n-title').textContent = t.title;
-            document.getElementById('i18n-desc').textContent = t.desc;
-            document.getElementById('i18n-status-title').textContent = t.statusTitle;
-            document.getElementById('i18n-status-msg').textContent = t.statusMsg;
-            document.getElementById('nav-lang').textContent = t.navLang;
-            document.getElementById('nav-audio').textContent = t.navAudio;
-
-            localStorage.setItem('app_lang', lang);
+        // Task 21: Web Crypto API AES-GCM Implementation
+        async function getCryptoKey(passcode) {
+            const enc = new TextEncoder();
+            const keyMaterial = await window.crypto.subtle.importKey(
+                'raw', enc.encode(passcode), 'PBKDF2', false, ['deriveKey']
+            );
+            return window.crypto.subtle.deriveKey(
+                { name: 'PBKDF2', salt: enc.encode('emergency_kit_salt'), iterations: 100000, hash: 'SHA-256' },
+                keyMaterial, { name: 'AES-GCM', length: 256 }, false, ['encrypt', 'decrypt']
+            );
         }
 
-        const savedLang = localStorage.getItem('app_lang');
-        if (savedLang) {
-            document.getElementById('i18n-lang-select').value = savedLang;
-            changeAppLanguage(savedLang);
+        async function encryptDataAES() {
+            const pass = document.getElementById('crypto-passcode').value;
+            const text = document.getElementById('crypto-plaintext').value;
+            if (!pass || !text) { alert('يرجى أدخال كلمة السر والنص'); return; }
+
+            const key = await getCryptoKey(pass);
+            const iv = window.crypto.getRandomValues(new Uint8Array(12));
+            const enc = new TextEncoder();
+            const encrypted = await window.crypto.subtle.encrypt({ name: 'AES-GCM', iv: iv }, key, enc.encode(text));
+
+            const combined = new Uint8Array(iv.length + encrypted.byteLength);
+            combined.set(iv);
+            combined.set(new Uint8Array(encrypted), iv.length);
+
+            const b64 = btoa(String.fromCharCode.apply(null, combined));
+            document.getElementById('crypto-output-text').textContent = b64;
+            document.getElementById('crypto-output-box').style.display = 'block';
+        }
+
+        async function decryptDataAES() {
+            const pass = document.getElementById('crypto-passcode').value;
+            const b64 = document.getElementById('crypto-plaintext').value.trim();
+            if (!pass || !b64) { alert('يرجى أدخال كلمة السر والنص المشفر في الخانة'); return; }
+
+            try {
+                const combined = new Uint8Array(atob(b64).split('').map(c => c.charCodeAt(0)));
+                const iv = combined.slice(0, 12);
+                const data = combined.slice(12);
+
+                const key = await getCryptoKey(pass);
+                const decrypted = await window.crypto.subtle.decrypt({ name: 'AES-GCM', iv: iv }, key, data);
+                const dec = new TextDecoder();
+                document.getElementById('crypto-output-text').textContent = dec.decode(decrypted);
+                document.getElementById('crypto-output-box').style.display = 'block';
+            } catch (e) {
+                alert('فشل فك التشفير: كلمة السر غير صحيحة أو البيانات تالفة');
+            }
         }
     </script>
 </body>
