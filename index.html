@@ -2,7 +2,7 @@
 <html lang="ar" dir="rtl" id="html-root">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
     <meta name="theme-color" content="#dc2626">
     <meta name="description" content="EmergencyKit PWA - أداة الطوارئ والفرز الطبي وحسابات البقاء الميدانية بدون إنترنت 100%">
     <title>EmergencyKit - رفيق الطوارئ والفرز الطبي الميداني</title>
@@ -36,8 +36,15 @@
             --accent-slate: #000000 !important;
         }
 
+        body.extreme-battery * {
+            animation: none !important;
+            transition: none !important;
+            box-shadow: none !important;
+            text-shadow: none !important;
+        }
+
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: system-ui, -apple-system, sans-serif; }
-        body { background: var(--bg-primary); color: var(--text-main); line-height: 1.5; padding-bottom: 75px; transition: background 0.3s, color 0.3s; }
+        body { background: var(--bg-primary); color: var(--text-main); line-height: 1.5; padding-bottom: 75px; transition: background 0.2s, color 0.2s; contain: content; }
         
         header { background: #b91c1c; padding: 0.75rem 1rem; text-align: center; font-weight: bold; position: sticky; top: 0; z-index: 100; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.3); display: flex; align-items: center; justify-content: space-between; }
         body.extreme-battery header { background: #000000 !important; border-bottom: 1px solid #ffffff; }
@@ -51,7 +58,7 @@
         .tab-content { display: none; padding: 1rem; max-width: 850px; margin: 0 auto; }
         .tab-content.active { display: block; }
 
-        .card { background: var(--bg-card); border-radius: 12px; padding: 1.25rem; margin-bottom: 1rem; border: 1px solid var(--border-color); }
+        .card { background: var(--bg-card); border-radius: 12px; padding: 1.25rem; margin-bottom: 1rem; border: 1px solid var(--border-color); content-visibility: auto; contain-intrinsic-size: 150px; }
         .card h2 { font-size: 1.2rem; margin-bottom: 0.75rem; color: var(--accent-red); display: flex; align-items: center; gap: 0.5rem; }
 
         .btn { padding: 0.7rem 1rem; border-radius: 8px; border: none; font-weight: bold; cursor: pointer; display: inline-flex; align-items: center; gap: 0.5rem; justify-content: center; width: 100%; margin-top: 0.5rem; text-decoration: none; font-size: 0.9rem; }
@@ -77,7 +84,7 @@
         <input type="text" id="quick-search-input" class="input-field" placeholder="🔍 بحث سريع في جميع بروتوكولات الإسعافات والبقاء..." oninput="filterProtocolsRealtime()">
     </div>
 
-    <!-- Tab 0: Search & Emergency Protocols Index (Task 24) -->
+    <!-- Tab 0: Emergency Protocols Index (Task 25 Optimized) -->
     <section id="search-tab" class="tab-content active">
         <div class="card search-item" data-keywords="نزيف MARCH عاصبة جرح تكتيك">
             <h2>🩸 بروتوكول الإصابات والنزيف الشديد (M.A.R.C.H. Protocol)</h2>
@@ -88,19 +95,6 @@
             <h2>💊 حاسبة جرعات أدوية الأطفال (Broselow Tape Simulator)</h2>
             <p style="color:var(--text-sub); font-size:0.85rem;">حساب الجرعات الحرجة للأطفال بناءً على الألوان والوزن التقديري.</p>
         </div>
-
-        <div class="card search-item" data-keywords="حريق ماء غلي تطهير تنقية أقراص كلور">
-            <h2>💧 مؤقت تنقية وتطهير المياه الميداني (Water Purification)</h2>
-            <p style="color:var(--text-sub); font-size:0.85rem;">مؤقت العد التنازلي لغلي المياه أو تفاعل أقراص الكلور واليود.</p>
-        </div>
-    </section>
-
-    <!-- Tab 1: Battery Saver -->
-    <section id="battery-tab" class="tab-content">
-        <div class="card">
-            <h2>🔋 وضع توفير الطاقة وتوفير البطارية الأقصى (Extreme Battery Saver)</h2>
-            <p style="color:var(--text-sub); font-size:0.85rem;">تحويل الشاشة إلى السواد التام.</p>
-        </div>
     </section>
 
     <!-- Bottom Navigation -->
@@ -109,15 +103,13 @@
             <span>🔍</span>
             <span>البحث</span>
         </button>
-        <button onclick="switchTab('battery-tab', this)">
-            <span>🔋</span>
-            <span>البطارية</span>
-        </button>
     </nav>
 
-    <script>
+    <script defer>
         if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register('sw.js').catch(err => console.log('SW failed', err));
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('sw.js').catch(err => console.log('SW failed', err));
+            });
         }
 
         function switchTab(tabId, btn) {
@@ -131,7 +123,6 @@
             document.body.classList.toggle('extreme-battery');
         }
 
-        // Task 24: Real-time Protocol Search Logic
         function filterProtocolsRealtime() {
             const query = document.getElementById('quick-search-input').value.trim().toLowerCase();
             const cards = document.querySelectorAll('.search-item');
