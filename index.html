@@ -69,39 +69,39 @@
 <body>
 
     <header>
-        <h1>🚨 EmergencyKit PWA v5.0 i18n</h1>
-        <div style="display:flex; gap:0.4rem; align-items:center;">
-            <select id="i18n-lang-select" onchange="changeAppLanguage(this.value)" style="background:#0f172a; color:white; border:1px solid #334155; border-radius:6px; padding:0.25rem 0.4rem; font-size:0.8rem;">
-                <option value="ar">العربية (AR)</option>
-                <option value="en">English (EN)</option>
-                <option value="fr">Français (FR)</option>
-                <option value="es">Español (ES)</option>
-                <option value="de">Deutsch (DE)</option>
-                <option value="it">Italiano (IT)</option>
-                <option value="ru">Русский (RU)</option>
-            </select>
-            <button onclick="toggleTacticalHUD()" class="btn btn-yellow" style="width:auto; padding:0.3rem 0.5rem; font-size:0.75rem; margin:0;">🖥️ HUD</button>
-        </div>
+        <h1>🚨 EmergencyKit PWA v5.1 Vent</h1>
+        <button onclick="toggleTacticalHUD()" class="btn btn-yellow" style="width:auto; padding:0.3rem 0.5rem; font-size:0.75rem; margin:0;">🖥️ HUD</button>
     </header>
 
-    <!-- Tab 0: Multi-Lingual Expansion Engine (Self-Evolving #10) -->
-    <section id="i18n-tab" class="tab-content active">
+    <!-- Tab 0: Shelter Air Ventilation & CO2 Buildup Calculator (Self-Evolving #11) -->
+    <section id="ventilation-tab" class="tab-content active">
         <div class="card">
-            <h2 id="i18n-title">🌐 دعم اللغات العالمية (Expanded i18n Engine: 7 Languages)</h2>
-            <p id="i18n-desc" style="color:var(--text-sub); font-size:0.85rem; margin-bottom:1rem;">تم التوسع في المحرك متعدد اللغات لإضافة الإيطالية والروسية للاستخدام العالمي أوفلاين.</p>
+            <h2>💨 حاسبة تهوية الملاجئ ونسبة ثاني أكسيد الكربون (Shelter Ventilation Calc)</h2>
+            <p style="color:var(--text-sub); font-size:0.85rem; margin-bottom:1rem;">حساب زمن بقاء الأكسجين الآمن وتراكم غاز CO2 في الملاجئ المغلقة محكمة الإغلاق أثناء الكوارث.</p>
 
-            <div style="background:var(--bg-inner); padding:1rem; border-radius:10px; text-align:center;">
-                <h3 id="i18n-status-title" style="color:var(--accent-blue);">اللغة الحالية: العربية</h3>
-                <p id="i18n-status-msg" style="font-size:0.9rem; color:var(--text-sub); margin-top:0.4rem;">التطبيق مدعوم بـ 7 لغات عالمية 100% أوفلاين.</p>
+            <div class="input-group">
+                <label>حجم المأوى الإجمالي (بالمتر المكعب m³):</label>
+                <input type="number" id="shelter-vol" class="input-field" value="50" oninput="calcShelterVentilation()">
+            </div>
+
+            <div class="input-group">
+                <label>عدد الأشخاص المحصورين داخل المأوى:</label>
+                <input type="number" id="shelter-people" class="input-field" value="5" oninput="calcShelterVentilation()">
+            </div>
+
+            <div id="vent-result-box" style="background:var(--bg-inner); padding:1rem; border-radius:10px;">
+                <h4 style="color:var(--accent-blue); margin-bottom:0.5rem;">⏱️ زمن البقاء الآمن قبل الحاجة لتهوية الهواء:</h4>
+                <div style="font-size:1.4rem; font-weight:bold; color:var(--accent-yellow);" id="shelter-hours-text">20 ساعة</div>
+                <div style="font-size:0.85rem; color:var(--text-sub); margin-top:0.3rem;" id="shelter-recommendation">ينصح بتشغيل فلتر الكربون أو فتح صمام التهوية بعد انتهاء هذه المدة.</div>
             </div>
         </div>
     </section>
 
     <!-- Bottom Navigation -->
     <nav>
-        <button class="active" onclick="switchTab('i18n-tab', this)">
-            <span>🌐</span>
-            <span id="nav-lang">اللغة</span>
+        <button class="active" onclick="switchTab('ventilation-tab', this)">
+            <span>💨</span>
+            <span>التهوية</span>
         </button>
     </nav>
 
@@ -121,29 +121,16 @@
 
         function toggleTacticalHUD() { document.body.classList.toggle('hud-mode'); }
 
-        // Self-Evolving #10: Multi-lingual i18n Expansion (AR, EN, FR, ES, DE, IT, RU)
-        const i18nDict = {
-            ar: { dir: 'rtl', title: '🌐 دعم اللغات العالمية (i18n)', desc: 'تم التوسع في المحرك متعدد اللغات أوفلاين.', statusTitle: 'اللغة الحالية: العربية', statusMsg: 'التطبيق مدعوم بـ 7 لغات أوفلاين.', navLang: 'اللغة' },
-            en: { dir: 'ltr', title: '🌐 Expanded i18n Engine (7 Languages)', desc: 'Multi-lingual engine supports Italian & Russian offline.', statusTitle: 'Current Language: English', statusMsg: 'App supports 7 global languages offline.', navLang: 'Language' },
-            fr: { dir: 'ltr', title: '🌐 Moteur i18n Étendu (7 Langues)', desc: 'Support multilingue étendu en italien et russe.', statusTitle: 'Langue Actuelle: Français', statusMsg: 'L\'application prend en charge 7 langues hors ligne.', navLang: 'Langue' },
-            it: { dir: 'ltr', title: '🌐 Motore i18n Espanso (7 Lingue)', desc: 'Supporto multilingue in italiano e russo offline.', statusTitle: 'Lingua Attuale: Italiano', statusMsg: 'L\'app supporta 7 lingue offline.', navLang: 'Lingua' },
-            ru: { dir: 'ltr', title: '🌐 Расширенный движок i18n (7 языков)', desc: 'Поддержка итальянского и русского языков оффлайн.', statusTitle: 'Текущий язык: Русский', statusMsg: 'Приложение поддерживает 7 языков оффлайн.', navLang: 'Язык' }
-        };
-
-        function changeAppLanguage(lang) {
-            const t = i18nDict[lang] || i18nDict.ar;
-            const root = document.getElementById('html-root');
-            root.setAttribute('lang', lang);
-            root.setAttribute('dir', t.dir);
-
-            document.getElementById('i18n-title').textContent = t.title;
-            document.getElementById('i18n-desc').textContent = t.desc;
-            document.getElementById('i18n-status-title').textContent = t.statusTitle;
-            document.getElementById('i18n-status-msg').textContent = t.statusMsg;
-            document.getElementById('nav-lang').textContent = t.navLang;
-
-            localStorage.setItem('app_lang', lang);
+        // Self-Evolving #11: Shelter Ventilation Math
+        function calcShelterVentilation() {
+            const vol = parseFloat(document.getElementById('shelter-vol').value) || 1;
+            const people = parseFloat(document.getElementById('shelter-people').value) || 1;
+            
+            // Formula: Approx 2 m³ air per person per 4 hours for safe CO2 levels (<1.5%)
+            const hours = (vol / (people * 0.5));
+            document.getElementById('shelter-hours-text').textContent = `${Math.round(hours)} ساعة`;
         }
+        calcShelterVentilation();
     </script>
 </body>
 </html>
