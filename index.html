@@ -65,7 +65,10 @@
         .input-group label { display: block; font-size: 0.85rem; margin-bottom: 0.4rem; color: var(--text-sub); }
         .input-field { width: 100%; padding: 0.75rem; border-radius: 8px; background: var(--bg-inner); color: var(--text-main); border: 1px solid var(--border-color); font-size: 0.95rem; }
 
-        .march-box { background: var(--bg-inner); border-right: 4px solid var(--accent-red); padding: 1rem; border-radius: 8px; margin-bottom: 0.75rem; }
+        .faces-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.75rem; text-align: center; margin-top: 1rem; }
+        .face-card { background: var(--bg-inner); border: 2px solid var(--border-color); border-radius: 10px; padding: 0.75rem; cursor: pointer; }
+        .face-card.selected { border-color: var(--accent-red); background: #331010; }
+        .face-emoji { font-size: 2.2rem; }
     </style>
 </head>
 <body>
@@ -77,50 +80,69 @@
         </button>
     </header>
 
-    <!-- Tab 0: Dental & Maxillofacial Trauma Guide (Task 7) -->
-    <section id="dental-tab" class="tab-content active">
+    <!-- Tab 0: Wong-Baker FACES Pain Scale (Task 8) -->
+    <section id="faces-tab" class="tab-content active">
         <div class="card">
-            <h2>🦷 دليل إصابات الأسنان والكسور الفكية (Dental & Facial Trauma Guide)</h2>
-            <p style="color:var(--text-sub); font-size:0.85rem; margin-bottom:1rem;">إسعافات كسور الفك وانخلاع الأسنان بسبب الصدمات الميدانية.</p>
+            <h2>😊 مقياس الألم التفاعلي (Wong-Baker FACES Pain Scale)</h2>
+            <p style="color:var(--text-sub); font-size:0.85rem; margin-bottom:0.5rem;">تقييم شدة الألم للأطفال وفاقدي النطق عبر تعابير الوجه البصرية.</p>
 
-            <details style="background:var(--bg-inner); padding:0.85rem; border-radius:8px; margin-bottom:0.5rem;" open>
-                <summary style="font-weight:bold; color:var(--accent-blue); cursor:pointer;">1. السن المخلوع بالكامل (Tooth Avulsion)</summary>
-                <ol style="margin-top:0.5rem; padding-right:1.25rem; color:var(--text-sub); font-size:0.9rem;">
-                    <li>امسك السن من التاج (الجزء الأبيض) وتجنب لمس الجذر إطلاقاً.</li>
-                    <li>لا تقم بحك أو تنظيف الجذر؛ اشطفه بسرعة بماء أو محلول ملحي إذا كان متسخاً.</li>
-                    <li>احفظ السن في كوب حليب سائل أو محلول ملحي (Saline) أو داخل فم المصاب بين الخد واللثة.</li>
-                    <li>إعادة غرس السن خلال 60 دقيقة تعطي أعلى نسبة نجاح للإنقاذ.</li>
-                </ol>
-            </details>
+            <div class="faces-grid">
+                <div class="face-card" onclick="selectFace(0, 'لا يسبب أي ألم على الإطلاق', '0', this)">
+                    <div class="face-emoji">😃</div>
+                    <div style="font-weight:bold; margin-top:0.3rem;">0 - ممتاز</div>
+                    <div style="font-size:0.75rem; color:var(--text-sub);">لا ألم</div>
+                </div>
+                <div class="face-card" onclick="selectFace(2, 'ألم طفيف جداً', '2', this)">
+                    <div class="face-emoji">🙂</div>
+                    <div style="font-weight:bold; margin-top:0.3rem;">2 - ألم طفيف</div>
+                    <div style="font-size:0.75rem; color:var(--text-sub);">يؤلم قليلاً</div>
+                </div>
+                <div class="face-card" onclick="selectFace(4, 'ألم متوسط المحتمل', '4', this)">
+                    <div class="face-emoji">😐</div>
+                    <div style="font-weight:bold; margin-top:0.3rem;">4 - ألم متوسط</div>
+                    <div style="font-size:0.75rem; color:var(--text-sub);">يؤلم أكثر قليلاً</div>
+                </div>
+                <div class="face-card" onclick="selectFace(6, 'ألم شديد ومزعج', '6', this)">
+                    <div class="face-emoji">😣</div>
+                    <div style="font-weight:bold; margin-top:0.3rem;">6 - ألم مزعج</div>
+                    <div style="font-size:0.75rem; color:var(--text-sub);">يؤلم أكثر بكثير</div>
+                </div>
+                <div class="face-card" onclick="selectFace(8, 'ألم شديد جداً', '8', this)">
+                    <div class="face-emoji">😫</div>
+                    <div style="font-weight:bold; margin-top:0.3rem;">8 - ألم شديد</div>
+                    <div style="font-size:0.75rem; color:var(--text-sub);">يؤلم بشدة عالية</div>
+                </div>
+                <div class="face-card" onclick="selectFace(10, 'ألم أقصى لا يطاق إطلاقاً', '10', this)">
+                    <div class="face-emoji">😭</div>
+                    <div style="font-weight:bold; margin-top:0.3rem;">10 - ألم أقصى</div>
+                    <div style="font-size:0.75rem; color:var(--text-sub);">ألم لا يطاق</div>
+                </div>
+            </div>
 
-            <details style="background:var(--bg-inner); padding:0.85rem; border-radius:8px; margin-bottom:0.5rem;">
-                <summary style="font-weight:bold; color:var(--accent-red); cursor:pointer;">2. كسور الفك السفلي (Mandibular Fracture)</summary>
-                <ol style="margin-top:0.5rem; padding-right:1.25rem; color:var(--text-sub); font-size:0.9rem;">
-                    <li>دعم الذقن والفك برفق باستخدام ضمادة رأس تكتيكية (Barton Bandage Wrap).</li>
-                    <li>احرص على حماية مجرى الهواء ومنع انسداده بالدم أو التراجع الخلفي للسان.</li>
-                    <li>اجعل المصاب يميل للأمام قليلاً للسماح للسوائل والدم بالخروج من الفم.</li>
-                </ol>
-            </details>
+            <div id="faces-result-box" style="margin-top:1rem; padding:1rem; background:var(--bg-inner); border-radius:8px; text-align:center;">
+                <div>درجة الألم المحددة: <strong id="faces-score" style="font-size:1.4rem; color:var(--accent-blue);">0 / 10</strong></div>
+                <div id="faces-desc" style="color:var(--text-sub); margin-top:0.3rem;">اختر وجهاً لتقييم الألم</div>
+            </div>
         </div>
     </section>
 
-    <!-- Tab 1: Emergency Childbirth Guide -->
-    <section id="birth-tab" class="tab-content">
+    <!-- Tab 1: Dental Trauma Guide -->
+    <section id="dental-tab" class="tab-content">
         <div class="card">
-            <h2>🤰 دليل الولادة الطارئة في الميدان (Emergency Childbirth)</h2>
-            <p style="color:var(--text-sub); font-size:0.85rem;">إرشادات خطوة بخطوة للولادة الطارئة.</p>
+            <h2>🦷 دليل إصابات الأسنان والكسور الفكية (Dental Trauma)</h2>
+            <p style="color:var(--text-sub); font-size:0.85rem;">إسعافات كسور الفك وانخلاع الأسنان.</p>
         </div>
     </section>
 
     <!-- Bottom Navigation -->
     <nav>
-        <button class="active" onclick="switchTab('dental-tab', this)">
+        <button class="active" onclick="switchTab('faces-tab', this)">
+            <span>😊</span>
+            <span>الألم</span>
+        </button>
+        <button onclick="switchTab('dental-tab', this)">
             <span>🦷</span>
             <span>الأسنان</span>
-        </button>
-        <button onclick="switchTab('birth-tab', this)">
-            <span>🤰</span>
-            <span>الولادة</span>
         </button>
     </nav>
 
@@ -139,6 +161,14 @@
             document.querySelectorAll('nav button').forEach(b => b.classList.remove('active'));
             document.getElementById(tabId).classList.add('active');
             btn.classList.add('active');
+        }
+
+        // Task 8: FACES Pain Scale
+        function selectFace(score, desc, valStr, el) {
+            document.querySelectorAll('.face-card').forEach(c => c.classList.remove('selected'));
+            el.classList.add('selected');
+            document.getElementById('faces-score').textContent = `${score} / 10`;
+            document.getElementById('faces-desc').textContent = desc;
         }
     </script>
 </body>
