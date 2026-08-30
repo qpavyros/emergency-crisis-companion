@@ -69,48 +69,48 @@
         <button onclick="toggleTacticalHUD()" class="btn btn-yellow" style="width:auto; padding:0.3rem 0.6rem; font-size:0.8rem; margin:0;">🖥️ HUD</button>
     </header>
 
-    <!-- Tab 0: Snakebite & Scorpion Envenomation Protocol (Task 30) -->
-    <section id="venom-tab" class="tab-content active">
+    <!-- Tab 0: Frostbite & Hypothermia Protocol (Task 31) -->
+    <section id="frostbite-tab" class="tab-content active">
         <div class="card">
-            <h2>🐍 بروتوكول لدغات الأفاعي والعقارب (WHO Snakebite Protocol)</h2>
-            <p style="color:var(--text-sub); font-size:0.85rem; margin-bottom:1rem;">البروتوكول الطبي العالمي المعتمد لتقليل انتشار السميات وتثبيت الطرف المصاب.</p>
+            <h2>❄️ دليل عضات البرد وانخفاض الحرارة (Frostbite & Hypothermia)</h2>
+            <p style="color:var(--text-sub); font-size:0.85rem; margin-bottom:1rem;">إسعافات تجمد الأطراف وهبوط حرارة الجسم الشديد في الطقس المتجمد.</p>
 
             <details style="background:var(--bg-inner); padding:0.85rem; border-radius:8px; margin-bottom:0.5rem;" open>
-                <summary style="font-weight:bold; color:var(--accent-red); cursor:pointer;">❌ محظورات طارئة قاتلة (لا تقع فيها إطلاقاً)</summary>
-                <ul style="margin-top:0.5rem; padding-right:1.25rem; color:var(--text-sub); font-size:0.9rem;">
-                    <li>لا تقم بتشريط المكان أو مص السم بالفم أو استخدام جهاز الممص.</li>
-                    <li>لا تضع الثلج أو المحاليل أو ربط عاصبة ضاغطة شريانية قاسية.</li>
-                </ul>
+                <summary style="font-weight:bold; color:var(--accent-blue); cursor:pointer;">1. إعادة التدفئة السريعة لعضات البرد (Frostbite Rewarming)</summary>
+                <ol style="margin-top:0.5rem; padding-right:1.25rem; color:var(--text-sub); font-size:0.9rem;">
+                    <li>انقل المصاب فوراً إلى مكان دافئ واستبدل الملابس المبتلة بأخرى جافة.</li>
+                    <li>اغمر الطرف المتجمد في ماء دافئ درجة حرارته (37°C إلى 39°C) لمدة 30 دقيقة.</li>
+                    <li>تحذير: لا تدلك الأنسجة المتجمدة بالثلج إطلاقاً ولا تعرضها للحارة المباشرة الجافة.</li>
+                </ol>
             </details>
 
             <details style="background:var(--bg-inner); padding:0.85rem; border-radius:8px; margin-bottom:0.5rem;">
-                <summary style="font-weight:bold; color:var(--accent-green); cursor:pointer;">✅ خطوات الإسعاف الصحيحة (WHO Pressure Immobilization)</summary>
-                <ol style="margin-top:0.5rem; padding-right:1.25rem; color:var(--text-sub); font-size:0.9rem;">
-                    <li>طَمئن المصاب وثبّت الطرف الملدوغ لمنع تسريع الدورة الدموية.</li>
-                    <li>لف ضماداً مرناً ضاغطاً متوسطاً من أسفل الطرف الملدوغ إلى أعلاه.</li>
-                    <li>ابق الطرف تحت مستوى القلب وتوجه لأقرب مركز لمصل السموم.</li>
-                </ol>
+                <summary style="font-weight:bold; color:var(--accent-yellow); cursor:pointer;">2. إسعافات انخفاض الحرارة الحاد (Severe Hypothermia)</summary>
+                <ul style="margin-top:0.5rem; padding-right:1.25rem; color:var(--text-sub); font-size:0.9rem;">
+                    <li>لف المصاب ببطانيات حرارية عازلة من الرأس إلى القدمين.</li>
+                    <li>ضع أكياس تدفئة دافئة في مناطق المركز (تحت الإبطين والمغبن/الرقبة).</li>
+                </ul>
             </details>
         </div>
     </section>
 
-    <!-- Tab 1: Airway Guide -->
-    <section id="airway-tab" class="tab-content">
+    <!-- Tab 1: Snakebite Guide -->
+    <section id="venom-tab" class="tab-content">
         <div class="card">
-            <h2>😮‍💨 مناورات إخلاء مجرى الهواء (Airway Clearance)</h2>
-            <p style="color:var(--text-sub); font-size:0.85rem;">إسعافات انسداد مجرى الهواء.</p>
+            <h2>🐍 بروتوكول لدغات الأفاعي والعقارب (WHO Snakebite)</h2>
+            <p style="color:var(--text-sub); font-size:0.85rem;">البروتوكول الطبي العالمي المعتمد.</p>
         </div>
     </section>
 
     <!-- Bottom Navigation -->
     <nav>
-        <button class="active" onclick="switchTab('venom-tab', this)">
+        <button class="active" onclick="switchTab('frostbite-tab', this)">
+            <span>❄️</span>
+            <span>البرد</span>
+        </button>
+        <button onclick="switchTab('venom-tab', this)">
             <span>🐍</span>
             <span>السموم</span>
-        </button>
-        <button onclick="switchTab('airway-tab', this)">
-            <span>😮‍💨</span>
-            <span>الهواء</span>
         </button>
     </nav>
 
