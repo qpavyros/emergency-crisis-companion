@@ -71,49 +71,47 @@
         </button>
     </header>
 
-    <!-- Tab 0: Friction Fire Starting Guide (Task 14) -->
-    <section id="fire-tab" class="tab-content active">
+    <!-- Tab 0: Tactical Knot Tying Guide (Task 15) -->
+    <section id="knots-tab" class="tab-content active">
         <div class="card">
-            <h2>🔥 دليل إشعال النيران البدائي والتكتيكي (Fire Starting Guide)</h2>
-            <p style="color:var(--text-sub); font-size:0.85rem; margin-bottom:1rem;">طرق توليد شرار الجمر وإشعال النار بدون كبريت أو ولاعات تقليدية.</p>
+            <h2>🪢 دليل العقد التكتيكية وعقد الإنقاذ (Tactical Knot Guide)</h2>
+            <p style="color:var(--text-sub); font-size:0.85rem; margin-bottom:1rem;">طريقة ربط أهم العقد الميدانية للإنقاذ والتثبيت مع توضيح رسومي SVG.</p>
 
             <details style="background:var(--bg-inner); padding:0.85rem; border-radius:8px; margin-bottom:0.5rem;" open>
-                <summary style="font-weight:bold; color:var(--accent-red); cursor:pointer;">1. طريقة المحفار القوسي (Bow Drill Method)</summary>
-                <ol style="margin-top:0.5rem; padding-right:1.25rem; color:var(--text-sub); font-size:0.9rem;">
-                    <li>جهّز قوساً خشبياً منحنائاً مربوطاً بحبل قوي، ومغزلاً خشبياً مستقيماً، وقاعدة خشبية لينة.</li>
-                    <li>احفر تجويفاً صغيراً في القاعدة واقطع حزّاً مثلثاً بجانبه لجمع مسحوق الفحم.</li>
-                    <li>حرّك القوس للأمام والخلف بسرعة متزايدة حتى يتصاعد الدخان وتتكون جمرة سوداء متوهجة.</li>
-                    <li>انقل الجمرة بحذر إلى عش الهشيم الجاف (Tinder Nest) وانفخ عليها برفق حتى تشتعل.</li>
-                </ol>
+                <summary style="font-weight:bold; color:var(--accent-blue); cursor:pointer;">1. عقدة الإنقاذ البولين (Bowline Knot - ملكة العقد)</summary>
+                <div style="text-align:center; margin:0.5rem 0;">
+                    <svg width="100" height="60" viewBox="0 0 100 60"><path d="M 20 50 C 20 20, 80 20, 80 50 C 80 10, 40 10, 40 40" stroke="#38bdf8" stroke-width="4" fill="none"/></svg>
+                </div>
+                <p style="font-size:0.85rem; color:var(--text-sub);">عقدة ثابتة لا تنزلق إطلاقاً تحت أي وزن، وتستخدم لربط المصاب أو السحب في خطوط الإخلاء.</p>
             </details>
 
             <details style="background:var(--bg-inner); padding:0.85rem; border-radius:8px; margin-bottom:0.5rem;">
-                <summary style="font-weight:bold; color:var(--accent-yellow); cursor:pointer;">2. شرار قضيب الفيرو أو الصوان (Ferro Rod / Flint)</summary>
-                <ol style="margin-top:0.5rem; padding-right:1.25rem; color:var(--text-sub); font-size:0.9rem;">
-                    <li>ضع قضيب الصوان ملاصقاً تماماً لألياف الهشيم الجاف (قشر الشجر/القطن).</li>
-                    <li>احكّ شفرة السكين بقوة وزاوية 45 درجة لتوليد شرار حراري (3000°C).</li>
-                </ol>
+                <summary style="font-weight:bold; color:var(--accent-green); cursor:pointer;">2. العقدة المربعة (Square Knot / Reef Knot)</summary>
+                <div style="text-align:center; margin:0.5rem 0;">
+                    <svg width="100" height="60" viewBox="0 0 100 60"><path d="M 10 30 Q 50 10 90 30 Q 50 50 10 30" stroke="#22c55e" stroke-width="4" fill="none"/></svg>
+                </div>
+                <p style="font-size:0.85rem; color:var(--text-sub);">تستخدم لربط حبلين من نفس السمك بسرعة لتثبيت الضمادات أو الملاجئ.</p>
             </details>
         </div>
     </section>
 
-    <!-- Tab 1: Shelter Guide -->
-    <section id="shelter-tab" class="tab-content">
+    <!-- Tab 1: Fire Guide -->
+    <section id="fire-tab" class="tab-content">
         <div class="card">
-            <h2>⛺ دليل بناء الملاجئ الميدانية المؤقتة (Shelter Building)</h2>
-            <p style="color:var(--text-sub); font-size:0.85rem;">طرق بناء الملاجئ العازلة للحرارة.</p>
+            <h2>🔥 دليل إشعال النيران البدائي والتكتيكي (Fire Starting)</h2>
+            <p style="color:var(--text-sub); font-size:0.85rem;">طرق إشعال النار البدائية.</p>
         </div>
     </section>
 
     <!-- Bottom Navigation -->
     <nav>
-        <button class="active" onclick="switchTab('fire-tab', this)">
+        <button class="active" onclick="switchTab('knots-tab', this)">
+            <span>🪢</span>
+            <span>العقد</span>
+        </button>
+        <button onclick="switchTab('fire-tab', this)">
             <span>🔥</span>
             <span>النار</span>
-        </button>
-        <button onclick="switchTab('shelter-tab', this)">
-            <span>⛺</span>
-            <span>الملاجئ</span>
         </button>
     </nav>
 
