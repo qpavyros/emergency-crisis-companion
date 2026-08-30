@@ -69,49 +69,47 @@
         <button onclick="toggleTacticalHUD()" class="btn btn-yellow" style="width:auto; padding:0.3rem 0.6rem; font-size:0.8rem; margin:0;">🖥️ HUD</button>
     </header>
 
-    <!-- Tab 0: Chest Seal & Tension Pneumothorax Guide (Task 28) -->
-    <section id="chestseal-tab" class="tab-content active">
+    <!-- Tab 0: Airway Clearance & Choking Guide (Task 29) -->
+    <section id="airway-tab" class="tab-content active">
         <div class="card">
-            <h2>🫁 إصابات الصدر واستثنائ الرئة (Chest Seal & Tension Pneumothorax)</h2>
-            <p style="color:var(--text-sub); font-size:0.85rem; margin-bottom:1rem;">علاج جروح الصدر المفتوحة والماصة للهواء والاسترواح الصدري الميداني.</p>
+            <h2>😮‍💨 مناورات إخلاء مجرى الهواء والشرق (Airway Clearance & Choking Guide)</h2>
+            <p style="color:var(--text-sub); font-size:0.85rem; margin-bottom:1rem;">إسعافات انسداد مجرى الهواء ومناورة هايملخ للبالغين والأطفال والرضع.</p>
 
             <details style="background:var(--bg-inner); padding:0.85rem; border-radius:8px; margin-bottom:0.5rem;" open>
-                <summary style="font-weight:bold; color:var(--accent-red); cursor:pointer;">1. تركيب اللاصق الصدري ذي الصمام (Vented Chest Seal)</summary>
+                <summary style="font-weight:bold; color:var(--accent-red); cursor:pointer;">1. مناورة هايملخ للبالغين (Heimlich Maneuver)</summary>
                 <ol style="margin-top:0.5rem; padding-right:1.25rem; color:var(--text-sub); font-size:0.9rem;">
-                    <li>امسح الدم والسوائل حول جرح الصدر المفتوح بسرعة.</li>
-                    <li>اطلب من المصاب الزفير بالكامل ثم ضع اللاصق الصدري (Chest Seal) بحيث يغطي الجرح بالكامل.</li>
-                    <li>افحص ظهر المصاب والإبط لتأكيد عدم وجود جرح منفذ خروجي آخر.</li>
+                    <li>قف خلف المصاب والظف ذراعيك حول بطنه فوق السرة مباشرة وتحت قفصه الصدري.</li>
+                    <li>اضغط بقبضة يدك للداخل وللأعلى بسرعة وقوة متكررة لطرود الجسم الغريب.</li>
                 </ol>
             </details>
 
             <details style="background:var(--bg-inner); padding:0.85rem; border-radius:8px; margin-bottom:0.5rem;">
-                <summary style="font-weight:bold; color:var(--accent-yellow); cursor:pointer;">2. علامات الاسترواح الصدري المائي/الضغط (Tension Pneumothorax)</summary>
-                <ul style="margin-top:0.5rem; padding-right:1.25rem; color:var(--text-sub); font-size:0.9rem;">
-                    <li>ضيق تنفس شديد ومتصاعد ومظاهر انخفاض الأكسجين.</li>
-                    <li>انعدام أصوات التنفس في إحدى الرئتين وانحراف القصبة الهوائية للجانب السليم.</li>
-                    <li>الإجراء الطارئ: تنفيس اللاصق الصدري (Burping the seal) لإخراج الهواء المحتبس فوراً.</li>
-                </ul>
+                <summary style="font-weight:bold; color:var(--accent-yellow); cursor:pointer;">2. إسعاف الرضيع الخانق (<1 سنة)</summary>
+                <ol style="margin-top:0.5rem; padding-right:1.25rem; color:var(--text-sub); font-size:0.9rem;">
+                    <li>ضع الرضيع مائلاً للأسر على ساعدك مع دعم فكه.</li>
+                    <li>وجه 5 ضربات ظهرية بين الكتفين بكعب كف اليد، ثم قلبه ووجه 5 ضغطات صدرية.</li>
+                </ol>
             </details>
         </div>
     </section>
 
-    <!-- Tab 1: Junctional Bleeding -->
-    <section id="junctional-tab" class="tab-content">
+    <!-- Tab 1: Chest Seal -->
+    <section id="chestseal-tab" class="tab-content">
         <div class="card">
-            <h2>💉 حشو الجروح والنزيف المفصلي (Junctional Bleeding)</h2>
-            <p style="color:var(--text-sub); font-size:0.85rem;">إيقاف النزيف الشرياني في المناطق المفصلية.</p>
+            <h2>🫁 إصابات الصدر واستثنائ الرئة (Chest Seal)</h2>
+            <p style="color:var(--text-sub); font-size:0.85rem;">علاج جروح الصدر المفتوحة.</p>
         </div>
     </section>
 
     <!-- Bottom Navigation -->
     <nav>
-        <button class="active" onclick="switchTab('chestseal-tab', this)">
+        <button class="active" onclick="switchTab('airway-tab', this)">
+            <span>😮‍💨</span>
+            <span>الهواء</span>
+        </button>
+        <button onclick="switchTab('chestseal-tab', this)">
             <span>🫁</span>
             <span>الصدر</span>
-        </button>
-        <button onclick="switchTab('junctional-tab', this)">
-            <span>💉</span>
-            <span>الحشو</span>
         </button>
     </nav>
 
