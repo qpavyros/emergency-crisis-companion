@@ -69,26 +69,22 @@
 <body>
 
     <header>
-        <h1>🚨 EmergencyKit PWA v6.1 Surgical</h1>
+        <h1>🚨 EmergencyKit PWA v6.2 HPMK</h1>
         <button onclick="toggleTacticalHUD()" class="btn btn-yellow" style="width:auto; padding:0.3rem 0.5rem; font-size:0.75rem; margin:0;">🖥️ HUD</button>
     </header>
 
-    <!-- Tab 0: Emergency Surgical Cricothyroidotomy Protocol (Self-Evolving #21) -->
-    <section id="crico-tab" class="tab-content active">
+    <!-- Tab 0: TCCC Hypothermia Prevention & Management Kit Guide (Self-Evolving #22) -->
+    <section id="hpmk-tab" class="tab-content active">
         <div class="card">
-            <h2>🔪 بروتوكول فتح مجرى الهواء الجراحي الطارئ (Surgical Cricothyroidotomy)</h2>
-            <p style="color:var(--text-sub); font-size:0.85rem; margin-bottom:1rem;">الإجراء الجراحي الميداني الأخير لإعادة التنفس عند انسداد مجرى الهواء الكامل وعدم إمكانية التنبيب.</p>
+            <h2>🛡️ طقم حماية انخفاض الحرارة التكتيكي (TCCC HPMK Protocol)</h2>
+            <p style="color:var(--text-sub); font-size:0.85rem; margin-bottom:1rem;">منع الثالوث القاتل في الإصابات الحادة (انخفاض الحرارة، حموضة الدم، واعتلال التجلط).</p>
 
             <details style="background:var(--bg-inner); padding:0.85rem; border-radius:8px; margin-bottom:0.5rem;" open>
-                <summary style="font-weight:bold; color:var(--accent-red); cursor:pointer;">1. تحديد الغشاء الحلقي الدرقي (Landmark Identification)</summary>
-                <p style="font-size:0.85rem; color:var(--text-sub); margin-top:0.3rem;">تحسس الغضروف الدرقي (تفاحة آدم) والغضروف الحلقي أسفله مباشرة، الفراغ اللين بينهما هو الغشاء الحلقي الدرقي (Cricothyroid Membrane).</p>
-            </details>
-
-            <details style="background:var(--bg-inner); padding:0.85rem; border-radius:8px; margin-bottom:0.5rem;">
-                <summary style="font-weight:bold; color:var(--accent-blue); cursor:pointer;">2. التثبيت والأنبوب الجراحي (Scalpel-Bougie-Tube Technique)</summary>
+                <summary style="font-weight:bold; color:var(--accent-red); cursor:pointer;">1. خطوات استخدام بطانية التدفئة التكتيكية (Ready-Heat Blanket)</summary>
                 <ol style="margin-top:0.5rem; padding-right:1.25rem; color:var(--text-sub); font-size:0.9rem;">
-                    <li>اعمل شقاً أفقياً بالمشرط بطول 1.5 سم فوق الغشاء، وأدخل الإبهام أو البوجي (Bougie) مباشرة.</li>
-                    <li>مرر أنبوب تنفس قياس 6.0 mm وتثبيته ونفخ الكفة بالهواء فوراً لتأمين مجرى الهواء.</li>
+                    <li>أزل الملابس المبتلة عن المصاب فوراً واستبدلها بأخرى جافة.</li>
+                    <li>افتح الغلاف الحراري التفاعلي (Ready-Heat) وضعه فوق جذع المصاب وليس على الجلد المباشر.</li>
+                    <li>لف المصاب بالكامل داخل الغلاف العازل للبخار (Vapor Barrier Enclosure) لحفظ الحرارة التام.</li>
                 </ol>
             </details>
         </div>
@@ -96,9 +92,9 @@
 
     <!-- Bottom Navigation -->
     <nav>
-        <button class="active" onclick="switchTab('crico-tab', this)">
-            <span>🔪</span>
-            <span>الفتح الجراحي</span>
+        <button class="active" onclick="switchTab('hpmk-tab', this)">
+            <span>🛡️</span>
+            <span>طقم HPMK</span>
         </button>
     </nav>
 
