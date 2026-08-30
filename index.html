@@ -22,43 +22,42 @@
             --accent-slate: #475569;
         }
 
-        body.extreme-battery {
+        body.hud-mode {
             --bg-primary: #000000 !important;
-            --bg-card: #000000 !important;
+            --bg-card: #050505 !important;
             --bg-inner: #000000 !important;
-            --text-main: #ffffff !important;
-            --text-sub: #aaaaaa !important;
-            --border-color: #ffffff !important;
-            --accent-red: #ffffff !important;
-            --accent-yellow: #ffffff !important;
-            --accent-green: #ffffff !important;
-            --accent-blue: #ffffff !important;
-            --accent-slate: #000000 !important;
+            --text-main: #ffff00 !important;
+            --text-sub: #ffffaa !important;
+            --border-color: #ffff00 !important;
+            --accent-red: #ff3333 !important;
+            --accent-yellow: #ffff00 !important;
+            --accent-green: #00ff00 !important;
+            --accent-blue: #00ffff !important;
+            --accent-slate: #222200 !important;
         }
 
-        body.extreme-battery * {
-            animation: none !important;
-            transition: none !important;
-            box-shadow: none !important;
-            text-shadow: none !important;
+        body.hud-mode .btn {
+            font-size: 1.1rem !important;
+            padding: 1.1rem !important;
+            border: 2px solid #ffff00 !important;
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: system-ui, -apple-system, sans-serif; }
         body { background: var(--bg-primary); color: var(--text-main); line-height: 1.5; padding-bottom: 75px; transition: background 0.2s, color 0.2s; contain: content; }
         
         header { background: #b91c1c; padding: 0.75rem 1rem; text-align: center; font-weight: bold; position: sticky; top: 0; z-index: 100; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.3); display: flex; align-items: center; justify-content: space-between; }
-        body.extreme-battery header { background: #000000 !important; border-bottom: 1px solid #ffffff; }
+        body.hud-mode header { background: #000000 !important; border-bottom: 3px solid #ffff00; }
         header h1 { font-size: 1.2rem; display: flex; align-items: center; gap: 0.5rem; }
 
         nav { display: flex; background: #020617; position: fixed; bottom: 0; width: 100%; z-index: 100; border-top: 1px solid var(--border-color); overflow-x: auto; }
-        body.extreme-battery nav { background: #000000 !important; border-top: 1px solid #ffffff; }
+        body.hud-mode nav { background: #000000 !important; border-top: 3px solid #ffff00; }
         nav button { flex: 1; min-width: 40px; padding: 0.6rem 0.1rem; background: none; border: none; color: var(--text-sub); font-size: 0.58rem; cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 0.2rem; white-space: nowrap; }
         nav button.active { color: var(--text-main); font-weight: bold; background: var(--bg-card); border-top: 2px solid var(--accent-red); }
 
         .tab-content { display: none; padding: 1rem; max-width: 850px; margin: 0 auto; }
         .tab-content.active { display: block; }
 
-        .card { background: var(--bg-card); border-radius: 12px; padding: 1.25rem; margin-bottom: 1rem; border: 1px solid var(--border-color); content-visibility: auto; contain-intrinsic-size: 150px; }
+        .card { background: var(--bg-card); border-radius: 12px; padding: 1.25rem; margin-bottom: 1rem; border: 1px solid var(--border-color); }
         .card h2 { font-size: 1.2rem; margin-bottom: 0.75rem; color: var(--accent-red); display: flex; align-items: center; gap: 0.5rem; }
 
         .btn { padding: 0.7rem 1rem; border-radius: 8px; border: none; font-weight: bold; cursor: pointer; display: inline-flex; align-items: center; gap: 0.5rem; justify-content: center; width: 100%; margin-top: 0.5rem; text-decoration: none; font-size: 0.9rem; }
@@ -67,41 +66,36 @@
         .btn-yellow { background: var(--accent-yellow); color: black; }
         .btn-blue { background: var(--accent-blue); color: black; }
         .btn-slate { background: var(--accent-slate); color: white; }
-
-        .input-group { margin-bottom: 1rem; }
-        .input-group label { display: block; font-size: 0.85rem; margin-bottom: 0.4rem; color: var(--text-sub); }
-        .input-field { width: 100%; padding: 0.75rem; border-radius: 8px; background: var(--bg-inner); color: var(--text-main); border: 1px solid var(--border-color); font-size: 0.95rem; }
     </style>
 </head>
 <body>
 
     <header>
         <h1>🚨 EmergencyKit PWA</h1>
-        <button onclick="toggleExtremeBatterySaver()" class="btn btn-slate" style="width:auto; padding:0.3rem 0.6rem; font-size:0.8rem; margin:0;">🔋</button>
+        <button onclick="toggleTacticalHUD()" class="btn btn-yellow" style="width:auto; padding:0.3rem 0.6rem; font-size:0.8rem; margin:0;" title="نمط الرؤية التكتيكي HUD">🖥️ HUD</button>
     </header>
 
-    <div style="padding:0.75rem 1rem 0 1rem; max-width:850px; margin:0 auto;">
-        <input type="text" id="quick-search-input" class="input-field" placeholder="🔍 بحث سريع في جميع بروتوكولات الإسعافات والبقاء..." oninput="filterProtocolsRealtime()">
-    </div>
+    <!-- Tab 0: High-Contrast Emergency HUD Mode (Task 26) -->
+    <section id="hud-tab" class="tab-content active">
+        <div class="card" style="text-align:center;">
+            <h2>🖥️ نمط الرؤية التكتيكي عالي التباين (High-Contrast Tactical HUD)</h2>
+            <p style="color:var(--text-sub); font-size:0.85rem; margin-bottom:1rem;">واجهة صفراء وسوداء ذات تباين فائق وأزرار ضخمة للعمل أثناء ارتداء القفازات الثقيلة أو تحت أشعة الشمس المباشرة.</p>
 
-    <!-- Tab 0: Emergency Protocols Index (Task 25 Optimized) -->
-    <section id="search-tab" class="tab-content active">
-        <div class="card search-item" data-keywords="نزيف MARCH عاصبة جرح تكتيك">
-            <h2>🩸 بروتوكول الإصابات والنزيف الشديد (M.A.R.C.H. Protocol)</h2>
-            <p style="color:var(--text-sub); font-size:0.85rem;">تركيب العاصبة فوراً للنزيف الشرياني، فتح مجرى الهواء، وفحص الصدر والحرارة.</p>
-        </div>
+            <button class="btn btn-yellow" style="font-size:1.1rem; padding:1.2rem;" onclick="toggleTacticalHUD()">
+                🖥️ تفعيل / إيقاف نمط HUD عالي التباين
+            </button>
 
-        <div class="card search-item" data-keywords="طفل جرعات أدوية باراسيتامول إبينفرين Broselow">
-            <h2>💊 حاسبة جرعات أدوية الأطفال (Broselow Tape Simulator)</h2>
-            <p style="color:var(--text-sub); font-size:0.85rem;">حساب الجرعات الحرجة للأطفال بناءً على الألوان والوزن التقديري.</p>
+            <div id="hud-state-box" style="margin-top:1rem; padding:1rem; background:var(--bg-inner); border-radius:8px;">
+                <div style="color:var(--accent-yellow);">حالة النمط: <strong id="hud-mode-state">معطل</strong></div>
+            </div>
         </div>
     </section>
 
     <!-- Bottom Navigation -->
     <nav>
-        <button class="active" onclick="switchTab('search-tab', this)">
-            <span>🔍</span>
-            <span>البحث</span>
+        <button class="active" onclick="switchTab('hud-tab', this)">
+            <span>🖥️</span>
+            <span>HUD</span>
         </button>
     </nav>
 
@@ -119,23 +113,16 @@
             btn.classList.add('active');
         }
 
-        function toggleExtremeBatterySaver() {
-            document.body.classList.toggle('extreme-battery');
+        // Task 26: High-Contrast Tactical HUD Logic
+        function toggleTacticalHUD() {
+            document.body.classList.toggle('hud-mode');
+            const isHUD = document.body.classList.contains('hud-mode');
+            document.getElementById('hud-mode-state').textContent = isHUD ? 'مفعل (أصفر/أسود تباين عالي للأشعة والقفازات)' : 'معطل';
+            localStorage.setItem('hud_mode', isHUD ? 'true' : 'false');
         }
 
-        function filterProtocolsRealtime() {
-            const query = document.getElementById('quick-search-input').value.trim().toLowerCase();
-            const cards = document.querySelectorAll('.search-item');
-
-            cards.forEach(card => {
-                const text = card.textContent.toLowerCase();
-                const keywords = card.getAttribute('data-keywords') ? card.getAttribute('data-keywords').toLowerCase() : '';
-                if (!query || text.includes(query) || keywords.includes(query)) {
-                    card.style.display = 'block';
-                } else {
-                    card.style.display = 'none';
-                }
-            });
+        if (localStorage.getItem('hud_mode') === 'true') {
+            document.body.classList.add('hud-mode');
         }
     </script>
 </body>
