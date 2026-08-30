@@ -69,47 +69,48 @@
         <button onclick="toggleTacticalHUD()" class="btn btn-yellow" style="width:auto; padding:0.3rem 0.6rem; font-size:0.8rem; margin:0;">🖥️ HUD</button>
     </header>
 
-    <!-- Tab 0: Airway Clearance & Choking Guide (Task 29) -->
-    <section id="airway-tab" class="tab-content active">
+    <!-- Tab 0: Snakebite & Scorpion Envenomation Protocol (Task 30) -->
+    <section id="venom-tab" class="tab-content active">
         <div class="card">
-            <h2>😮‍💨 مناورات إخلاء مجرى الهواء والشرق (Airway Clearance & Choking Guide)</h2>
-            <p style="color:var(--text-sub); font-size:0.85rem; margin-bottom:1rem;">إسعافات انسداد مجرى الهواء ومناورة هايملخ للبالغين والأطفال والرضع.</p>
+            <h2>🐍 بروتوكول لدغات الأفاعي والعقارب (WHO Snakebite Protocol)</h2>
+            <p style="color:var(--text-sub); font-size:0.85rem; margin-bottom:1rem;">البروتوكول الطبي العالمي المعتمد لتقليل انتشار السميات وتثبيت الطرف المصاب.</p>
 
             <details style="background:var(--bg-inner); padding:0.85rem; border-radius:8px; margin-bottom:0.5rem;" open>
-                <summary style="font-weight:bold; color:var(--accent-red); cursor:pointer;">1. مناورة هايملخ للبالغين (Heimlich Maneuver)</summary>
-                <ol style="margin-top:0.5rem; padding-right:1.25rem; color:var(--text-sub); font-size:0.9rem;">
-                    <li>قف خلف المصاب والظف ذراعيك حول بطنه فوق السرة مباشرة وتحت قفصه الصدري.</li>
-                    <li>اضغط بقبضة يدك للداخل وللأعلى بسرعة وقوة متكررة لطرود الجسم الغريب.</li>
-                </ol>
+                <summary style="font-weight:bold; color:var(--accent-red); cursor:pointer;">❌ محظورات طارئة قاتلة (لا تقع فيها إطلاقاً)</summary>
+                <ul style="margin-top:0.5rem; padding-right:1.25rem; color:var(--text-sub); font-size:0.9rem;">
+                    <li>لا تقم بتشريط المكان أو مص السم بالفم أو استخدام جهاز الممص.</li>
+                    <li>لا تضع الثلج أو المحاليل أو ربط عاصبة ضاغطة شريانية قاسية.</li>
+                </ul>
             </details>
 
             <details style="background:var(--bg-inner); padding:0.85rem; border-radius:8px; margin-bottom:0.5rem;">
-                <summary style="font-weight:bold; color:var(--accent-yellow); cursor:pointer;">2. إسعاف الرضيع الخانق (<1 سنة)</summary>
+                <summary style="font-weight:bold; color:var(--accent-green); cursor:pointer;">✅ خطوات الإسعاف الصحيحة (WHO Pressure Immobilization)</summary>
                 <ol style="margin-top:0.5rem; padding-right:1.25rem; color:var(--text-sub); font-size:0.9rem;">
-                    <li>ضع الرضيع مائلاً للأسر على ساعدك مع دعم فكه.</li>
-                    <li>وجه 5 ضربات ظهرية بين الكتفين بكعب كف اليد، ثم قلبه ووجه 5 ضغطات صدرية.</li>
+                    <li>طَمئن المصاب وثبّت الطرف الملدوغ لمنع تسريع الدورة الدموية.</li>
+                    <li>لف ضماداً مرناً ضاغطاً متوسطاً من أسفل الطرف الملدوغ إلى أعلاه.</li>
+                    <li>ابق الطرف تحت مستوى القلب وتوجه لأقرب مركز لمصل السموم.</li>
                 </ol>
             </details>
         </div>
     </section>
 
-    <!-- Tab 1: Chest Seal -->
-    <section id="chestseal-tab" class="tab-content">
+    <!-- Tab 1: Airway Guide -->
+    <section id="airway-tab" class="tab-content">
         <div class="card">
-            <h2>🫁 إصابات الصدر واستثنائ الرئة (Chest Seal)</h2>
-            <p style="color:var(--text-sub); font-size:0.85rem;">علاج جروح الصدر المفتوحة.</p>
+            <h2>😮‍💨 مناورات إخلاء مجرى الهواء (Airway Clearance)</h2>
+            <p style="color:var(--text-sub); font-size:0.85rem;">إسعافات انسداد مجرى الهواء.</p>
         </div>
     </section>
 
     <!-- Bottom Navigation -->
     <nav>
-        <button class="active" onclick="switchTab('airway-tab', this)">
+        <button class="active" onclick="switchTab('venom-tab', this)">
+            <span>🐍</span>
+            <span>السموم</span>
+        </button>
+        <button onclick="switchTab('airway-tab', this)">
             <span>😮‍💨</span>
             <span>الهواء</span>
-        </button>
-        <button onclick="switchTab('chestseal-tab', this)">
-            <span>🫁</span>
-            <span>الصدر</span>
         </button>
     </nav>
 
