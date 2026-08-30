@@ -45,16 +45,16 @@
 
         nav { display: flex; background: #020617; position: fixed; bottom: 0; width: 100%; z-index: 100; border-top: 1px solid var(--border-color); overflow-x: auto; }
         body.night-mode nav { background: #0a0101; }
-        nav button { flex: 1; min-width: 65px; padding: 0.6rem 0.2rem; background: none; border: none; color: var(--text-sub); font-size: 0.75rem; cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 0.2rem; }
+        nav button { flex: 1; min-width: 60px; padding: 0.6rem 0.2rem; background: none; border: none; color: var(--text-sub); font-size: 0.72rem; cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 0.2rem; }
         nav button.active { color: var(--text-main); font-weight: bold; background: var(--bg-card); border-top: 2px solid var(--accent-red); }
 
         .tab-content { display: none; padding: 1rem; max-width: 850px; margin: 0 auto; }
         .tab-content.active { display: block; }
 
         .card { background: var(--bg-card); border-radius: 12px; padding: 1.25rem; margin-bottom: 1rem; border: 1px solid var(--border-color); }
-        .card h2 { font-size: 1.25rem; margin-bottom: 0.75rem; color: var(--accent-red); display: flex; align-items: center; gap: 0.5rem; }
+        .card h2 { font-size: 1.2rem; margin-bottom: 0.75rem; color: var(--accent-red); display: flex; align-items: center; gap: 0.5rem; }
 
-        .btn { padding: 0.75rem 1rem; border-radius: 8px; border: none; font-weight: bold; cursor: pointer; display: inline-flex; align-items: center; gap: 0.5rem; justify-content: center; width: 100%; margin-top: 0.5rem; text-decoration: none; font-size: 0.95rem; }
+        .btn { padding: 0.7rem 1rem; border-radius: 8px; border: none; font-weight: bold; cursor: pointer; display: inline-flex; align-items: center; gap: 0.5rem; justify-content: center; width: 100%; margin-top: 0.5rem; text-decoration: none; font-size: 0.9rem; }
         .btn-red { background: var(--accent-red); color: white; }
         .btn-green { background: var(--accent-green); color: white; }
         .btn-yellow { background: var(--accent-yellow); color: black; }
@@ -68,18 +68,15 @@
         .badge-black { background: #000000; color: white; border: 1px solid #475569; }
 
         .input-group { margin-bottom: 1rem; }
-        .input-group label { display: block; font-size: 0.9rem; margin-bottom: 0.4rem; color: var(--text-sub); }
-        .input-field { width: 100%; padding: 0.75rem; border-radius: 8px; background: var(--bg-inner); color: var(--text-main); border: 1px solid var(--border-color); font-size: 1rem; }
+        .input-group label { display: block; font-size: 0.85rem; margin-bottom: 0.4rem; color: var(--text-sub); }
+        .input-field { width: 100%; padding: 0.75rem; border-radius: 8px; background: var(--bg-inner); color: var(--text-main); border: 1px solid var(--border-color); font-size: 0.95rem; }
 
-        /* Metronome Pulse */
-        .cpr-pulse { width: 100px; height: 100px; border-radius: 50%; background: var(--accent-red); margin: 1rem auto; display: flex; align-items: center; justify-content: center; font-size: 1.8rem; font-weight: bold; transition: transform 0.1s; }
+        .cpr-pulse { width: 90px; height: 90px; border-radius: 50%; background: var(--accent-red); margin: 1rem auto; display: flex; align-items: center; justify-content: center; font-size: 1.8rem; font-weight: bold; transition: transform 0.1s; }
         .cpr-pulse.beat { transform: scale(1.2); box-shadow: 0 0 25px var(--accent-red); }
 
-        /* SOS Strobe */
         @keyframes strobe { 0%, 100% { background: #ef4444; } 50% { background: #000000; } }
         .strobing { animation: strobe 0.3s infinite; }
 
-        /* Log Table */
         .log-table { width: 100%; border-collapse: collapse; margin-top: 1rem; font-size: 0.85rem; }
         .log-table th, .log-table td { padding: 0.5rem; text-align: right; border-bottom: 1px solid var(--border-color); }
         .log-table th { color: var(--accent-blue); }
@@ -92,7 +89,7 @@
     <header>
         <h1>🚨 EmergencyKit PWA</h1>
         <button onclick="toggleNightMode()" class="btn btn-slate" style="width:auto; padding:0.3rem 0.6rem; font-size:0.8rem; margin:0;">
-            🌙 الوضع الليلة التكتيكي
+            🌙 الوضع التكتيكي
         </button>
     </header>
 
@@ -155,7 +152,6 @@
             </div>
         </div>
 
-        <!-- Triage Log Vault -->
         <div class="card">
             <h2>📋 سجل الفرز الطبي الميداني المحفوظ (Offline Vault)</h2>
             <div style="overflow-x:auto;">
@@ -178,46 +174,32 @@
         </div>
     </section>
 
-    <!-- Tab 2: CPR & Rhythm Metronome -->
+    <!-- Tab 2: CPR Metronome -->
     <section id="cpr-tab" class="tab-content">
         <div class="card" style="text-align:center;">
             <h2>🫀 منبه إيقاع الإنعاش القلبي (CPR Metronome)</h2>
-            <p style="color:var(--text-sub); font-size:0.85rem; margin-bottom:1rem;">إيقاع صوتي وبصري بدقة 110 ضغطة/دقيقة لضبط توقيت الضغطات الصدرية أثناء الإنعاش.</p>
             
+            <div class="input-group" style="text-align:right;">
+                <label>فئة المصاب:</label>
+                <select id="cpr-mode-select" class="input-field" onchange="resetCPRMetronome()">
+                    <option value="adult">بالغ (110 ضغطة/دقيقة - 30 ضغطة : تنفسين)</option>
+                    <option value="child">طفل/رضيع (120 ضغطة/دقيقة - 15 ضغطة : تنفسين)</option>
+                </select>
+            </div>
+
             <div id="cpr-visual-pulse" class="cpr-pulse">0</div>
 
-            <div style="font-size:1.1rem; font-weight:bold; margin-bottom:0.5rem;" id="cpr-status-text">جاهز لبدء الإنعاش</div>
-            <div style="color:var(--text-sub); font-size:0.9rem;" id="cpr-cycle-text">الدورة: 0 | الضغطات: 0 / 30</div>
+            <div style="font-size:1.05rem; font-weight:bold; margin-bottom:0.5rem;" id="cpr-status-text">جاهز لبدء الإنعاش</div>
+            <div style="color:var(--text-sub); font-size:0.9rem;" id="cpr-cycle-text">الدورة: 0 | الضغطات: 0</div>
 
             <div class="grid-2" style="margin-top:1rem;">
-                <button id="cpr-start-btn" class="btn btn-green" onclick="toggleCPRMetronome()">▶️ بدء الإيقاع الصوتي (110 BPM)</button>
+                <button id="cpr-start-btn" class="btn btn-green" onclick="toggleCPRMetronome()">▶️ بدء الإيقاع الصوتي</button>
                 <button class="btn btn-slate" onclick="resetCPRMetronome()">🔄 إعادة الضبط</button>
             </div>
         </div>
-
-        <div class="card">
-            <h2>🩸 الإسعافات الأولية الحرجة</h2>
-            <details style="background:var(--bg-inner); padding:0.85rem; border-radius:8px; margin-bottom:0.5rem;">
-                <summary style="font-weight:bold; color:var(--accent-red); cursor:pointer;">1. التحكم في النزيف الشديد وتطبيق العاصبة</summary>
-                <ol style="margin-top:0.5rem; padding-right:1.25rem; color:var(--text-sub); font-size:0.9rem;">
-                    <li>ضغط مباشر وقوي بكلا اليدين فوراً على مصدر الدم.</li>
-                    <li>إن لم يتوقف النزيف، ضع العاصبة (Tourniquet) 5-7 سم فوق الجرح (ليس على المفصل).</li>
-                    <li>شدّ المقبض الخشبي/البلاستيكي حتى يتوقف الدم تماماً واقفل العاصبة.</li>
-                    <li>سجل وقت التثبيت بدقة على جبهة المصاب.</li>
-                </ol>
-            </details>
-            <details style="background:var(--bg-inner); padding:0.85rem; border-radius:8px; margin-bottom:0.5rem;">
-                <summary style="font-weight:bold; color:var(--accent-red); cursor:pointer;">2. انسداد مجرى الهواء والتخنق (Heimlich Maneuver)</summary>
-                <ol style="margin-top:0.5rem; padding-right:1.25rem; color:var(--text-sub); font-size:0.9rem;">
-                    <li>قف خلف المصاب ولف يديك حول خصره.</li>
-                    <li>اصنع قبضة بيدك الأولى فوق السرة مباشرة وتحت العظم الصدري.</li>
-                    <li>اضغط بقوة وللأعلى بسرعة حتى خروج الجسم الغريب.</li>
-                </ol>
-            </details>
-        </div>
     </section>
 
-    <!-- Tab 3: Medical Calculators -->
+    <!-- Tab 3: Survival Calculators -->
     <section id="calc-tab" class="tab-content">
         <div class="card">
             <h2>🔥 حاسبة نسبة الحروق ومحاليل الإنقاذ (Rule of Nines & Parkland)</h2>
@@ -229,8 +211,7 @@
 
             <div class="input-group">
                 <label>المناطق المحروقة (قاعدة التسعات):</label>
-                <div style="font-size:0.85rem; color:var(--text-sub); margin-bottom:0.5rem;">حدد الأجزاء المتأثرة بالحروق من الدرجة الثانية/الثالثة:</div>
-                <div style="display:grid; grid-template-columns:1fr 1fr; gap:0.5rem; text-align:right; font-size:0.9rem;">
+                <div style="display:grid; grid-template-columns:1fr 1fr; gap:0.5rem; text-align:right; font-size:0.85rem;">
                     <label><input type="checkbox" value="9" class="burn-part" onchange="calcBurnFluid()"> الرأس والرقبة (9%)</label>
                     <label><input type="checkbox" value="18" class="burn-part" onchange="calcBurnFluid()"> الصدر والبطن (18%)</label>
                     <label><input type="checkbox" value="18" class="burn-part" onchange="calcBurnFluid()"> الظهر بالكامل (18%)</label>
@@ -245,7 +226,6 @@
             <div id="burn-result-box" style="background:var(--bg-inner); padding:1rem; border-radius:8px; margin-top:0.75rem;">
                 <div>مجموع نسبة الحروق: <strong id="total-burn-percent" style="color:var(--accent-red);">0%</strong></div>
                 <div>المحاليل الوريدية المطلوبة (أول 24 ساعة): <strong id="total-fluid-ml" style="color:var(--accent-blue);">0 مل</strong></div>
-                <div style="font-size:0.8rem; color:var(--text-sub); margin-top:0.4rem;">ملاحظة: يُعطى نصف النسبة في أول 8 ساعات، والنصف الآخر في الـ 16 ساعة التالية (معادلة باركلاند: 4 مل × كجم × %).</div>
             </div>
         </div>
 
@@ -256,14 +236,46 @@
                 <input type="number" id="water-liters" class="input-field" value="10" oninput="calcWaterPurification()">
             </div>
             <div style="background:var(--bg-inner); padding:1rem; border-radius:8px; font-size:0.9rem;">
-                <div>💧 قطرات الكلور/المبيض المنزلي (تركيز 5%): <strong id="bleach-drops" style="color:var(--accent-blue);">10 قطرات</strong></div>
-                <div>⏱️ وقت الانتظار المطلوب قبل الشرب: <strong style="color:var(--accent-yellow);">30 دقيقة (60 دقيقة إذا كان الماء بارداً جداً)</strong></div>
-                <div style="font-size:0.8rem; color:var(--text-sub); margin-top:0.4rem;">التطهير الشمسي (SODIS): ضع الماء في زجاجة شفافة تحت الشمس المباشرة لمدة 6 ساعات متواصلة.</div>
+                <div>💧 قطرات الكلور/المبيض المنزلي: <strong id="bleach-drops" style="color:var(--accent-blue);">10 قطرات</strong></div>
+                <div>⏱️ وقت الانتظار المطلوب قبل الشرب: <strong style="color:var(--accent-yellow);">30 دقيقة</strong></div>
             </div>
         </div>
     </section>
 
-    <!-- Tab 4: Medical Translator -->
+    <!-- Tab 4: ICE Medical Card -->
+    <section id="ice-tab" class="tab-content">
+        <div class="card">
+            <h2>🆔 بطاقة الطوارئ الطبية الشخصية (ICE Emergency Card)</h2>
+            <p style="color:var(--text-sub); font-size:0.85rem; margin-bottom:1rem;">احفظ بياناتك الطبية الحرجة على الجهاز للوصول إليها بدون إنترنت.</p>
+            
+            <div class="input-group">
+                <label>الاسم الكامل:</label>
+                <input type="text" id="ice-name" class="input-field">
+            </div>
+            <div class="grid-2">
+                <div class="input-group">
+                    <label>فصيلة الدم:</label>
+                    <select id="ice-blood" class="input-field">
+                        <option value="A+">A+</option><option value="A-">A-</option>
+                        <option value="B+">B+</option><option value="B-">B-</option>
+                        <option value="O+">O+</option><option value="O-">O-</option>
+                        <option value="AB+">AB+</option><option value="AB-">AB-</option>
+                    </select>
+                </div>
+                <div class="input-group">
+                    <label>هاتف الطوارئ (ICE Contact):</label>
+                    <input type="text" id="ice-phone" class="input-field">
+                </div>
+            </div>
+            <div class="input-group">
+                <label>الحساسيات والأمراض المزمنة (إن وجدت):</label>
+                <textarea id="ice-allergies" class="input-field" rows="3" placeholder="مثال: حساسية من البنسلين، داء السكري"></textarea>
+            </div>
+            <button class="btn btn-green" onclick="saveICECard()">💾 حفظ البطاقة الشخصية</button>
+        </div>
+    </section>
+
+    <!-- Tab 5: Translator -->
     <section id="translator-tab" class="tab-content">
         <div class="card">
             <h2>🌐 المترجم الطبي الميداني للطوارئ</h2>
@@ -278,7 +290,7 @@
         </div>
     </section>
 
-    <!-- Tab 5: SOS Beacon -->
+    <!-- Tab 6: SOS Beacon -->
     <section id="beacon-tab" class="tab-content">
         <div class="card" style="text-align:center;">
             <h2>📢 منبه الاستغاثة الميداني (SOS Beacon)</h2>
@@ -302,11 +314,15 @@
         </button>
         <button onclick="switchTab('cpr-tab', this)">
             <span>🫀</span>
-            <span>الإنعاش الإيقاعي</span>
+            <span>الإنعاش</span>
         </button>
         <button onclick="switchTab('calc-tab', this)">
             <span>🧮</span>
             <span>حاسبات البقاء</span>
+        </button>
+        <button onclick="switchTab('ice-tab', this)">
+            <span>🆔</span>
+            <span>بطاقة ICE</span>
         </button>
         <button onclick="switchTab('translator-tab', this)">
             <span>🌐</span>
@@ -325,8 +341,7 @@
 
         function toggleNightMode() {
             document.body.classList.toggle('night-mode');
-            const isNight = document.body.classList.contains('night-mode');
-            localStorage.setItem('night_mode', isNight ? 'true' : 'false');
+            localStorage.setItem('night_mode', document.body.classList.contains('night-mode') ? 'true' : 'false');
         }
         if (localStorage.getItem('night_mode') === 'true') document.body.classList.add('night-mode');
 
@@ -347,22 +362,13 @@
         }
 
         function setTriageResult(code, label) {
-            currentTriageCode = code;
-            currentTriageDesc = label;
+            currentTriageCode = code; currentTriageDesc = label;
             document.querySelectorAll('#triage-tab [id^="triage-step-"]').forEach(el => el.style.display = 'none');
             const resBox = document.getElementById('triage-result');
-            const badgeContainer = document.getElementById('triage-badge-container');
-            const desc = document.getElementById('triage-desc');
-
             resBox.style.display = 'block';
-            desc.textContent = label;
-
-            let badgeClass = 'badge-green';
-            if (code === 'RED') badgeClass = 'badge-red';
-            if (code === 'YELLOW') badgeClass = 'badge-yellow';
-            if (code === 'BLACK') badgeClass = 'badge-black';
-
-            badgeContainer.innerHTML = `<span class="badge ${badgeClass}" style="font-size:1.3rem; padding:0.4rem 1.25rem;">التصنيف: ${code}</span>`;
+            document.getElementById('triage-desc').textContent = label;
+            let badgeClass = code === 'RED' ? 'badge-red' : (code === 'YELLOW' ? 'badge-yellow' : (code === 'BLACK' ? 'badge-black' : 'badge-green'));
+            document.getElementById('triage-badge-container').innerHTML = `<span class="badge ${badgeClass}" style="font-size:1.3rem; padding:0.4rem 1.25rem;">التصنيف: ${code}</span>`;
         }
 
         function resetTriage() {
@@ -371,24 +377,20 @@
             nextTriageStep(1);
         }
 
-        // Triage Vault (localStorage)
-        function getTriageLogs() {
-            return JSON.parse(localStorage.getItem('triage_vault_logs') || '[]');
-        }
+        // Vault
+        function getTriageLogs() { return JSON.parse(localStorage.getItem('triage_vault_logs') || '[]'); }
 
         function saveTriageLog() {
             if (!currentTriageCode) return;
-            const patientId = document.getElementById('patient-id-input').value.trim() || 'مصاب بدون اسم';
             const logs = getTriageLogs();
             logs.unshift({
                 time: new Date().toLocaleTimeString('ar-EG', { hour: '2-digit', minute: '2-digit' }),
-                patientId: patientId,
-                code: currentTriageCode,
-                desc: currentTriageDesc
+                patientId: document.getElementById('patient-id-input').value.trim() || 'مصاب بدون اسم',
+                code: currentTriageCode, desc: currentTriageDesc
             });
             localStorage.setItem('triage_vault_logs', JSON.stringify(logs));
             renderTriageLogs();
-            alert('تم حفظ المصاب بنجاح في السجل الميداني المحفوظ!');
+            alert('تم الحفظ في السجل!');
             resetTriage();
         }
 
@@ -399,48 +401,35 @@
             logs.forEach(log => {
                 const tr = document.createElement('tr');
                 let badgeClass = log.code === 'RED' ? 'badge-red' : (log.code === 'YELLOW' ? 'badge-yellow' : (log.code === 'BLACK' ? 'badge-black' : 'badge-green'));
-                tr.innerHTML = `
-                    <td>${log.time}</td>
-                    <td><strong>${log.patientId}</strong></td>
-                    <td><span class="badge ${badgeClass}">${log.code}</span></td>
-                    <td style="color:var(--text-sub);">${log.desc}</td>
-                `;
+                tr.innerHTML = `<td>${log.time}</td><td><strong>${log.patientId}</strong></td><td><span class="badge ${badgeClass}">${log.code}</span></td><td style="color:var(--text-sub);">${log.desc}</td>`;
                 tbody.appendChild(tr);
             });
         }
         renderTriageLogs();
 
         function clearTriageLogs() {
-            if (confirm('هل أنت تأكد من مسح جميع السجلات المحفوظة؟')) {
-                localStorage.removeItem('triage_vault_logs');
-                renderTriageLogs();
-            }
+            if (confirm('مسح السجل؟')) { localStorage.removeItem('triage_vault_logs'); renderTriageLogs(); }
         }
 
         function exportTriageLogs() {
-            const logs = getTriageLogs();
-            const blob = new Blob([JSON.stringify(logs, null, 2)], { type: 'application/json' });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = `triage-vault-${new Date().toISOString().slice(0,10)}.json`;
-            a.click();
+            const blob = new Blob([JSON.stringify(getTriageLogs(), null, 2)], { type: 'application/json' });
+            const a = document.createElement('a'); a.href = URL.createObjectURL(blob);
+            a.download = `triage-log-${new Date().toISOString().slice(0,10)}.json`; a.click();
         }
 
-        // CPR Metronome Logic (110 BPM)
-        let cprTimer = null;
-        let cprCount = 0;
-        let cprCycles = 0;
-        let audioCtxCPR = null;
+        // CPR Metronome
+        let cprTimer = null, cprCount = 0, cprCycles = 0, audioCtxCPR = null;
 
         function toggleCPRMetronome() {
             const btn = document.getElementById('cpr-start-btn');
+            const mode = document.getElementById('cpr-mode-select').value;
+            const targetBPM = mode === 'child' ? 120 : 110;
+            const maxCompressions = mode === 'child' ? 15 : 30;
+
             if (!cprTimer) {
                 if (!audioCtxCPR) audioCtxCPR = new (window.AudioContext || window.webkitAudioContext)();
-                btn.textContent = '⏸️ إيقاف الإيقاع';
-                btn.classList.replace('btn-green', 'btn-slate');
+                btn.textContent = '⏸️ إيقاف'; btn.classList.replace('btn-green', 'btn-slate');
                 
-                const intervalMs = (60 / 110) * 1000;
                 cprTimer = setInterval(() => {
                     cprCount++;
                     const visual = document.getElementById('cpr-visual-pulse');
@@ -451,149 +440,115 @@
                     visual.classList.add('beat');
                     setTimeout(() => visual.classList.remove('beat'), 100);
 
-                    // Beep sound
-                    let osc = audioCtxCPR.createOscillator();
-                    let gain = audioCtxCPR.createGain();
-                    osc.frequency.setValueAtTime(1000, audioCtxCPR.currentTime);
-                    gain.gain.setValueAtTime(0.2, audioCtxCPR.currentTime);
-                    osc.connect(gain);
-                    gain.connect(audioCtxCPR.destination);
-                    osc.start();
-                    osc.stop(audioCtxCPR.currentTime + 0.05);
+                    let osc = audioCtxCPR.createOscillator(); gain = audioCtxCPR.createGain();
+                    osc.frequency.setValueAtTime(1000, audioCtxCPR.currentTime); gain.gain.setValueAtTime(0.2, audioCtxCPR.currentTime);
+                    osc.connect(gain); gain.connect(audioCtxCPR.destination); osc.start(); osc.stop(audioCtxCPR.currentTime + 0.05);
 
-                    if (cprCount >= 30) {
-                        cprCycles++;
-                        cprCount = 0;
-                        status.textContent = '💨 أوقف الضغط! اعطِ تنفسين صناعيين فوراً!';
+                    if (cprCount >= maxCompressions) {
+                        cprCycles++; cprCount = 0;
+                        status.textContent = '💨 أوقف الضغط! اعطِ تنفسين صناعيين!';
                         status.style.color = 'var(--accent-yellow)';
                     } else {
-                        status.textContent = '🫀 ضغط صدري متواصل...';
-                        status.style.color = 'var(--accent-green)';
+                        status.textContent = '🫀 ضغط صدري متواصل...'; status.style.color = 'var(--accent-green)';
                     }
-
-                    cycle.textContent = `الدورة: ${cprCycles} | الضغطات: ${cprCount} / 30`;
-                }, intervalMs);
+                    cycle.textContent = `الدورة: ${cprCycles} | الضغطات: ${cprCount} / ${maxCompressions}`;
+                }, (60 / targetBPM) * 1000);
             } else {
-                clearInterval(cprTimer);
-                cprTimer = null;
-                btn.textContent = '▶️ استئناف الإيقاع الصوتي';
-                btn.classList.replace('btn-slate', 'btn-green');
+                clearInterval(cprTimer); cprTimer = null;
+                btn.textContent = '▶️ استئناف'; btn.classList.replace('btn-slate', 'btn-green');
             }
         }
 
         function resetCPRMetronome() {
             if (cprTimer) clearInterval(cprTimer);
-            cprTimer = null;
-            cprCount = 0;
-            cprCycles = 0;
+            cprTimer = null; cprCount = 0; cprCycles = 0;
             document.getElementById('cpr-visual-pulse').textContent = '0';
             document.getElementById('cpr-status-text').textContent = 'جاهز لبدء الإنعاش';
             document.getElementById('cpr-status-text').style.color = 'var(--text-main)';
-            document.getElementById('cpr-cycle-text').textContent = 'الدورة: 0 | الضغطات: 0 / 30';
-            document.getElementById('cpr-start-btn').textContent = '▶️ بدء الإيقاع الصوتي (110 BPM)';
+            document.getElementById('cpr-cycle-text').textContent = 'الدورة: 0 | الضغطات: 0';
+            document.getElementById('cpr-start-btn').textContent = '▶️ بدء الإيقاع الصوتي';
             document.getElementById('cpr-start-btn').classList.replace('btn-slate', 'btn-green');
         }
+
+        // ICE Card
+        function saveICECard() {
+            const data = {
+                name: document.getElementById('ice-name').value,
+                blood: document.getElementById('ice-blood').value,
+                phone: document.getElementById('ice-phone').value,
+                allergies: document.getElementById('ice-allergies').value
+            };
+            localStorage.setItem('ice_card_data', JSON.stringify(data));
+            alert('تم حفظ بطاقة الطوارئ الشخصية بنجاح على الجهاز!');
+        }
+
+        function loadICECard() {
+            const data = JSON.parse(localStorage.getItem('ice_card_data') || '{}');
+            if (data.name) document.getElementById('ice-name').value = data.name;
+            if (data.blood) document.getElementById('ice-blood').value = data.blood;
+            if (data.phone) document.getElementById('ice-phone').value = data.phone;
+            if (data.allergies) document.getElementById('ice-allergies').value = data.allergies;
+        }
+        loadICECard();
 
         // Burn Fluid Calc
         function calcBurnFluid() {
             const weight = parseFloat(document.getElementById('burn-weight').value) || 0;
             let totalPercent = 0;
-            document.querySelectorAll('.burn-part:checked').forEach(cb => {
-                totalPercent += parseFloat(cb.value);
-            });
+            document.querySelectorAll('.burn-part:checked').forEach(cb => totalPercent += parseFloat(cb.value));
             document.getElementById('total-burn-percent').textContent = totalPercent + '%';
-            const fluidMl = 4 * weight * totalPercent;
-            document.getElementById('total-fluid-ml').textContent = fluidMl.toLocaleString() + ' مل';
+            document.getElementById('total-fluid-ml').textContent = (4 * weight * totalPercent).toLocaleString() + ' مل';
         }
 
         // Water Calc
         function calcWaterPurification() {
             const liters = parseFloat(document.getElementById('water-liters').value) || 0;
-            const drops = Math.ceil(liters * 1);
-            document.getElementById('bleach-drops').textContent = drops + ' قطرات';
+            document.getElementById('bleach-drops').textContent = Math.ceil(liters * 1) + ' قطرات';
         }
 
-        // Emergency Translator Dictionary
+        // Translator
         const dictionary = {
-            ar: [
-                "أين مكان الألم؟", "هل تستطيع التنفس؟", "هل لديك حساسية من دواء؟",
-                "لا تتحرك، مساعدة قادمة", "اضغط هنا لوقف النزيف", "كم عمرك؟"
-            ],
-            en: [
-                "Where is the pain?", "Can you breathe?", "Are you allergic to any medicine?",
-                "Do not move, help is coming", "Press here to stop bleeding", "How old are you?"
-            ],
-            fr: [
-                "Où est la douleur?", "Pouvez-vous respirer?", "Êtes-vous allergique à un médicament?",
-                "Ne bougez pas, les secours arrivent", "Appuyez ici pour arrêter le saignement", "Quel âge avez-vous?"
-            ],
-            es: [
-                "¿Dónde está el dolor?", "¿Puedes respirar?", "¿Eres alérgico a algún medicamento?",
-                "No te muevas, la ayuda viene", "Presiona aquí para detener el sangrado", "¿Cuántos años tienes?"
-            ],
-            tr: [
-                "Ağrı nerede?", "Nefes alabiliyor musunuz?", "Herhangi bir ilaca alerjiniz var mı?",
-                "Hareket etmeyin, yardım geliyor", "Kanamayı durdurmak için buraya basın", "Kaç yaşındasınız?"
-            ],
-            uk: [
-                "Де болить?", "Ви можете дихати?", "У вас є алергія на ліки?",
-                "Не рухайтесь, допомога йде", "Натисніть тут, щоб зупинити кровотечу", "Скільки вам років?"
-            ]
+            ar: ["أين مكان الألم؟", "هل تستطيع التنفس؟", "هل لديك حساسية من دواء؟", "لا تتحرك، مساعدة قادمة", "اضغط هنا لوقف النزيف", "كم عمرك؟"],
+            en: ["Where is the pain?", "Can you breathe?", "Are you allergic to any medicine?", "Do not move, help is coming", "Press here to stop bleeding", "How old are you?"],
+            fr: ["Où est la douleur?", "Pouvez-vous respirer?", "Êtes-vous allergique à un médicament?", "Ne bougez pas, les secours arrivent", "Appuyez ici pour arrêter le saignement", "Quel âge avez-vous?"],
+            es: ["¿Dónde está el dolor?", "¿Puedes respirar?", "¿Eres alérgico a algún medicamento?", "No te muevas, la ayuda viene", "Presiona aquí para detener el sangrado", "¿Cuántos años tienes?"],
+            tr: ["Ağrı nerede?", "Nefes alabiliyor musunuz?", "Herhangi bir ilaca alerjiniz var mı?", "Hareket etmeyin, yardım geliyor", "Kanamayı durdurmak için buraya basın", "Kaç yaşındasınız?"],
+            uk: ["Де болить?", "Ви можете дихати?", "У вас є алергія на ліки?", "Не рухайтесь, допомога йде", "Натисніть тут, щоб зупинити кровотечу", "Скільки вам років?"]
         };
 
         function renderTranslator() {
             const lang = document.getElementById('lang-select').value;
             const container = document.getElementById('phrase-container');
             container.innerHTML = '';
-
             dictionary.ar.forEach((arText, idx) => {
-                const transText = dictionary[lang][idx] || '';
                 const card = document.createElement('div');
                 card.style.cssText = 'background:var(--bg-inner); padding:0.85rem; border-radius:8px; border-right:4px solid var(--accent-red);';
-                card.innerHTML = `
-                    <div style="font-weight:bold; color:var(--accent-blue);">🇸🇦 ${arText}</div>
-                    <div style="color:var(--text-sub); font-size:0.9rem; margin-top:0.25rem;">🌐 ${transText}</div>
-                `;
+                card.innerHTML = `<div style="font-weight:bold; color:var(--accent-blue);">🇸🇦 ${arText}</div><div style="color:var(--text-sub); font-size:0.9rem; margin-top:0.25rem;">🌐 ${dictionary[lang][idx] || ''}</div>`;
                 container.appendChild(card);
             });
         }
         renderTranslator();
 
         // SOS Beacon
-        let audioCtxSOS = null;
-        let isSOS = false;
-        let sirenInterval = null;
+        let audioCtxSOS = null, isSOS = false, sirenInterval = null;
 
         function toggleSOS() {
             const btn = document.getElementById('sos-btn');
             if (!isSOS) {
-                isSOS = true;
-                btn.textContent = '🛑 إيقاف استغاثة SOS';
-                btn.classList.replace('btn-red', 'btn-slate');
+                isSOS = true; btn.textContent = '🛑 إيقاف استغاثة SOS'; btn.classList.replace('btn-red', 'btn-slate');
                 document.body.classList.add('strobing');
-
                 if (!audioCtxSOS) audioCtxSOS = new (window.AudioContext || window.webkitAudioContext)();
-                
                 sirenInterval = setInterval(() => {
                     if (!isSOS) return;
-                    let osc = audioCtxSOS.createOscillator();
-                    let gain = audioCtxSOS.createGain();
-                    osc.type = 'sawtooth';
-                    osc.frequency.setValueAtTime(800, audioCtxSOS.currentTime);
+                    let osc = audioCtxSOS.createOscillator(); gain = audioCtxSOS.createGain();
+                    osc.type = 'sawtooth'; osc.frequency.setValueAtTime(800, audioCtxSOS.currentTime);
                     osc.frequency.exponentialRampToValueAtTime(1400, audioCtxSOS.currentTime + 0.3);
                     gain.gain.setValueAtTime(0.3, audioCtxSOS.currentTime);
-                    osc.connect(gain);
-                    gain.connect(audioCtxSOS.destination);
-                    osc.start();
-                    osc.stop(audioCtxSOS.currentTime + 0.3);
+                    osc.connect(gain); gain.connect(audioCtxSOS.destination); osc.start(); osc.stop(audioCtxSOS.currentTime + 0.3);
                 }, 400);
-
             } else {
-                isSOS = false;
-                btn.textContent = '🔔 تشغيل صفارة واستغاثة SOS';
-                btn.classList.replace('btn-slate', 'btn-red');
-                document.body.classList.remove('strobing');
-                if (sirenInterval) clearInterval(sirenInterval);
+                isSOS = false; btn.textContent = '🔔 تشغيل صفارة واستغاثة SOS'; btn.classList.replace('btn-slate', 'btn-red');
+                document.body.classList.remove('strobing'); if (sirenInterval) clearInterval(sirenInterval);
             }
         }
 
@@ -603,15 +558,11 @@
             if ('geolocation' in navigator) {
                 coordsP.textContent = 'جاري تحديد موقعك بالقمح الاصطناعي...';
                 navigator.geolocation.getCurrentPosition(
-                    (pos) => {
-                        coordsP.textContent = `خط العرض: ${pos.coords.latitude.toFixed(5)} | خط الطول: ${pos.coords.longitude.toFixed(5)}`;
-                    },
-                    (err) => coordsP.textContent = 'تعذر الحصول على الإحداثيات',
+                    (pos) => coordsP.textContent = `خط العرض: ${pos.coords.latitude.toFixed(5)} | خط الطول: ${pos.coords.longitude.toFixed(5)}`,
+                    () => coordsP.textContent = 'تعذر الحصول على الإحداثيات',
                     { enableHighAccuracy: true, timeout: 10000 }
                 );
-            } else {
-                coordsP.textContent = 'خاصية GPS غير مدعومة';
-            }
+            } else { coordsP.textContent = 'خاصية GPS غير مدعومة'; }
         }
         fetchGPS();
     </script>
