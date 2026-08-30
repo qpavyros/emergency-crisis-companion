@@ -69,39 +69,39 @@
 <body>
 
     <header>
-        <h1>🚨 EmergencyKit PWA v5.7 TCCC</h1>
+        <h1>🚨 EmergencyKit PWA v5.8 Foot</h1>
         <button onclick="toggleTacticalHUD()" class="btn btn-yellow" style="width:auto; padding:0.3rem 0.5rem; font-size:0.75rem; margin:0;">🖥️ HUD</button>
     </header>
 
-    <!-- Tab 0: TCCC Prolonged Field Care Burn Rule of Tens (Self-Evolving #17) -->
-    <section id="tcccburn-tab" class="tab-content active">
+    <!-- Tab 0: Tactical Trench Foot & Immersion Foot Prevention Guide (Self-Evolving #18) -->
+    <section id="trenchfoot-tab" class="tab-content active">
         <div class="card">
-            <h2>🔥 حاسبة المحاليل الميدانية للحروق التكتيكية (TCCC Rule of Tens)</h2>
-            <p style="color:var(--text-sub); font-size:0.85rem; margin-bottom:1rem;">قاعدة العشرة (Rule of Tens) المعتمدة من الجيش الأمريكي TCCC للإنعاش السائلي السريع في الرعاية الميدانية المطولة.</p>
+            <h2>🦶 دليل الوقاية وإسعافات قدم الخنادق والبلل (Trench Foot & Immersion Foot)</h2>
+            <p style="color:var(--text-sub); font-size:0.85rem; margin-bottom:1rem;">إسعافات والوقاية من تلف الأنسجة الناتجة عن تعريض القدمين للبلل والرطوبة الباردة لفترات طويلة.</p>
 
-            <div class="input-group">
-                <label>نسبة الحرق الإجمالية (% TBSA Burn):</label>
-                <input type="number" id="tccc-tbsa" class="input-field" value="30" oninput="calcTCCCRuleOfTens()">
-            </div>
+            <details style="background:var(--bg-inner); padding:0.85rem; border-radius:8px; margin-bottom:0.5rem;" open>
+                <summary style="font-weight:bold; color:var(--accent-blue); cursor:pointer;">1. أعراض قدم الخنادق (Trench Foot Symptoms)</summary>
+                <ul style="margin-top:0.5rem; padding-right:1.25rem; color:var(--text-sub); font-size:0.9rem;">
+                    <li>شحوب وتخشب الجلد مع انتفاخ وخدران في أصابع القدم.</li>
+                    <li>ظهور فقاعات جلدية وآلام حرقة شديدة أثناء إعادة التدفئة.</li>
+                </ul>
+            </details>
 
-            <div class="input-group">
-                <label>وزن المصاب (كجم):</label>
-                <input type="number" id="tccc-weight" class="input-field" value="70" oninput="calcTCCCRuleOfTens()">
-            </div>
-
-            <div id="tccc-result-box" style="background:var(--bg-inner); padding:1rem; border-radius:10px;">
-                <h4 style="color:var(--accent-red); margin-bottom:0.5rem;">💧 سرعة المحاليل الوريدية الفورية (Lactated Ringer's IV Rate):</h4>
-                <div style="font-size:1.4rem; font-weight:bold; color:var(--accent-yellow);" id="tccc-rate-ml">300 مل / الساعة</div>
-                <div style="font-size:0.85rem; color:var(--accent-blue); margin-top:0.3rem;" id="tccc-rate-drops">معدل التنقيط: 100 قطرة / دقيقة (جهاز نقط 20 قطرة/مل)</div>
-            </div>
+            <details style="background:var(--bg-inner); padding:0.85rem; border-radius:8px; margin-bottom:0.5rem;">
+                <summary style="font-weight:bold; color:var(--accent-green); cursor:pointer;">2. إجراءات الإسعاف الميداني (Field Treatment)</summary>
+                <ol style="margin-top:0.5rem; padding-right:1.25rem; color:var(--text-sub); font-size:0.9rem;">
+                    <li>جفف القدمين تماماً وغير الجوارب المبتلة بجوارب صوفية جافة 3 مرات يومياً.</li>
+                    <li>ارفع القدمين لأعلى وجففهما بالهواء الدافئ دون تعريضهما للحرارة المباشرة.</li>
+                </ol>
+            </details>
         </div>
     </section>
 
     <!-- Bottom Navigation -->
     <nav>
-        <button class="active" onclick="switchTab('tcccburn-tab', this)">
-            <span>🔥</span>
-            <span>حروق TCCC</span>
+        <button class="active" onclick="switchTab('trenchfoot-tab', this)">
+            <span>🦶</span>
+            <span>قدم الخنادق</span>
         </button>
     </nav>
 
@@ -120,26 +120,6 @@
         }
 
         function toggleTacticalHUD() { document.body.classList.toggle('hud-mode'); }
-
-        // Self-Evolving #17: TCCC Rule of Tens Calculation
-        function calcTCCCRuleOfTens() {
-            const tbsa = parseFloat(document.getElementById('tccc-tbsa').value) || 0;
-            const w = parseFloat(document.getElementById('tccc-weight').value) || 70;
-            
-            // Base rate = % TBSA * 10 ml/hr (for 40-80kg)
-            let rate = tbsa * 10;
-            if (w > 80) {
-                const extraKg = w - 80;
-                const extraTen = Math.floor(extraKg / 10);
-                rate += extraTen * 100;
-            }
-
-            const dropsPerMin = Math.round((rate * 20) / 60);
-
-            document.getElementById('tccc-rate-ml').textContent = `${rate} مل / الساعة`;
-            document.getElementById('tccc-rate-drops').textContent = `معدل التنقيط: ${dropsPerMin} قطرة / دقيقة (جهاز نقط 20 gtt/ml)`;
-        }
-        calcTCCCRuleOfTens();
     </script>
 </body>
 </html>
