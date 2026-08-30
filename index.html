@@ -75,50 +75,46 @@
         </button>
     </header>
 
-    <!-- Tab 0: Water Purification Timer (Task 11) -->
-    <section id="watertimer-tab" class="tab-content active">
-        <div class="card" style="text-align:center;">
-            <h2>💧 مؤقت تنقية المياه الميداني (Water Purification Timer)</h2>
-            <p style="color:var(--text-sub); font-size:0.85rem; margin-bottom:1rem;">حساب الوقت الدقيق لغلي المياه أو تفاعل الأقراص الكيميائية لقتل الميكروبات.</p>
+    <!-- Tab 0: Radiation Decay Calculator (Task 12) -->
+    <section id="radiation-tab" class="tab-content active">
+        <div class="card">
+            <h2>☢️ حاسبة التحلل الإشعاعي (7/10 Radiation Decay Rule)</h2>
+            <p style="color:var(--text-sub); font-size:0.85rem; margin-bottom:1rem;">حساب هبوط الشدة الإشعاعية للغبار النووي بمرور الوقت لقاعدة 7/10 العالمية.</p>
 
-            <div class="input-group" style="text-align:right;">
-                <label>طريقة التطهير المستعملة:</label>
-                <select id="water-method-select" class="input-field" onchange="setWaterMethodTime()">
-                    <option value="60">🔥 غلي متواصل عادي (1 دقيقة غلي قوي)</option>
-                    <option value="180">🏔️ غلي متواصل في المرتفعات >2000م (3 دقائق)</option>
-                    <option value="1800">💊 أقراص الكلور / Aquatabs (30 دقيقة)</option>
-                    <option value="3600">❄️ أقراص اليود مع ماء شديد البرودة (60 دقيقة)</option>
-                    <option value="21600">☀️ التطهير الشمسي SODIS (6 ساعات)</option>
-                </select>
+            <div class="input-group">
+                <label>معدل الإشعاع في الساعة الأولى (R/hr أو mSv/hr):</label>
+                <input type="number" id="rad-i1" class="input-field" value="100" oninput="calcRadiationDecay()">
             </div>
 
-            <div id="water-countdown-display" style="font-size:2.5rem; font-weight:bold; color:var(--accent-blue); margin:1rem 0;">01:00</div>
-            <div id="water-timer-status" style="font-size:0.95rem; color:var(--text-sub);">جاهز لبدء العد التنازلي للتنقية</div>
+            <div class="input-group">
+                <label>الزمن المنقضي منذ الانفجار/التسرب (بالساعات):</label>
+                <input type="number" id="rad-time" class="input-field" value="7" oninput="calcRadiationDecay()">
+            </div>
 
-            <div class="grid-2" style="margin-top:1rem;">
-                <button id="water-start-btn" class="btn btn-green" onclick="startWaterTimer()">▶️ بدء المؤقت</button>
-                <button class="btn btn-slate" onclick="resetWaterTimer()">🔄 إعادة الضبط</button>
+            <div id="rad-result-box" style="background:var(--bg-inner); padding:1rem; border-radius:8px; text-align:center;">
+                <div>الشدة الإشعاعية المتوقعة الآن: <strong id="rad-current" style="font-size:1.3rem; color:var(--accent-yellow);">10 R/hr</strong></div>
+                <div id="rad-recommendation" style="font-size:0.85rem; margin-top:0.4rem; color:var(--text-sub);">انخفاض بنسبة 90% عن الساعة الأولى. الالتزام بالمألوج الخرساني مقترح.</div>
             </div>
         </div>
     </section>
 
-    <!-- Tab 1: Morse Generator -->
-    <section id="morse-tab" class="tab-content">
+    <!-- Tab 1: Water Purification Timer -->
+    <section id="watertimer-tab" class="tab-content">
         <div class="card">
-            <h2>📡 مولد إشارات مورس الضوئية (Morse Code Generator)</h2>
-            <p style="color:var(--text-sub); font-size:0.85rem;">تحويل النصوص إلى ومضات ضوئية.</p>
+            <h2>💧 مؤقت تنقية المياه الميداني (Water Purification)</h2>
+            <p style="color:var(--text-sub); font-size:0.85rem;">حساب الوقت الدقيق لغلي المياه.</p>
         </div>
     </section>
 
     <!-- Bottom Navigation -->
     <nav>
-        <button class="active" onclick="switchTab('watertimer-tab', this)">
+        <button class="active" onclick="switchTab('radiation-tab', this)">
+            <span>☢️</span>
+            <span>إشعاع</span>
+        </button>
+        <button onclick="switchTab('watertimer-tab', this)">
             <span>💧</span>
             <span>المياه</span>
-        </button>
-        <button onclick="switchTab('morse-tab', this)">
-            <span>📡</span>
-            <span>مورس</span>
         </button>
     </nav>
 
@@ -139,51 +135,25 @@
             btn.classList.add('active');
         }
 
-        // Task 11: Water Purification Timer Logic
-        let waterSecsRemaining = 60;
-        let waterTimerInterval = null;
+        // Task 12: Radiation Decay Rule 7/10
+        function calcRadiationDecay() {
+            const I1 = parseFloat(document.getElementById('rad-i1').value) || 0;
+            const t = parseFloat(document.getElementById('rad-time').value) || 1;
+            
+            // Formula: I_t = I_1 * (t ^ -1.2)
+            const It = I1 * Math.pow(t, -1.2);
+            document.getElementById('rad-current').textContent = `${It.toFixed(2)} R/hr`;
 
-        function formatTimerDisplay(secs) {
-            const m = Math.floor(secs / 60).toString().padStart(2, '0');
-            const s = (secs % 60).toString().padStart(2, '0');
-            return `${m}:${s}`;
+            const rec = document.getElementById('rad-recommendation');
+            if (t < 48) {
+                rec.textContent = '🚨 الشدة الإشعاعية عالية! البقاء داخل المأوى الخرساني المغلق ضروري ومؤكد.';
+                rec.style.color = 'var(--accent-red)';
+            } else {
+                rec.textContent = '✅ انخفاض كبير في الإشعاع. امكانية الإخلاء السريع بالحذر والملابس الواقية.';
+                rec.style.color = 'var(--accent-green)';
+            }
         }
-
-        function setWaterMethodTime() {
-            if (waterTimerInterval) clearInterval(waterTimerInterval);
-            waterTimerInterval = null;
-            waterSecsRemaining = parseInt(document.getElementById('water-method-select').value);
-            document.getElementById('water-countdown-display').textContent = formatTimerDisplay(waterSecsRemaining);
-            document.getElementById('water-timer-status').textContent = 'جاهز لبدء العد التنازلي للتنقية';
-            document.getElementById('water-start-btn').textContent = '▶️ بدء المؤقت';
-        }
-
-        function startWaterTimer() {
-            if (waterTimerInterval) return;
-            const btn = document.getElementById('water-start-btn');
-            btn.textContent = '⏸️ جاري التطهير...';
-            document.getElementById('water-timer-status').textContent = '⏱️ جاري العد التنازلي لتطهير المياه...';
-
-            waterTimerInterval = setInterval(() => {
-                waterSecsRemaining--;
-                document.getElementById('water-countdown-display').textContent = formatTimerDisplay(waterSecsRemaining);
-
-                if (waterSecsRemaining <= 0) {
-                    clearInterval(waterTimerInterval);
-                    waterTimerInterval = null;
-                    document.getElementById('water-timer-status').textContent = '✅ اكتمل التطهير! المياه آمنة ومطهرة للشرب الآن.';
-                    document.getElementById('water-timer-status').style.color = 'var(--accent-green)';
-                    btn.textContent = '▶️ بدء المؤقت';
-                    if ('speechSynthesis' in window) {
-                        window.speechSynthesis.speak(new SpeechSynthesisUtterance('اكتمل التطهير المياه صالحة للشرب الان'));
-                    }
-                }
-            }, 1000);
-        }
-
-        function resetWaterTimer() {
-            setWaterMethodTime();
-        }
+        calcRadiationDecay();
     </script>
 </body>
 </html>
