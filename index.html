@@ -82,7 +82,6 @@
         .log-table th { color: var(--accent-blue); }
 
         .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; }
-        
         .march-box { background: var(--bg-inner); border-right: 4px solid var(--accent-red); padding: 1rem; border-radius: 8px; margin-bottom: 0.75rem; }
     </style>
 </head>
@@ -146,15 +145,21 @@
         </div>
     </section>
 
-    <!-- Tab 1: START Triage -->
+    <!-- Tab 1: START & JumpSTART Pediatric Triage (Task 2) -->
     <section id="triage-tab" class="tab-content">
         <div class="card">
-            <h2>🏥 نظام الفرز الطبي السريع (START Triage)</h2>
-            <p style="color:var(--text-sub); font-size:0.85rem; margin-bottom:1rem;">تصنيف المصابين ميدانياً في حالات الكوارث والإصابات الجماعية خلال 60 ثانية.</p>
-            
+            <h2>🏥 نظام الفرز الطبي السريع (START & JumpSTART Pediatric Triage)</h2>
+            <div class="input-group">
+                <label>نوع نظام الفرز المطلوب:</label>
+                <select id="triage-system-type" class="input-field" onchange="resetTriage()">
+                    <option value="adult">بالغين (START Triage - البالغين)</option>
+                    <option value="pediatric">أطفال ورضع (JumpSTART Pediatric Triage - أقل من 8 سنوات)</option>
+                </select>
+            </div>
+
             <div id="triage-step-1">
                 <h3>1. هل المصاب قادر على المشي؟</h3>
-                <button class="btn btn-green" onclick="setTriageResult('GREEN', 'أخضر (اصابة طفيفة - تأجيل العلاج)')">نعم (قادر على المشي)</button>
+                <button class="btn btn-green" onclick="setTriageResult('GREEN', 'أخضر (إصابة طفيفة - تأجيل العلاج)')">نعم (قادر على المشي)</button>
                 <button class="btn btn-red" onclick="nextTriageStep(2)">لا (غير قادر على المشي)</button>
             </div>
 
@@ -165,27 +170,33 @@
             </div>
 
             <div id="triage-step-respirations-check" style="display:none;">
-                <h3>بعد فتح مجرى الهواء، هل بدأ التنفس؟</h3>
+                <h3>بعد فتح مجرى الهواء، هل بدأ التنفس تلقائياً؟</h3>
                 <button class="btn btn-red" onclick="setTriageResult('RED', 'أحمر (حرج جداً - رعاية فورية)')">نعم بدأ التنفس</button>
-                <button class="btn btn-slate" onclick="setTriageResult('BLACK', 'أسود (متوفي / لا يمكن إنعاشه)')">لا يتنفس حتى بعد الفتح</button>
+                <button class="btn btn-slate" onclick="handleNoBreathingPediatricCheck()">لا يتنفس حتى بعد الفتح</button>
+            </div>
+
+            <div id="triage-step-jumpstart-pulse" style="display:none;">
+                <h3>(JumpSTART الأطفال) فحص النبض المحيطي للطفل:</h3>
+                <button class="btn btn-red" onclick="setTriageResult('RED', 'أحمر (تم إعطاء 5 أنفاس إنقاذ وبدأ التنفس - حرج)')">يوجد نبض (اعطِ 5 أنفاس إنقاذ)</button>
+                <button class="btn btn-slate" onclick="setTriageResult('BLACK', 'أسود (لا يوجد نبض ولا تنفس - متوفي)')">لا يوجد نبض</button>
             </div>
 
             <div id="triage-step-3" style="display:none;">
-                <h3>3. كم معدل التنفس في الدقيقة؟</h3>
-                <button class="btn btn-red" onclick="setTriageResult('RED', 'أحمر (أكثر من 30 نفَس/دقيقة - حرج)')">أكثر من 30 نفَس/دقيقة</button>
-                <button class="btn btn-green" onclick="nextTriageStep(4)">أقل من 30 نفَس/دقيقة</button>
+                <h3>3. معدل التنفس في الدقيقة:</h3>
+                <button class="btn btn-red" onclick="setTriageResult('RED', 'أحمر (تنفس حرج: <15 أو >45 للطفل، أو >30 للبالغ)')">غير طبيعي / حرج</button>
+                <button class="btn btn-green" onclick="nextTriageStep(4)">طبيعي</button>
             </div>
 
             <div id="triage-step-4" style="display:none;">
-                <h3>4. فحص الدورة الدموية (النبض السقطري / امتلاء الشعيرات الدموية):</h3>
-                <button class="btn btn-red" onclick="setTriageResult('RED', 'أحمر (ضعيف / أبطأ من ثانتين)')">ضعيف / أبطأ من ثانتين</button>
-                <button class="btn btn-green" onclick="nextTriageStep(5)">قوي / أقل من ثانتين</button>
+                <h3>4. فحص النبض والدورة الدموية:</h3>
+                <button class="btn btn-red" onclick="setTriageResult('RED', 'أحمر (النبض المحيطي مفقود / امتلاء الشعيرات > ثانتين)')">ضعيف أو مفقود</button>
+                <button class="btn btn-green" onclick="nextTriageStep(5)">قوي وموجود</button>
             </div>
 
             <div id="triage-step-5" style="display:none;">
-                <h3>5. الحالة الذهنية (الاستجابة للأوامر البسيطة):</h3>
-                <button class="btn btn-yellow" onclick="setTriageResult('YELLOW', 'أصفر (عاجل - إصابة متوسطة)')">يستجيب للأوامر</button>
-                <button class="btn btn-red" onclick="setTriageResult('RED', 'أحمر (غير مستجيب للأوامر - حرج)')">لا يستجيب للأوامر</button>
+                <h3>5. الاستجابة العصبية (AVPU):</h3>
+                <button class="btn btn-yellow" onclick="setTriageResult('YELLOW', 'أصفر (مستجيب للصوت/الألم بدون وضعيات غير طبيعية)')">يستجيب بشكل طبيعي</button>
+                <button class="btn btn-red" onclick="setTriageResult('RED', 'أحمر (غير مستجيب / وضعية تشنجية - P/U)')">غير مستجيب / وضعية حبلية</button>
             </div>
 
             <div id="triage-result" style="display:none; text-align:center; padding:1.25rem; background:var(--bg-inner); border-radius:8px; margin-top:1rem;">
@@ -195,7 +206,7 @@
                 
                 <div class="input-group" style="text-align:right;">
                     <label>معرّف/اسم المصاب (اختياري للحفظ):</label>
-                    <input type="text" id="patient-id-input" class="input-field" placeholder="مثال: مصاب #102">
+                    <input type="text" id="patient-id-input" class="input-field" placeholder="مثال: مصاب طفل #105">
                 </div>
 
                 <div class="grid-2">
@@ -505,6 +516,16 @@
                 const utterance = new SpeechSynthesisUtterance(text);
                 utterance.lang = 'ar-SA';
                 window.speechSynthesis.speak(utterance);
+            }
+        }
+
+        function handleNoBreathingPediatricCheck() {
+            const systemType = document.getElementById('triage-system-type').value;
+            if (systemType === 'pediatric') {
+                document.querySelectorAll('#triage-tab [id^="triage-step-"]').forEach(el => el.style.display = 'none');
+                document.getElementById('triage-step-jumpstart-pulse').style.display = 'block';
+            } else {
+                setTriageResult('BLACK', 'أسود (متوفي / لا يمكن إنعاشه)');
             }
         }
 
