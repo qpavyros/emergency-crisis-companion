@@ -61,14 +61,8 @@
         .btn-blue { background: var(--accent-blue); color: black; }
         .btn-slate { background: var(--accent-slate); color: white; }
 
-        .input-group { margin-bottom: 1rem; }
-        .input-group label { display: block; font-size: 0.85rem; margin-bottom: 0.4rem; color: var(--text-sub); }
-        .input-field { width: 100%; padding: 0.75rem; border-radius: 8px; background: var(--bg-inner); color: var(--text-main); border: 1px solid var(--border-color); font-size: 0.95rem; }
-
-        .faces-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.75rem; text-align: center; margin-top: 1rem; }
-        .face-card { background: var(--bg-inner); border: 2px solid var(--border-color); border-radius: 10px; padding: 0.75rem; cursor: pointer; }
-        .face-card.selected { border-color: var(--accent-red); background: #331010; }
-        .face-emoji { font-size: 2.2rem; }
+        .compass-dial { width: 180px; height: 180px; border-radius: 50%; border: 4px solid var(--accent-blue); margin: 1rem auto; position: relative; transition: transform 0.1s linear; display: flex; align-items: center; justify-content: center; background: var(--bg-inner); }
+        .compass-needle { width: 6px; height: 150px; background: linear-gradient(#ef4444 50%, #475569 50%); position: absolute; border-radius: 4px; }
     </style>
 </head>
 <body>
@@ -80,69 +74,43 @@
         </button>
     </header>
 
-    <!-- Tab 0: Wong-Baker FACES Pain Scale (Task 8) -->
-    <section id="faces-tab" class="tab-content active">
-        <div class="card">
-            <h2>😊 مقياس الألم التفاعلي (Wong-Baker FACES Pain Scale)</h2>
-            <p style="color:var(--text-sub); font-size:0.85rem; margin-bottom:0.5rem;">تقييم شدة الألم للأطفال وفاقدي النطق عبر تعابير الوجه البصرية.</p>
+    <!-- Tab 0: Offline Digital Compass (Task 9) -->
+    <section id="compass-tab" class="tab-content active">
+        <div class="card" style="text-align:center;">
+            <h2>🧭 البوصلة الرقمية التكتيكية (Offline Tactical Compass)</h2>
+            <p style="color:var(--text-sub); font-size:0.85rem; margin-bottom:1rem;">تحديد الاتجاهات الجغرافية ومطابقة الشمال المغناطيسي بدون إنترنت باستشعارات الجهاز الداخلية.</p>
 
-            <div class="faces-grid">
-                <div class="face-card" onclick="selectFace(0, 'لا يسبب أي ألم على الإطلاق', '0', this)">
-                    <div class="face-emoji">😃</div>
-                    <div style="font-weight:bold; margin-top:0.3rem;">0 - ممتاز</div>
-                    <div style="font-size:0.75rem; color:var(--text-sub);">لا ألم</div>
-                </div>
-                <div class="face-card" onclick="selectFace(2, 'ألم طفيف جداً', '2', this)">
-                    <div class="face-emoji">🙂</div>
-                    <div style="font-weight:bold; margin-top:0.3rem;">2 - ألم طفيف</div>
-                    <div style="font-size:0.75rem; color:var(--text-sub);">يؤلم قليلاً</div>
-                </div>
-                <div class="face-card" onclick="selectFace(4, 'ألم متوسط المحتمل', '4', this)">
-                    <div class="face-emoji">😐</div>
-                    <div style="font-weight:bold; margin-top:0.3rem;">4 - ألم متوسط</div>
-                    <div style="font-size:0.75rem; color:var(--text-sub);">يؤلم أكثر قليلاً</div>
-                </div>
-                <div class="face-card" onclick="selectFace(6, 'ألم شديد ومزعج', '6', this)">
-                    <div class="face-emoji">😣</div>
-                    <div style="font-weight:bold; margin-top:0.3rem;">6 - ألم مزعج</div>
-                    <div style="font-size:0.75rem; color:var(--text-sub);">يؤلم أكثر بكثير</div>
-                </div>
-                <div class="face-card" onclick="selectFace(8, 'ألم شديد جداً', '8', this)">
-                    <div class="face-emoji">😫</div>
-                    <div style="font-weight:bold; margin-top:0.3rem;">8 - ألم شديد</div>
-                    <div style="font-size:0.75rem; color:var(--text-sub);">يؤلم بشدة عالية</div>
-                </div>
-                <div class="face-card" onclick="selectFace(10, 'ألم أقصى لا يطاق إطلاقاً', '10', this)">
-                    <div class="face-emoji">😭</div>
-                    <div style="font-weight:bold; margin-top:0.3rem;">10 - ألم أقصى</div>
-                    <div style="font-size:0.75rem; color:var(--text-sub);">ألم لا يطاق</div>
-                </div>
+            <div class="compass-dial" id="compass-dial">
+                <div class="compass-needle" id="compass-needle"></div>
+                <div style="position:absolute; top:8px; font-weight:bold; color:var(--accent-red);">N (شمال)</div>
+                <div style="position:absolute; bottom:8px; font-weight:bold; color:var(--text-sub);">S (جنوب)</div>
+                <div style="position:absolute; left:8px; font-weight:bold; color:var(--text-sub);">W</div>
+                <div style="position:absolute; right:8px; font-weight:bold; color:var(--text-sub);">E</div>
             </div>
 
-            <div id="faces-result-box" style="margin-top:1rem; padding:1rem; background:var(--bg-inner); border-radius:8px; text-align:center;">
-                <div>درجة الألم المحددة: <strong id="faces-score" style="font-size:1.4rem; color:var(--accent-blue);">0 / 10</strong></div>
-                <div id="faces-desc" style="color:var(--text-sub); margin-top:0.3rem;">اختر وجهاً لتقييم الألم</div>
-            </div>
+            <div style="font-size:1.2rem; font-weight:bold; color:var(--accent-blue);" id="compass-heading-text">الاتجاه: 0° (الشمال)</div>
+
+            <button class="btn btn-blue" style="margin-top:1rem;" onclick="initCompassPermission()">🧭 تفعيل مستشعر الاتجاهات</button>
         </div>
     </section>
 
-    <!-- Tab 1: Dental Trauma Guide -->
-    <section id="dental-tab" class="tab-content">
+    <!-- Tab 1: FACES Pain Scale -->
+    <section id="faces-tab" class="tab-content">
         <div class="card">
-            <h2>🦷 دليل إصابات الأسنان والكسور الفكية (Dental Trauma)</h2>
-            <p style="color:var(--text-sub); font-size:0.85rem;">إسعافات كسور الفك وانخلاع الأسنان.</p>
+            <h2>😊 مقياس الألم التفاعلي (Wong-Baker FACES Pain Scale)</h2>
+            <p style="color:var(--text-sub); font-size:0.85rem;">تقييم شدة الألم للأطفال وفاقدي النطق.</p>
         </div>
     </section>
 
     <!-- Bottom Navigation -->
     <nav>
-        <button class="active" onclick="switchTab('faces-tab', this)">
+        <button class="active" onclick="switchTab('compass-tab', this)">
+            <span>🧭</span>
+            <span>البوصلة</span>
+        </button>
+        <button onclick="switchTab('faces-tab', this)">
             <span>😊</span>
             <span>الألم</span>
-        </button>
-        <button onclick="switchTab('dental-tab', this)">
-            <span>🦷</span>
-            <span>الأسنان</span>
         </button>
     </nav>
 
@@ -163,12 +131,27 @@
             btn.classList.add('active');
         }
 
-        // Task 8: FACES Pain Scale
-        function selectFace(score, desc, valStr, el) {
-            document.querySelectorAll('.face-card').forEach(c => c.classList.remove('selected'));
-            el.classList.add('selected');
-            document.getElementById('faces-score').textContent = `${score} / 10`;
-            document.getElementById('faces-desc').textContent = desc;
+        // Task 9: Offline Compass Logic
+        function initCompassPermission() {
+            if (typeof DeviceOrientationEvent !== 'undefined' && typeof DeviceOrientationEvent.requestPermission === 'function') {
+                DeviceOrientationEvent.requestPermission().then(state => {
+                    if (state === 'granted') window.addEventListener('deviceorientation', handleCompassOrientation, true);
+                    else alert('تم رفض إذن مستشعر الاتجاهات');
+                });
+            } else {
+                window.addEventListener('deviceorientation', handleCompassOrientation, true);
+            }
+        }
+
+        function handleCompassOrientation(event) {
+            let heading = event.alpha;
+            if (event.webkitCompassHeading) heading = event.webkitCompassHeading;
+
+            if (heading !== null && heading !== undefined) {
+                const deg = Math.round(heading);
+                document.getElementById('compass-needle').style.transform = `rotate(${deg}deg)`;
+                document.getElementById('compass-heading-text').textContent = `الاتجاه: ${deg}°`;
+            }
         }
     </script>
 </body>
