@@ -36,13 +36,6 @@
             --accent-slate: #000000 !important;
         }
 
-        body.extreme-battery * {
-            animation: none !important;
-            transition: none !important;
-            box-shadow: none !important;
-            text-shadow: none !important;
-        }
-
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: system-ui, -apple-system, sans-serif; }
         body { background: var(--bg-primary); color: var(--text-main); line-height: 1.5; padding-bottom: 75px; transition: background 0.3s, color 0.3s; }
         
@@ -67,50 +60,58 @@
         .btn-yellow { background: var(--accent-yellow); color: black; }
         .btn-blue { background: var(--accent-blue); color: black; }
         .btn-slate { background: var(--accent-slate); color: white; }
+
+        .input-group { margin-bottom: 1rem; }
+        .input-group label { display: block; font-size: 0.85rem; margin-bottom: 0.4rem; color: var(--text-sub); }
+        .input-field { width: 100%; padding: 0.75rem; border-radius: 8px; background: var(--bg-inner); color: var(--text-main); border: 1px solid var(--border-color); font-size: 0.95rem; }
     </style>
 </head>
 <body>
 
     <header>
         <h1>🚨 EmergencyKit PWA</h1>
-        <div style="display:flex; gap:0.4rem;">
-            <button onclick="toggleExtremeBatterySaver()" class="btn btn-slate" style="width:auto; padding:0.3rem 0.6rem; font-size:0.8rem; margin:0;" title="وضع توفير البطارية الأقصى">🔋 توفير البطارية</button>
-        </div>
+        <button onclick="toggleExtremeBatterySaver()" class="btn btn-slate" style="width:auto; padding:0.3rem 0.6rem; font-size:0.8rem; margin:0;">🔋</button>
     </header>
 
-    <!-- Tab 0: Extreme Battery Saver Module (Task 23) -->
-    <section id="battery-tab" class="tab-content active">
-        <div class="card" style="text-align:center;">
-            <h2>🔋 وضع توفير الطاقة وتوفير البطارية الأقصى (Extreme Battery Saver)</h2>
-            <p style="color:var(--text-sub); font-size:0.85rem; margin-bottom:1rem;">تحويل الشاشة إلى السواد التام (Monochrome Pitch Black) وتعطيل الحركة لإبقاء الهاتف يعمل على 1% بطارية لأطول فترة.</p>
+    <div style="padding:0.75rem 1rem 0 1rem; max-width:850px; margin:0 auto;">
+        <input type="text" id="quick-search-input" class="input-field" placeholder="🔍 بحث سريع في جميع بروتوكولات الإسعافات والبقاء..." oninput="filterProtocolsRealtime()">
+    </div>
 
-            <button class="btn btn-green" style="font-size:1.1rem; padding:1rem;" onclick="toggleExtremeBatterySaver()">
-                ⚡ تفعيل / إيقاف وضع توفير البطارية الخارق (OLED Monochrome)
-            </button>
+    <!-- Tab 0: Search & Emergency Protocols Index (Task 24) -->
+    <section id="search-tab" class="tab-content active">
+        <div class="card search-item" data-keywords="نزيف MARCH عاصبة جرح تكتيك">
+            <h2>🩸 بروتوكول الإصابات والنزيف الشديد (M.A.R.C.H. Protocol)</h2>
+            <p style="color:var(--text-sub); font-size:0.85rem;">تركيب العاصبة فوراً للنزيف الشرياني، فتح مجرى الهواء، وفحص الصدر والحرارة.</p>
+        </div>
 
-            <div id="battery-status-box" style="margin-top:1rem; padding:1rem; background:var(--bg-inner); border-radius:8px;">
-                <div style="color:var(--accent-blue);">حالة الوضع: <strong id="battery-mode-state">معطل (العادي)</strong></div>
-            </div>
+        <div class="card search-item" data-keywords="طفل جرعات أدوية باراسيتامول إبينفرين Broselow">
+            <h2>💊 حاسبة جرعات أدوية الأطفال (Broselow Tape Simulator)</h2>
+            <p style="color:var(--text-sub); font-size:0.85rem;">حساب الجرعات الحرجة للأطفال بناءً على الألوان والوزن التقديري.</p>
+        </div>
+
+        <div class="card search-item" data-keywords="حريق ماء غلي تطهير تنقية أقراص كلور">
+            <h2>💧 مؤقت تنقية وتطهير المياه الميداني (Water Purification)</h2>
+            <p style="color:var(--text-sub); font-size:0.85rem;">مؤقت العد التنازلي لغلي المياه أو تفاعل أقراص الكلور واليود.</p>
         </div>
     </section>
 
-    <!-- Tab 1: Hand Signals -->
-    <section id="handsignals-tab" class="tab-content">
+    <!-- Tab 1: Battery Saver -->
+    <section id="battery-tab" class="tab-content">
         <div class="card">
-            <h2>🖐️ دليل الإشارات اليدوية التكتيكية (Hand Signals)</h2>
-            <p style="color:var(--text-sub); font-size:0.85rem;">لغة الإشارات الصامتة الميدانية.</p>
+            <h2>🔋 وضع توفير الطاقة وتوفير البطارية الأقصى (Extreme Battery Saver)</h2>
+            <p style="color:var(--text-sub); font-size:0.85rem;">تحويل الشاشة إلى السواد التام.</p>
         </div>
     </section>
 
     <!-- Bottom Navigation -->
     <nav>
-        <button class="active" onclick="switchTab('battery-tab', this)">
+        <button class="active" onclick="switchTab('search-tab', this)">
+            <span>🔍</span>
+            <span>البحث</span>
+        </button>
+        <button onclick="switchTab('battery-tab', this)">
             <span>🔋</span>
             <span>البطارية</span>
-        </button>
-        <button onclick="switchTab('handsignals-tab', this)">
-            <span>🖐️</span>
-            <span>إشارات</span>
         </button>
     </nav>
 
@@ -126,17 +127,24 @@
             btn.classList.add('active');
         }
 
-        // Task 23: Extreme Battery Saver Logic
         function toggleExtremeBatterySaver() {
             document.body.classList.toggle('extreme-battery');
-            const isExtreme = document.body.classList.contains('extreme-battery');
-            document.getElementById('battery-mode-state').textContent = isExtreme ? 'مفعل (أسود وأبيض OLED دون إضاءة زائدة)' : 'معطل (العادي)';
-            document.getElementById('battery-mode-state').style.color = isExtreme ? '#22c55e' : '#38bdf8';
-            localStorage.setItem('extreme_battery', isExtreme ? 'true' : 'false');
         }
 
-        if (localStorage.getItem('extreme_battery') === 'true') {
-            document.body.classList.add('extreme-battery');
+        // Task 24: Real-time Protocol Search Logic
+        function filterProtocolsRealtime() {
+            const query = document.getElementById('quick-search-input').value.trim().toLowerCase();
+            const cards = document.querySelectorAll('.search-item');
+
+            cards.forEach(card => {
+                const text = card.textContent.toLowerCase();
+                const keywords = card.getAttribute('data-keywords') ? card.getAttribute('data-keywords').toLowerCase() : '';
+                if (!query || text.includes(query) || keywords.includes(query)) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
         }
     </script>
 </body>
