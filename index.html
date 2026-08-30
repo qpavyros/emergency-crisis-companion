@@ -71,47 +71,45 @@
         </button>
     </header>
 
-    <!-- Tab 0: Tactical Knot Tying Guide (Task 15) -->
-    <section id="knots-tab" class="tab-content active">
-        <div class="card">
-            <h2>🪢 دليل العقد التكتيكية وعقد الإنقاذ (Tactical Knot Guide)</h2>
-            <p style="color:var(--text-sub); font-size:0.85rem; margin-bottom:1rem;">طريقة ربط أهم العقد الميدانية للإنقاذ والتثبيت مع توضيح رسومي SVG.</p>
+    <!-- Tab 0: Sound & Light Distance Calculator (Task 16) -->
+    <section id="dist-tab" class="tab-content active">
+        <div class="card" style="text-align:center;">
+            <h2>⚡ حاسبة مسافة الانفجارات والعواصف (Flash-to-Boom Distance Calc)</h2>
+            <p style="color:var(--text-sub); font-size:0.85rem; margin-bottom:1rem;">حساب مسافة بعد خطورة العواصف الرعدية أو الانفجارات الميدانية بفارق سرعة الضوء والصوت (343 م/ث).</p>
 
-            <details style="background:var(--bg-inner); padding:0.85rem; border-radius:8px; margin-bottom:0.5rem;" open>
-                <summary style="font-weight:bold; color:var(--accent-blue); cursor:pointer;">1. عقدة الإنقاذ البولين (Bowline Knot - ملكة العقد)</summary>
-                <div style="text-align:center; margin:0.5rem 0;">
-                    <svg width="100" height="60" viewBox="0 0 100 60"><path d="M 20 50 C 20 20, 80 20, 80 50 C 80 10, 40 10, 40 40" stroke="#38bdf8" stroke-width="4" fill="none"/></svg>
-                </div>
-                <p style="font-size:0.85rem; color:var(--text-sub);">عقدة ثابتة لا تنزلق إطلاقاً تحت أي وزن، وتستخدم لربط المصاب أو السحب في خطوط الإخلاء.</p>
-            </details>
+            <button id="dist-flash-btn" class="btn btn-yellow" style="font-size:1.1rem; padding:1rem;" onclick="triggerFlashSeen()">
+                ⚡ اضغط فور رؤية الوميض / الانفجار
+            </button>
 
-            <details style="background:var(--bg-inner); padding:0.85rem; border-radius:8px; margin-bottom:0.5rem;">
-                <summary style="font-weight:bold; color:var(--accent-green); cursor:pointer;">2. العقدة المربعة (Square Knot / Reef Knot)</summary>
-                <div style="text-align:center; margin:0.5rem 0;">
-                    <svg width="100" height="60" viewBox="0 0 100 60"><path d="M 10 30 Q 50 10 90 30 Q 50 50 10 30" stroke="#22c55e" stroke-width="4" fill="none"/></svg>
-                </div>
-                <p style="font-size:0.85rem; color:var(--text-sub);">تستخدم لربط حبلين من نفس السمك بسرعة لتثبيت الضمادات أو الملاجئ.</p>
-            </details>
+            <button id="dist-sound-btn" class="btn btn-red" style="font-size:1.1rem; padding:1rem; display:none;" onclick="triggerSoundHeard()">
+                🔊 اضغط فور سماع صوت الصاعقة / الانفجار
+            </button>
+
+            <div id="dist-result-box" style="display:none; margin-top:1.5rem; padding:1rem; background:var(--bg-inner); border-radius:10px;">
+                <div>المسافة التقديرية لموقع الحدث:</div>
+                <div id="dist-km-text" style="font-size:1.8rem; font-weight:bold; color:var(--accent-blue); margin:0.3rem 0;">0.00 كم</div>
+                <div id="dist-meters-text" style="font-size:0.9rem; color:var(--text-sub);">(0 متر)</div>
+            </div>
         </div>
     </section>
 
-    <!-- Tab 1: Fire Guide -->
-    <section id="fire-tab" class="tab-content">
+    <!-- Tab 1: Knots Guide -->
+    <section id="knots-tab" class="tab-content">
         <div class="card">
-            <h2>🔥 دليل إشعال النيران البدائي والتكتيكي (Fire Starting)</h2>
-            <p style="color:var(--text-sub); font-size:0.85rem;">طرق إشعال النار البدائية.</p>
+            <h2>🪢 دليل العقد التكتيكية (Tactical Knots)</h2>
+            <p style="color:var(--text-sub); font-size:0.85rem;">طريقة ربط أهم العقد الميدانية.</p>
         </div>
     </section>
 
     <!-- Bottom Navigation -->
     <nav>
-        <button class="active" onclick="switchTab('knots-tab', this)">
+        <button class="active" onclick="switchTab('dist-tab', this)">
+            <span>⚡</span>
+            <span>المسافة</span>
+        </button>
+        <button onclick="switchTab('knots-tab', this)">
             <span>🪢</span>
             <span>العقد</span>
-        </button>
-        <button onclick="switchTab('fire-tab', this)">
-            <span>🔥</span>
-            <span>النار</span>
         </button>
     </nav>
 
@@ -130,6 +128,32 @@
             document.querySelectorAll('nav button').forEach(b => b.classList.remove('active'));
             document.getElementById(tabId).classList.add('active');
             btn.classList.add('active');
+        }
+
+        // Task 16: Lightning/Explosion Distance Logic
+        let flashTime = 0;
+
+        function triggerFlashSeen() {
+            flashTime = performance.now();
+            document.getElementById('dist-flash-btn').style.display = 'none';
+            document.getElementById('dist-sound-btn').style.display = 'inline-flex';
+            document.getElementById('dist-result-box').style.display = 'none';
+        }
+
+        function triggerSoundHeard() {
+            if (!flashTime) return;
+            const soundTime = performance.now();
+            const elapsedSecs = (soundTime - flashTime) / 1000;
+            const distanceMeters = elapsedSecs * 343;
+            const distanceKm = distanceMeters / 1000;
+
+            document.getElementById('dist-km-text').textContent = `${distanceKm.toFixed(2)} كم`;
+            document.getElementById('dist-meters-text').textContent = `(${Math.round(distanceMeters).toLocaleString()} متر - الزمن المنقضي: ${elapsedSecs.toFixed(1)} ثانية)`;
+            document.getElementById('dist-result-box').style.display = 'block';
+
+            document.getElementById('dist-sound-btn').style.display = 'none';
+            document.getElementById('dist-flash-btn').style.display = 'inline-flex';
+            flashTime = 0;
         }
     </script>
 </body>
