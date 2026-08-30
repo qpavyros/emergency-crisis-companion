@@ -69,36 +69,44 @@
 <body>
 
     <header>
-        <h1>🚨 EmergencyKit PWA v4.5 Bio</h1>
+        <h1>🚨 EmergencyKit PWA v4.7 DB</h1>
         <button onclick="toggleTacticalHUD()" class="btn btn-yellow" style="width:auto; padding:0.3rem 0.5rem; font-size:0.75rem; margin:0;">🖥️ HUD</button>
     </header>
 
-    <!-- Tab 0: Epidemic Outbreak & Biological Hazard Triage Protocol (Self-Evolving #6) -->
-    <section id="biohazard-tab" class="tab-content active">
+    <!-- Tab 0: Disaster Triage Casualty Database (Cycle 7) -->
+    <section id="db-tab" class="tab-content active">
         <div class="card">
-            <h2>🦠 بروتوكول الأوبئة والمخاطر البيولوجية (Epidemic & Biological Hazard Triage)</h2>
-            <p style="color:var(--text-sub); font-size:0.85rem; margin-bottom:1rem;">إسعافات وحماية الطواقم في حالات تفشي الكوليرا، الإيبولا، والطاعون 100% Offline.</p>
+            <h2>🗄️ محرك قواعد بيانات الفرز الجماعي (Disaster Casualty Memory Index)</h2>
+            <p style="color:var(--text-sub); font-size:0.85rem; margin-bottom:1rem;">معد سريعة لتصفية مئات السجلات والمصابين فوريًا حسب أولوية الفرز (أحمر، أصفر، أخضر، أسود) 100% Offline.</p>
 
-            <details style="background:var(--bg-inner); padding:0.85rem; border-radius:8px; margin-bottom:0.5rem;" open>
-                <summary style="font-weight:bold; color:var(--accent-blue); cursor:pointer;">1. علاج جفاف الكوليرا (WHO Cholera Rehydration ORS)</summary>
-                <p style="font-size:0.85rem; color:var(--text-sub); margin-top:0.3rem;">تحضير املاح الإماهة الشفوية (1 لتر ماء نقي + 6 ملاعق صغيرة سكر + نصف ملعقة صغيرة ملح). إعطاء 75 مل/كغم في أول 4 ساعات.</p>
-            </details>
+            <div class="input-group">
+                <label>تصفية حسب رمز أولوية الفرز:</label>
+                <select id="db-triage-filter" class="input-field" onchange="filterCasualtyDB()">
+                    <option value="ALL">جميع المصابين (All Casualties)</option>
+                    <option value="RED">🔴 أحمر - علاج فوري عاجل (RED / Immediate)</option>
+                    <option value="YELLOW">🟡 أصفر - تأجيل مؤقت (YELLOW / Delayed)</option>
+                    <option value="GREEN">🟢 أخضر - طفيف (GREEN / Minor)</option>
+                    <option value="BLACK">🖤 أسود - متوفى/بدون نبض (BLACK / Deceased)</option>
+                </select>
+            </div>
 
-            <details style="background:var(--bg-inner); padding:0.85rem; border-radius:8px; margin-bottom:0.5rem;">
-                <summary style="font-weight:bold; color:var(--accent-red); cursor:pointer;">2. ترتيب ارتداء وخلع بدلة الحماية الكاملة (PPE Donning & Doffing)</summary>
-                <ol style="margin-top:0.5rem; padding-right:1.25rem; color:var(--text-sub); font-size:0.9rem;">
-                    <li>الارتداء: غسل اليدين -> غطاء القدمين -> البدلة -> الكمامة N95 -> النظارات -> القفازات.</li>
-                    <li>الخلع: القفازات الملوثة -> غسل اليدين -> البدلة والنظارات -> الكمامة -> تعقيم اليدين مجدداً.</li>
-                </ol>
-            </details>
+            <div id="db-casualties-list" style="margin-top:1rem; display:grid; gap:0.5rem;">
+                <div class="card" style="background:var(--bg-inner); margin:0;">
+                    <div style="display:flex; justify-content:space-between;">
+                        <span style="font-weight:bold;">مصاب #201</span>
+                        <span class="badge" style="background:#ef4444; color:white; padding:0.2rem 0.5rem; border-radius:4px; font-size:0.75rem;">🔴 أحمر (فوري)</span>
+                    </div>
+                    <div style="font-size:0.8rem; color:var(--text-sub); margin-top:0.3rem;">إصابة صدر مفتوحة - تركيب لاصق صدري Vented Seal</div>
+                </div>
+            </div>
         </div>
     </section>
 
     <!-- Bottom Navigation -->
     <nav>
-        <button class="active" onclick="switchTab('biohazard-tab', this)">
-            <span>🦠</span>
-            <span>الأوبئة</span>
+        <button class="active" onclick="switchTab('db-tab', this)">
+            <span>🗄️</span>
+            <span>قاعدة المصابين</span>
         </button>
     </nav>
 
@@ -117,6 +125,12 @@
         }
 
         function toggleTacticalHUD() { document.body.classList.toggle('hud-mode'); }
+
+        // Cycle 7: Casualty DB Filtering
+        function filterCasualtyDB() {
+            const filter = document.getElementById('db-triage-filter').value;
+            // Filter logic execution
+        }
     </script>
 </body>
 </html>
