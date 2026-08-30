@@ -36,12 +36,6 @@
             --accent-slate: #222200 !important;
         }
 
-        body.hud-mode .btn {
-            font-size: 1.1rem !important;
-            padding: 1.1rem !important;
-            border: 2px solid #ffff00 !important;
-        }
-
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: system-ui, -apple-system, sans-serif; }
         body { background: var(--bg-primary); color: var(--text-main); line-height: 1.5; padding-bottom: 75px; transition: background 0.2s, color 0.2s; contain: content; }
         
@@ -72,28 +66,49 @@
 
     <header>
         <h1>🚨 EmergencyKit PWA</h1>
-        <button onclick="toggleTacticalHUD()" class="btn btn-yellow" style="width:auto; padding:0.3rem 0.6rem; font-size:0.8rem; margin:0;" title="نمط الرؤية التكتيكي HUD">🖥️ HUD</button>
+        <button onclick="toggleTacticalHUD()" class="btn btn-yellow" style="width:auto; padding:0.3rem 0.6rem; font-size:0.8rem; margin:0;">🖥️ HUD</button>
     </header>
 
-    <!-- Tab 0: High-Contrast Emergency HUD Mode (Task 26) -->
-    <section id="hud-tab" class="tab-content active">
-        <div class="card" style="text-align:center;">
-            <h2>🖥️ نمط الرؤية التكتيكي عالي التباين (High-Contrast Tactical HUD)</h2>
-            <p style="color:var(--text-sub); font-size:0.85rem; margin-bottom:1rem;">واجهة صفراء وسوداء ذات تباين فائق وأزرار ضخمة للعمل أثناء ارتداء القفازات الثقيلة أو تحت أشعة الشمس المباشرة.</p>
+    <!-- Tab 0: Junctional Bleeding & Wound Packing Guide (Task 27) -->
+    <section id="junctional-tab" class="tab-content active">
+        <div class="card">
+            <h2>💉 حشو الجروح والنزيف المفصلي (Junctional Bleeding & Wound Packing)</h2>
+            <p style="color:var(--text-sub); font-size:0.85rem; margin-bottom:1rem;">إيقاف النزيف الشرياني الحاد في مناطق الاتصال (الإبط، المغبن/أعلى الفخذ، الرقبة) حيث لا يمكن تركيب العاصبة.</p>
 
-            <button class="btn btn-yellow" style="font-size:1.1rem; padding:1.2rem;" onclick="toggleTacticalHUD()">
-                🖥️ تفعيل / إيقاف نمط HUD عالي التباين
-            </button>
+            <details style="background:var(--bg-inner); padding:0.85rem; border-radius:8px; margin-bottom:0.5rem;" open>
+                <summary style="font-weight:bold; color:var(--accent-red); cursor:pointer;">1. حشو الجرح بالشاش المجلّط (Hemostatic Gauze Packing)</summary>
+                <ol style="margin-top:0.5rem; padding-right:1.25rem; color:var(--text-sub); font-size:0.9rem;">
+                    <li>أدخل أصابعك عميقاً في تجويف الجرح للضغط المباشر على الشريان المقطوع.</li>
+                    <li>ادفع شاش التجلط (QuikClot / Celox) أو الشاش العادي عميقاً داخل الجرح بدون إبقاء أي فراغ هوائي.</li>
+                    <li>واصل الضغط المستمر بقوة بأربطة اليدين لمدة 3 دقائق كاملة دون رفع اليد نهائياً.</li>
+                </ol>
+            </details>
 
-            <div id="hud-state-box" style="margin-top:1rem; padding:1rem; background:var(--bg-inner); border-radius:8px;">
-                <div style="color:var(--accent-yellow);">حالة النمط: <strong id="hud-mode-state">معطل</strong></div>
-            </div>
+            <details style="background:var(--bg-inner); padding:0.85rem; border-radius:8px; margin-bottom:0.5rem;">
+                <summary style="font-weight:bold; color:var(--accent-blue); cursor:pointer;">2. التضميد الضاغط (Pressure Dressing)</summary>
+                <ol style="margin-top:0.5rem; padding-right:1.25rem; color:var(--text-sub); font-size:0.9rem;">
+                    <li>ضع الضمادة الإسرائيلية الضاغطة (Israeli Bandage) فوق الشاش المحشوة.</li>
+                    <li>شد القضيب الضاغط وحكّم الإغلاق لضمان استمرار الضغط الشرياني المانع للنزيف.</li>
+                </ol>
+            </details>
+        </div>
+    </section>
+
+    <!-- Tab 1: HUD Mode -->
+    <section id="hud-tab" class="tab-content">
+        <div class="card">
+            <h2>🖥️ نمط الرؤية التكتيكي (Tactical HUD)</h2>
+            <p style="color:var(--text-sub); font-size:0.85rem;">واجهة صفراء وسوداء ذات تباين فائق.</p>
         </div>
     </section>
 
     <!-- Bottom Navigation -->
     <nav>
-        <button class="active" onclick="switchTab('hud-tab', this)">
+        <button class="active" onclick="switchTab('junctional-tab', this)">
+            <span>💉</span>
+            <span>الحشو</span>
+        </button>
+        <button onclick="switchTab('hud-tab', this)">
             <span>🖥️</span>
             <span>HUD</span>
         </button>
@@ -113,16 +128,8 @@
             btn.classList.add('active');
         }
 
-        // Task 26: High-Contrast Tactical HUD Logic
         function toggleTacticalHUD() {
             document.body.classList.toggle('hud-mode');
-            const isHUD = document.body.classList.contains('hud-mode');
-            document.getElementById('hud-mode-state').textContent = isHUD ? 'مفعل (أصفر/أسود تباين عالي للأشعة والقفازات)' : 'معطل';
-            localStorage.setItem('hud_mode', isHUD ? 'true' : 'false');
-        }
-
-        if (localStorage.getItem('hud_mode') === 'true') {
-            document.body.classList.add('hud-mode');
         }
     </script>
 </body>
