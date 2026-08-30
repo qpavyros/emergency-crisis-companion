@@ -69,39 +69,38 @@
 <body>
 
     <header>
-        <h1>🚨 EmergencyKit PWA v5.1 Vent</h1>
+        <h1>🚨 EmergencyKit PWA v5.2 Water</h1>
         <button onclick="toggleTacticalHUD()" class="btn btn-yellow" style="width:auto; padding:0.3rem 0.5rem; font-size:0.75rem; margin:0;">🖥️ HUD</button>
     </header>
 
-    <!-- Tab 0: Shelter Air Ventilation & CO2 Buildup Calculator (Self-Evolving #11) -->
-    <section id="ventilation-tab" class="tab-content active">
+    <!-- Tab 0: Solar Still Desalination & Survival Filter Guide (Self-Evolving #12) -->
+    <section id="solarstill-tab" class="tab-content active">
         <div class="card">
-            <h2>💨 حاسبة تهوية الملاجئ ونسبة ثاني أكسيد الكربون (Shelter Ventilation Calc)</h2>
-            <p style="color:var(--text-sub); font-size:0.85rem; margin-bottom:1rem;">حساب زمن بقاء الأكسجين الآمن وتراكم غاز CO2 في الملاجئ المغلقة محكمة الإغلاق أثناء الكوارث.</p>
+            <h2>☀️ دليل المقطر الشمسي وتحلية مياه البحر الميدانية (Solar Still & Desalination)</h2>
+            <p style="color:var(--text-sub); font-size:0.85rem; margin-bottom:1rem;">تقنية استخلاص المياه النظيفة الصالحة للشرب من التربة أو مياه البحر بأشعة الشمس والمشمع.</p>
 
-            <div class="input-group">
-                <label>حجم المأوى الإجمالي (بالمتر المكعب m³):</label>
-                <input type="number" id="shelter-vol" class="input-field" value="50" oninput="calcShelterVentilation()">
-            </div>
+            <details style="background:var(--bg-inner); padding:0.85rem; border-radius:8px; margin-bottom:0.5rem;" open>
+                <summary style="font-weight:bold; color:var(--accent-blue); cursor:pointer;">1. خطوات بناء المقطر الشمسي الميداني (Solar Still Construction)</summary>
+                <ol style="margin-top:0.5rem; padding-right:1.25rem; color:var(--text-sub); font-size:0.9rem;">
+                    <li>احفر حفرة بعمق 50 سم وعرض متر وتضع وعاء التجميع في المنتصف.</li>
+                    <li>غط الحفرة بمشمع بلاستيكي شفاف وثبّت الأطراف بالحجارة والتراب.</li>
+                    <li>ضع حصاة صغيرة فوق المشمع مباشرة فوق الوعاء لتوجيه قطرات التكثيف.</li>
+                    <li>الإنتاجية المتوقعة: 1 إلى 1.5 لتر ماء مقطر عذب يومياً.</li>
+                </ol>
+            </details>
 
-            <div class="input-group">
-                <label>عدد الأشخاص المحصورين داخل المأوى:</label>
-                <input type="number" id="shelter-people" class="input-field" value="5" oninput="calcShelterVentilation()">
-            </div>
-
-            <div id="vent-result-box" style="background:var(--bg-inner); padding:1rem; border-radius:10px;">
-                <h4 style="color:var(--accent-blue); margin-bottom:0.5rem;">⏱️ زمن البقاء الآمن قبل الحاجة لتهوية الهواء:</h4>
-                <div style="font-size:1.4rem; font-weight:bold; color:var(--accent-yellow);" id="shelter-hours-text">20 ساعة</div>
-                <div style="font-size:0.85rem; color:var(--text-sub); margin-top:0.3rem;" id="shelter-recommendation">ينصح بتشغيل فلتر الكربون أو فتح صمام التهوية بعد انتهاء هذه المدة.</div>
-            </div>
+            <details style="background:var(--bg-inner); padding:0.85rem; border-radius:8px; margin-bottom:0.5rem;">
+                <summary style="font-weight:bold; color:var(--accent-yellow); cursor:pointer;">2. فلتر الفحم والرمل الطبقي (Charcoal & Sand Layered Filter)</summary>
+                <p style="font-size:0.85rem; color:var(--text-sub); margin-top:0.3rem;">ترتيب الطبقات من الأعلى للأسفل: حصى كبير -> رمل ناعم -> فحم نباتي مطحون -> قماش مرشح. الفحم يزيل السميات والروائح الكيميائية.</p>
+            </details>
         </div>
     </section>
 
     <!-- Bottom Navigation -->
     <nav>
-        <button class="active" onclick="switchTab('ventilation-tab', this)">
-            <span>💨</span>
-            <span>التهوية</span>
+        <button class="active" onclick="switchTab('solarstill-tab', this)">
+            <span>☀️</span>
+            <span>المقطر الشمسي</span>
         </button>
     </nav>
 
@@ -120,17 +119,6 @@
         }
 
         function toggleTacticalHUD() { document.body.classList.toggle('hud-mode'); }
-
-        // Self-Evolving #11: Shelter Ventilation Math
-        function calcShelterVentilation() {
-            const vol = parseFloat(document.getElementById('shelter-vol').value) || 1;
-            const people = parseFloat(document.getElementById('shelter-people').value) || 1;
-            
-            // Formula: Approx 2 m³ air per person per 4 hours for safe CO2 levels (<1.5%)
-            const hours = (vol / (people * 0.5));
-            document.getElementById('shelter-hours-text').textContent = `${Math.round(hours)} ساعة`;
-        }
-        calcShelterVentilation();
     </script>
 </body>
 </html>
