@@ -36,20 +36,6 @@
             --accent-slate: #222200 !important;
         }
 
-        body.extreme-battery {
-            --bg-primary: #000000 !important;
-            --bg-card: #000000 !important;
-            --bg-inner: #000000 !important;
-            --text-main: #ffffff !important;
-            --text-sub: #aaaaaa !important;
-            --border-color: #ffffff !important;
-            --accent-red: #ffffff !important;
-            --accent-yellow: #ffffff !important;
-            --accent-green: #ffffff !important;
-            --accent-blue: #ffffff !important;
-            --accent-slate: #000000 !important;
-        }
-
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: system-ui, -apple-system, sans-serif; }
         body { background: var(--bg-primary); color: var(--text-main); line-height: 1.5; padding-bottom: 75px; transition: background 0.2s, color 0.2s; contain: content; }
         
@@ -83,34 +69,40 @@
 <body>
 
     <header>
-        <h1>🚨 EmergencyKit PWA v4.1 3D</h1>
-        <div style="display:flex; gap:0.4rem;">
-            <button onclick="toggleTacticalHUD()" class="btn btn-yellow" style="width:auto; padding:0.3rem 0.5rem; font-size:0.75rem; margin:0;">🖥️ HUD</button>
-        </div>
+        <h1>🚨 EmergencyKit PWA v4.2 CBRN</h1>
+        <button onclick="toggleTacticalHUD()" class="btn btn-yellow" style="width:auto; padding:0.3rem 0.5rem; font-size:0.75rem; margin:0;">🖥️ HUD</button>
     </header>
 
-    <!-- Tab 0: 3D Canvas Interactive Body Trauma Map (Self-Evolving #2) -->
-    <section id="bodymap-tab" class="tab-content active">
-        <div class="card" style="text-align:center;">
-            <h2>🧍 الخريطة التفاعلية لإصابات الجسم (Interactive Anatomy Trauma Map)</h2>
-            <p style="color:var(--text-sub); font-size:0.85rem; margin-bottom:1rem;">انقر على منطقة الإصابة في مجسم الجسم التفاعلي لاستدعاء بروتوكول الإسعاف الفوري.</p>
+    <!-- Tab 0: CBRN Nerve Agent Antidote Calculator (Self-Evolving #3) -->
+    <section id="nerve-tab" class="tab-content active">
+        <div class="card">
+            <h2>🧪 حاسبة ترياق الغازات العصبية والمبيدات (Nerve Agent Antidote Calc)</h2>
+            <p style="color:var(--text-sub); font-size:0.85rem; margin-bottom:1rem;">حساب الجرعات الفورية لترياق الأتروبين والبراليدوكسيم (Atropine / 2-PAM) لغازات الأعصاب (Sarin / VX).</p>
 
-            <div style="background:var(--bg-inner); padding:1rem; border-radius:12px; display:inline-block; position:relative;">
-                <canvas id="body-canvas" width="220" height="320" style="cursor:pointer;" onclick="handleBodyClick(event)"></canvas>
+            <div class="input-group">
+                <label>مستوى شدة التسمم العادي/الشديد (SLUDGEM Severity):</label>
+                <select id="nerve-severity" class="input-field" onchange="calcNerveAntidote()">
+                    <option value="mild">متوسط (ضيق حدقة، سيلان لعاب، تعرق)</option>
+                    <option value="severe" selected>شديد حاد (تشنجات، ضيق تنفس شديد، فقدان وعي)</option>
+                </select>
             </div>
 
-            <div id="body-trauma-info" style="display:none; margin-top:1rem; padding:1rem; background:var(--bg-inner); border-radius:10px; text-align:right;">
-                <h4 id="body-region-title" style="color:var(--accent-red); margin-bottom:0.4rem;"></h4>
-                <p id="body-region-desc" style="font-size:0.85rem; color:var(--text-sub);"></p>
+            <div id="nerve-dosing-box" style="background:var(--bg-inner); padding:1rem; border-radius:10px;">
+                <h4 style="color:var(--accent-red); margin-bottom:0.5rem;">💉 الجرعات الترياقية الموصى بها طارئاً (Mark I Kit):</h4>
+                <div style="font-size:0.9rem; display:grid; gap:0.4rem;">
+                    <div>💉 أتروبين بالحقن العضلي (Atropine Auto-injector): <strong id="dose-atropine" style="color:var(--accent-yellow);">6 مجم (3 حقنات Mark I)</strong></div>
+                    <div>💊 براليدوكسيم كلوريد (Pralidoxime 2-PAM): <strong id="dose-pam" style="color:var(--accent-blue);">1800 مجم IM</strong></div>
+                    <div style="font-size:0.8rem; color:var(--text-sub); margin-top:0.3rem;">ملاحظة: كرر الأتروبين كل 5-10 دقائق حتى تجف الإفرازات الصدرية (Atropinization).</div>
+                </div>
             </div>
         </div>
     </section>
 
     <!-- Bottom Navigation -->
     <nav>
-        <button class="active" onclick="switchTab('bodymap-tab', this)">
-            <span>🧍</span>
-            <span>مجسم الجسم</span>
+        <button class="active" onclick="switchTab('nerve-tab', this)">
+            <span>🧪</span>
+            <span>ترياق الأعصاب</span>
         </button>
     </nav>
 
@@ -130,52 +122,16 @@
 
         function toggleTacticalHUD() { document.body.classList.toggle('hud-mode'); }
 
-        // Self-Evolving #2: 3D Body Canvas Interactive Renderer
-        const canvas = document.getElementById('body-canvas');
-        if (canvas) {
-            const ctx = canvas.getContext('2d');
-            function drawBodyDiagram() {
-                ctx.fillStyle = '#0f172a'; ctx.fillRect(0, 0, 220, 320);
-                
-                // Head
-                ctx.fillStyle = '#38bdf8'; ctx.beginPath(); ctx.arc(110, 45, 25, 0, Math.PI * 2); ctx.fill();
-                
-                // Torso / Chest
-                ctx.fillStyle = '#ef4444'; ctx.fillRect(80, 80, 60, 90);
-                
-                // Arms
-                ctx.fillStyle = '#eab308'; ctx.fillRect(45, 80, 25, 100); ctx.fillRect(150, 80, 25, 100);
-                
-                // Legs
-                ctx.fillStyle = '#22c55e'; ctx.fillRect(80, 180, 25, 120); ctx.fillRect(115, 180, 25, 120);
-                
-                // Text labels
-                ctx.fillStyle = '#ffffff'; ctx.font = '12px system-ui'; ctx.textAlign = 'center';
-                ctx.fillText('الرأس', 110, 49); ctx.fillText('الصدر والبطن', 110, 130);
-                ctx.fillText('الذراعين', 57, 130); ctx.fillText('الساقين', 110, 240);
-            }
-            drawBodyDiagram();
-        }
-
-        function handleBodyClick(e) {
-            const rect = canvas.getBoundingClientRect();
-            const y = e.clientY - rect.top;
-            
-            const infoBox = document.getElementById('body-trauma-info');
-            const title = document.getElementById('body-region-title');
-            const desc = document.getElementById('body-region-desc');
-
-            if (y < 70) {
-                title.textContent = '🧠 إصابات الرأس والعنق (Head & Neck Trauma)';
-                desc.textContent = 'بروتوكول: تثبيت الفقرات العنقوية، تقييم مقياس غلاسكو GCS، وفحص اتساع الحدقتين.';
-            } else if (y >= 70 && y < 170) {
-                title.textContent = '🫁 إصابات الصدر والبطن (Chest & Abdomen Trauma)';
-                desc.textContent = 'بروتوكول: تركيب اللاصق الصدري ذي الصمام (Vented Chest Seal)، فحص استرواح الرئة والنزيف الداخلي.';
+        // Self-Evolving #3: Nerve Agent Dosing Logic
+        function calcNerveAntidote() {
+            const sev = document.getElementById('nerve-severity').value;
+            if (sev === 'severe') {
+                document.getElementById('dose-atropine').textContent = '6 مجم (3 حقنات أتروبين تلقائية تلقائياً)';
+                document.getElementById('dose-pam').textContent = '1800 مجم IM (3 حقنات 2-PAM)';
             } else {
-                title.textContent = '🦵 إصابات الأطراف والساقين (Extremity Trauma)';
-                desc.textContent = 'بروتوكول: تركيب العاصبة الشريانية (Tourniquet) 5-7 سم فوق النزيف وتثبيت كسور عظمة الفخذ.';
+                document.getElementById('dose-atropine').textContent = '2 مجم (حقنة أتروبين واحدة)';
+                document.getElementById('dose-pam').textContent = '600 مجم IM (حقنة واحدة)';
             }
-            infoBox.style.display = 'block';
         }
     </script>
 </body>
