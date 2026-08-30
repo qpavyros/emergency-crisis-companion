@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#dc2626">
+    <meta name="description" content="EmergencyKit - أداة الطوارئ والفرز الطبي الميداني للعمل بدون إنترنت">
+    <title>EmergencyKit - رفيق الطوارئ والفرز الطبي الميداني</title>
+    <link rel="manifest" href="manifest.json">
+    <style>
+        :root {
+            --bg-primary: #0f172a;
+            --bg-card: #1e293b;
+            --text-main: #f8fafc;
+            --accent-red: #ef4444;
+            --accent-yellow: #eab308;
+            --accent-green: #22c55e;
+            --accent-black: #475569;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: system-ui, -apple-system, sans-serif; }
+        body { background: var(--bg-primary); color: var(--text-main); line-height: 1.5; padding-bottom: 70px; }
+        
+        header { background: #b91c1c; padding: 1rem; text-align: center; font-weight: bold; position: sticky; top: 0; z-index: 100; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.3); }
+        header h1 { font-size: 1.4rem; display: flex; align-items: center; justify-content: center; gap: 0.5rem; }
+
+        nav { display: flex; background: #020617; position: fixed; bottom: 0; width: 100%; z-index: 100; border-top: 1px solid #334155; }
+        nav button { flex: 1; padding: 0.75rem 0.25rem; background: none; border: none; color: #94a3b8; font-size: 0.85rem; cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 0.25rem; }
+        nav button.active { color: #f8fafc; font-weight: bold; background: #1e293b; }
+
+        .tab-content { display: none; padding: 1rem; max-width: 800px; margin: 0 auto; }
+        .tab-content.active { display: block; }
+
+        .card { background: var(--bg-card); border-radius: 12px; padding: 1.25rem; margin-bottom: 1rem; border: 1px solid #334155; }
+        .card h2 { font-size: 1.2rem; margin-bottom: 0.75rem; color: #ef4444; }
+
+        .btn { padding: 0.75rem 1.25rem; border-radius: 8px; border: none; font-weight: bold; cursor: pointer; display: inline-flex; align-items: center; gap: 0.5rem; justify-content: center; width: 100%; margin-top: 0.5rem; text-decoration: none; }
+        .btn-red { background: #dc2626; color: white; }
+        .btn-red:hover { background: #b91c1c; }
+        .btn-green { background: #16a34a; color: white; }
+        .btn-yellow { background: #ca8a04; color: white; }
+        .btn-slate { background: #475569; color: white; }
+
+        /* Triage Styles */
+        .triage-option { padding: 1rem; border-radius: 8px; background: #0f172a; margin-bottom: 0.5rem; border: 2px solid transparent; cursor: pointer; }
+        .triage-option.selected { border-color: #ef4444; }
+        
+        .badge { padding: 0.25rem 0.75rem; border-radius: 9999px; font-weight: bold; font-size: 0.9rem; display: inline-block; }
+        .badge-red { background: #ef4444; color: white; }
+        .badge-yellow { background: #eab308; color: black; }
+        .badge-green { background: #22c55e; color: white; }
+        .badge-black { background: #000000; color: white; border: 1px solid #475569; }
+
+        /* Translator Grid */
+        .phrase-grid { display: grid; gap: 0.75rem; }
+        .phrase-card { background: #0f172a; padding: 1rem; border-radius: 8px; border-right: 4px solid #ef4444; }
+        .phrase-title { font-weight: bold; font-size: 1.1rem; color: #38bdf8; }
+        .phrase-trans { color: #94a3b8; font-size: 0.95rem; margin-top: 0.25rem; }
+
+        /* SOS Strobe */
+        @keyframes strobe {
+            0%, 100% { background: #ef4444; }
+            50% { background: #000000; }
+        }
+        .strobing { animation: strobe 0.3s infinite; }
+
+        .select-input { width: 100%; padding: 0.75rem; border-radius: 8px; background: #0f172a; color: white; border: 1px solid #334155; margin-bottom: 1rem; }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>🚨 EmergencyKit | رفيق الطوارئ والفرز الطبي</h1>
+    </header>
+
+    <!-- Tab 1: START Triage -->
+    <section id="triage-tab" class="tab-content active">
+        <div class="card">
+            <h2>🏥 نظام الفرز الطبي السريع (START Triage)</h2>
+            <p style="color:#94a3b8; font-size:0.9rem; margin-bottom:1rem;">نظام ميداني عالمي لتصنيف المصابين في حالات الكوارث والإصابات الجماعية خلال 60 ثانية.</p>
+            
+            <div id="triage-step-1">
+                <h3>1. هل المصاب قادر على المشي؟</h3>
+                <button class="btn btn-green" onclick="setTriageResult('GREEN', 'أخضر (اصابة طفيفة - تأجيل العلاج)')">نعم (قادر على المشي)</button>
+                <button class="btn btn-red" onclick="nextTriageStep(2)">لا (غير قادر على المشي)</button>
+            </div>
+
+            <div id="triage-step-2" style="display:none;">
+                <h3>2. هل يتنفس المصاب؟</h3>
+                <button class="btn btn-green" onclick="nextTriageStep(3)">نعم يتنفس</button>
+                <button class="btn btn-red" onclick="nextTriageStep('respirations-check')">لا يتنفس (افتح مجرى الهواء)</button>
+            </div>
+
+            <div id="triage-step-respirations-check" style="display:none;">
+                <h3>بعد فتح مجرى الهواء، هل بدأ التنفس؟</h3>
+                <button class="btn btn-red" onclick="setTriageResult('RED', 'أحمر (حرج جداً - رعاية فورية)')">نعم بدأ التنفس</button>
+                <button class="btn btn-slate" onclick="setTriageResult('BLACK', 'أسود (متوفي / لا يمكن إنعاشه)')">لا يتنفس حتى بعد الفتح</button>
+            </div>
+
+            <div id="triage-step-3" style="display:none;">
+                <h3>3. كم معدل التنفس في الدقيقة؟</h3>
+                <button class="btn btn-red" onclick="setTriageResult('RED', 'أحمر (أكثر من 30 نفَس/دقيقة - حرج)')">أكثر من 30 نفَس/دقيقة</button>
+                <button class="btn btn-green" onclick="nextTriageStep(4)">أقل من 30 نفَس/دقيقة</button>
+            </div>
+
+            <div id="triage-step-4" style="display:none;">
+                <h3>4. فحص الدورة الدموية (النبض السقطري / امتلاء الشعيرات الدموية):</h3>
+                <button class="btn btn-red" onclick="setTriageResult('RED', 'أحمر (عقدة النبض ضعيفة / امتلاء الشعيرات > ثانتين)')">ضعيف / أبطأ من ثانتين</button>
+                <button class="btn btn-green" onclick="nextTriageStep(5)">قوي / أقل من ثانتين</button>
+            </div>
+
+            <div id="triage-step-5" style="display:none;">
+                <h3>5. الحالة الذهنية (الاستجابة للأوامر البسيطة):</h3>
+                <button class="btn btn-yellow" onclick="setTriageResult('YELLOW', 'أصفر (عاجل - إصابة متوسطة لا تهدد الحياة فوراً)')">يستجيب للأوامر البسيطة</button>
+                <button class="btn btn-red" onclick="setTriageResult('RED', 'أحمر (غير مستجيب للأوامر - حرج)')">لا يستجيب للأوامر</button>
+            </div>
+
+            <div id="triage-result" style="display:none; text-align:center; padding:1.5rem; background:#0f172a; border-radius:8px; margin-top:1rem;">
+                <h3>نتيجة الفرز الطبي:</h3>
+                <div id="triage-badge-container" style="margin:1rem 0;"></div>
+                <p id="triage-desc" style="font-size:1rem; margin-bottom:1rem;"></p>
+                <button class="btn btn-slate" onclick="resetTriage()">إعادة الفرز لمصاب جديد</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Tab 2: First Aid Guides -->
+    <section id="firstaid-tab" class="tab-content">
+        <div class="card">
+            <h2>🩸 الإسعافات الأولية الحارجة</h2>
+
+            <details style="background:#0f172a; padding:1rem; border-radius:8px; margin-bottom:0.75rem;">
+                <summary style="font-weight:bold; color:#ef4444; cursor:pointer;">1. التحكم في النزيف الحاد (Severe Bleeding)</summary>
+                <ol style="margin-top:0.75rem; padding-right:1.25rem; color:#cbd5e1;">
+                    <li>ضغط مباشر وقوي على موقع النزيف بقطعة قماش نظيفة.</li>
+                    <li>لا ترفع الضغط لمعاينة الجرح؛ اضغط باستمرار.</li>
+                    <li>إذا استمر النزيف الشديد، استخدم عاصبة (Tourniquet) أعلى الجرح بـ 5-7 سم.</li>
+                    <li>سجل وقت وضع العاصبة على جبهة المصاب فوراً.</li>
+                </ol>
+            </details>
+
+            <details style="background:#0f172a; padding:1rem; border-radius:8px; margin-bottom:0.75rem;">
+                <summary style="font-weight:bold; color:#ef4444; cursor:pointer;">2. الإنعاش القلبي الرئوي (CPR)</summary>
+                <ol style="margin-top:0.75rem; padding-right:1.25rem; color:#cbd5e1;">
+                    <li>ضع كفي يديك في منتصف صدر المصاب.</li>
+                    <li>اضغط بمعدل 100-120 ضغطة في الدقيقة بعمق 5-6 سم.</li>
+                    <li>استمر بالضغط المتواصل حتى وصول الفرق الطبية أو عودة التنفس.</li>
+                </ol>
+            </details>
+
+            <details style="background:#0f172a; padding:1rem; border-radius:8px; margin-bottom:0.75rem;">
+                <summary style="font-weight:bold; color:#ef4444; cursor:pointer;">3. الحروق الشديدة (Severe Burns)</summary>
+                <ol style="margin-top:0.75rem; padding-right:1.25rem; color:#cbd5e1;">
+                    <li>برّد الحرق بماء فاتر (غير بارد جداً) لمدة 10-20 دقيقة.</li>
+                    <li>غَطِّ الحرق بضمادة معقمة غير لاصقة أو غلاف بلاستيكي نظيف.</li>
+                    <li>لا تفتح البثور ولا تضع المعاجين أو الزيوت.</li>
+                </ol>
+            </details>
+
+            <details style="background:#0f172a; padding:1rem; border-radius:8px; margin-bottom:0.75rem;">
+                <summary style="font-weight:bold; color:#ef4444; cursor:pointer;">4. الكسور وتثبيت الطرف (Fractures)</summary>
+                <ol style="margin-top:0.75rem; padding-right:1.25rem; color:#cbd5e1;">
+                    <li>لا تحرك الطرف المكسور إطلاقاً.</li>
+                    <li>ثبّت الكسر باستخدام جبيرة مؤقتة (خشب/كرتون مقوى) أعلا وأسفل مفصل الكسر.</li>
+                    <li>ضع كمادة باردة لتقليل التورم دون وضع الثلج مباشرة على الجلد.</li>
+                </ol>
+            </details>
+        </div>
+    </section>
+
+    <!-- Tab 3: Medical Translator -->
+    <section id="translator-tab" class="tab-content">
+        <div class="card">
+            <h2>🌐 المترجم الطبي الميداني للطوارئ</h2>
+            <p style="color:#94a3b8; font-size:0.9rem; margin-bottom:1rem;">عبارات مصورة ومترجمة للتواصل السريع مع المصابين أو الفرق الأجنبية بدون إنترنت.</p>
+            
+            <label style="font-size:0.9rem; color:#cbd5e1;">اختر لغة الترجمة:</label>
+            <select id="lang-select" class="select-input" onchange="renderTranslator()">
+                <option value="en">الإنجليزية (English)</option>
+                <option value="fr">الفرنسية (Français)</option>
+                <option value="es">الإسبانية (Español)</option>
+                <option value="tr">التركية (Türkçe)</option>
+                <option value="uk">الأوكرانية (Українська)</option>
+            </select>
+
+            <div id="phrase-container" class="phrase-grid"></div>
+        </div>
+    </section>
+
+    <!-- Tab 4: SOS Beacon -->
+    <section id="beacon-tab" class="tab-content">
+        <div class="card" style="text-align:center;">
+            <h2>📢 منبه الاستغاثة الميداني (SOS Beacon)</h2>
+            <p style="color:#94a3b8; font-size:0.9rem; margin-bottom:1rem;">يصدر صوت صفارة إنذار عالية التردد ووميض ضوئي لمساعدة فرق الإنقاذ على تحديد موقعك.</p>
+            
+            <button id="sos-btn" class="btn btn-red" style="font-size:1.2rem; padding:1rem;" onclick="toggleSOS()">
+                🔔 تشغيل صفارة واستغاثة SOS
+            </button>
+
+            <div id="gps-box" style="margin-top:1.5rem; padding:1rem; background:#0f172a; border-radius:8px;">
+                <h4>📍 إحداثيات الموقع الحالي (Offline GPS):</h4>
+                <p id="gps-coords" style="font-size:1.1rem; font-weight:bold; color:#38bdf8; margin-top:0.5rem;">جاري جلب الإحداثيات...</p>
+                <button class="btn btn-slate" style="margin-top:0.5rem;" onclick="fetchGPS()">تحديث الموقع</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Bottom Navigation -->
+    <nav>
+        <button class="active" onclick="switchTab('triage-tab', this)">
+            <span>🏥</span>
+            <span>الفرز الطبي</span>
+        </button>
+        <button onclick="switchTab('firstaid-tab', this)">
+            <span>🩸</span>
+            <span>الإسعافات</span>
+        </button>
+        <button onclick="switchTab('translator-tab', this)">
+            <span>🌐</span>
+            <span>المترجم</span>
+        </button>
+        <button onclick="switchTab('beacon-tab', this)">
+            <span>🚨</span>
+            <span>استغاثة SOS</span>
+        </button>
+    </nav>
+
+    <script>
+        // Register Service Worker for Offline PWA
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('sw.js').catch(err => console.log('SW registration failed', err));
+        }
+
+        // Tab Navigation
+        function switchTab(tabId, btn) {
+            document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('nav button').forEach(b => b.classList.remove('active'));
+            document.getElementById(tabId).classList.add('active');
+            btn.classList.add('active');
+        }
+
+        // START Triage Logic
+        function nextTriageStep(step) {
+            document.querySelectorAll('#triage-tab [id^="triage-step-"]').forEach(el => el.style.display = 'none');
+            document.getElementById('triage-step-' + step).style.display = 'block';
+        }
+
+        function setTriageResult(code, label) {
+            document.querySelectorAll('#triage-tab [id^="triage-step-"]').forEach(el => el.style.display = 'none');
+            const resBox = document.getElementById('triage-result');
+            const badgeContainer = document.getElementById('triage-badge-container');
+            const desc = document.getElementById('triage-desc');
+
+            resBox.style.display = 'block';
+            desc.textContent = label;
+
+            let badgeClass = 'badge-green';
+            if (code === 'RED') badgeClass = 'badge-red';
+            if (code === 'YELLOW') badgeClass = 'badge-yellow';
+            if (code === 'BLACK') badgeClass = 'badge-black';
+
+            badgeContainer.innerHTML = `<span class="badge ${badgeClass}" style="font-size:1.4rem; padding:0.5rem 1.5rem;">التصنيف: ${code}</span>`;
+        }
+
+        function resetTriage() {
+            document.getElementById('triage-result').style.display = 'none';
+            nextTriageStep(1);
+        }
+
+        // Emergency Translator Dictionary
+        const dictionary = {
+            ar: [
+                "أين مكان الألم؟", "هل تستطيع التنفس؟", "هل لديك حساسية من دواء؟",
+                "لا تتحرك، مساعدة قادمة", "اضغط هنا لوقف النزيف", "كم عمرك؟"
+            ],
+            en: [
+                "Where is the pain?", "Can you breathe?", "Are you allergic to any medicine?",
+                "Do not move, help is coming", "Press here to stop bleeding", "How old are you?"
+            ],
+            fr: [
+                "Où est la douleur?", "Pouvez-vous respirer?", "Êtes-vous allergique à un médicament?",
+                "Ne bougez pas, les secours arrivent", "Appuyez ici pour arrêter le saignement", "Quel âge avez-vous?"
+            ],
+            es: [
+                "¿Dónde está el dolor?", "¿Puedes respirar?", "¿Eres alérgico a algún medicamento?",
+                "No te muevas, la ayuda viene", "Presiona aquí para detener el sangrado", "¿Cuántos años tienes?"
+            ],
+            tr: [
+                "Ağrı nerede?", "Nefes alabiliyor musunuz?", "Herhangi bir ilaca alerjiniz var mı?",
+                "Hareket etmeyin, yardım geliyor", "Kanamayı durdurmak için buraya basın", "Kaç yaşındasınız?"
+            ],
+            uk: [
+                "Де болить?", "Ви можете дихати?", "У вас є алергія на ліки?",
+                "Не рухайтесь, допомога йде", "Натисніть тут, щоб зупинити кровотечу", "Скільки вам років?"
+            ]
+        };
+
+        function renderTranslator() {
+            const lang = document.getElementById('lang-select').value;
+            const container = document.getElementById('phrase-container');
+            container.innerHTML = '';
+
+            dictionary.ar.forEach((arText, idx) => {
+                const transText = dictionary[lang][idx] || '';
+                const card = document.createElement('div');
+                card.className = 'phrase-card';
+                card.innerHTML = `
+                    <div class="phrase-title">🇸🇦 ${arText}</div>
+                    <div class="phrase-trans">🌐 ${transText}</div>
+                `;
+                container.appendChild(card);
+            });
+        }
+        renderTranslator();
+
+        // Web Audio API SOS Beacon Siren & Strobe
+        let audioCtx = null;
+        let isSOS = false;
+        let sirenInterval = null;
+
+        function toggleSOS() {
+            const btn = document.getElementById('sos-btn');
+            if (!isSOS) {
+                isSOS = true;
+                btn.textContent = '🛑 إيقاف استغاثة SOS';
+                btn.classList.replace('btn-red', 'btn-slate');
+                document.body.classList.add('strobing');
+
+                if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                
+                sirenInterval = setInterval(() => {
+                    if (!isSOS) return;
+                    let osc = audioCtx.createOscillator();
+                    let gain = audioCtx.createGain();
+                    osc.type = 'sawtooth';
+                    osc.frequency.setValueAtTime(800, audioCtx.currentTime);
+                    osc.frequency.exponentialRampToValueAtTime(1400, audioCtx.currentTime + 0.3);
+                    gain.gain.setValueAtTime(0.3, audioCtx.currentTime);
+                    osc.connect(gain);
+                    gain.connect(audioCtx.destination);
+                    osc.start();
+                    osc.stop(audioCtx.currentTime + 0.3);
+                }, 400);
+
+            } else {
+                isSOS = false;
+                btn.textContent = '🔔 تشغيل صفارة واستغاثة SOS';
+                btn.classList.replace('btn-slate', 'btn-red');
+                document.body.classList.remove('strobing');
+                if (sirenInterval) clearInterval(sirenInterval);
+            }
+        }
+
+        // Offline GPS
+        function fetchGPS() {
+            const coordsP = document.getElementById('gps-coords');
+            if ('geolocation' in navigator) {
+                coordsP.textContent = 'جاري تحديد موقعك بالقمح الاصطناعي...';
+                navigator.geolocation.getCurrentPosition(
+                    (pos) => {
+                        coordsP.textContent = `خط العرض: ${pos.coords.latitude.toFixed(5)} | خط الطول: ${pos.coords.longitude.toFixed(5)}`;
+                    },
+                    (err) => {
+                        coordsP.textContent = 'تعذر الحصول على الإحداثيات (تحقق من إذن الموقع)';
+                    },
+                    { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
+                );
+            } else {
+                coordsP.textContent = 'خاصية GPS غير مدعومة في المتصفح';
+            }
+        }
+        fetchGPS();
+    </script>
+</body>
+</html>
