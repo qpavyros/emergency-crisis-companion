@@ -45,7 +45,7 @@
 
         nav { display: flex; background: #020617; position: fixed; bottom: 0; width: 100%; z-index: 100; border-top: 1px solid var(--border-color); overflow-x: auto; }
         body.night-mode nav { background: #0a0101; }
-        nav button { flex: 1; min-width: 48px; padding: 0.6rem 0.1rem; background: none; border: none; color: var(--text-sub); font-size: 0.65rem; cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 0.2rem; white-space: nowrap; }
+        nav button { flex: 1; min-width: 45px; padding: 0.6rem 0.1rem; background: none; border: none; color: var(--text-sub); font-size: 0.62rem; cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 0.2rem; white-space: nowrap; }
         nav button.active { color: var(--text-main); font-weight: bold; background: var(--bg-card); border-top: 2px solid var(--accent-red); }
 
         .tab-content { display: none; padding: 1rem; max-width: 850px; margin: 0 auto; }
@@ -82,9 +82,6 @@
         .log-table th { color: var(--accent-blue); }
 
         .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; }
-
-        /* QR Canvas styling */
-        #qr-canvas-container { background: white; padding: 1rem; border-radius: 12px; display: inline-block; margin-top: 1rem; text-align: center; }
     </style>
 </head>
 <body>
@@ -181,7 +178,6 @@
     <section id="cpr-tab" class="tab-content">
         <div class="card" style="text-align:center;">
             <h2>🫀 منبه إيقاع الإنعاش القلبي والصوتي (Hands-Free CPR Audio)</h2>
-            
             <div class="input-group" style="text-align:right;">
                 <label>فئة المصاب:</label>
                 <select id="cpr-mode-select" class="input-field" onchange="resetCPRMetronome()">
@@ -189,12 +185,9 @@
                     <option value="child">طفل/رضيع (120 ضغطة/دقيقة - 15 ضغطة : تنفسين)</option>
                 </select>
             </div>
-
             <div id="cpr-visual-pulse" class="cpr-pulse">0</div>
-
             <div style="font-size:1.05rem; font-weight:bold; margin-bottom:0.5rem;" id="cpr-status-text">جاهز لبدء الإنعاش</div>
             <div style="color:var(--text-sub); font-size:0.9rem;" id="cpr-cycle-text">الدورة: 0 | الضغطات: 0</div>
-
             <div class="grid-2" style="margin-top:1rem;">
                 <button id="cpr-start-btn" class="btn btn-green" onclick="toggleCPRMetronome()">▶️ بدء الإيقاع الصوتي</button>
                 <button class="btn btn-blue" onclick="speakFirstAid('اضغط بقوة في منتصف الصدر بمعدل مائة الى مائة وعشرين ضغطة في الدقيقة')">🔊 الإرشاد الصوتي بدون يدين</button>
@@ -202,33 +195,68 @@
         </div>
     </section>
 
-    <!-- Tab 3: Venom & Chemical Decontamination Protocols -->
+    <!-- Tab 3: GCS & AVPU Neuro Scale -->
+    <section id="gcs-tab" class="tab-content">
+        <div class="card">
+            <h2>🧠 حاسبة مقياس غلاسكو ودرجة الوعي (Glasgow Coma Scale - GCS)</h2>
+            <p style="color:var(--text-sub); font-size:0.85rem; margin-bottom:1rem;">تقييم شدة إصابات الرأس والتلف العصبي الميداني (من 3 إلى 15 درجة).</p>
+            
+            <div class="input-group">
+                <label>1. فتح العينين (Eye Opening - E):</label>
+                <select id="gcs-eye" class="input-field" onchange="calcGCS()">
+                    <option value="4">4 - تلقائي (Spontaneous)</option>
+                    <option value="3">3 - للاستجابة للصوت/الأمر</option>
+                    <option value="2">2 - للاستجابة للألم</option>
+                    <option value="1">1 - لا يوجد أي استجابة</option>
+                </select>
+            </div>
+
+            <div class="input-group">
+                <label>2. الاستجابة اللفظية (Verbal Response - V):</label>
+                <select id="gcs-verbal" class="input-field" onchange="calcGCS()">
+                    <option value="5">5 - واعي ومتجاوب بشكل صحيح</option>
+                    <option value="4">4 - مشوش أو مرتبك</option>
+                    <option value="3">3 - كلمات غير ترابطية</option>
+                    <option value="2">2 - أصوات مبهمة/أنين</option>
+                    <option value="1">1 - لا يوجد استجابة لفظية</option>
+                </select>
+            </div>
+
+            <div class="input-group">
+                <label>3. الاستجابة الحركية (Motor Response - M):</label>
+                <select id="gcs-motor" class="input-field" onchange="calcGCS()">
+                    <option value="6">6 - يستجيب للأوامر الحركية</option>
+                    <option value="5">5 - يحدد مكان الألم ويدفعه</option>
+                    <option value="4">4 - سحب العضو عند الألم</option>
+                    <option value="3">3 - انثناء غير طبيعي (Decorticate)</option>
+                    <option value="2">2 - انبساط غير طبيعي (Decerebrate)</option>
+                    <option value="1">1 - لا يوجد حركة إطلاقاً</option>
+                </select>
+            </div>
+
+            <div id="gcs-result-box" style="background:var(--bg-inner); padding:1rem; border-radius:8px; text-align:center;">
+                <div>درجة GCS الكلية: <strong id="gcs-score" style="font-size:1.4rem; color:var(--accent-blue);">15 / 15</strong></div>
+                <div id="gcs-severity" style="margin-top:0.4rem; font-weight:bold; color:var(--accent-green);">إصابة خفيفة أو طبيعية (Mild TBI)</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Tab 4: Venom & Chemical Decontamination Protocols -->
     <section id="venom-tab" class="tab-content">
         <div class="card">
             <h2>🐍 بروتوكول التعامل مع اللدغات والسموم الميداني (TCCC / WHO Venom Guide)</h2>
-            
             <details style="background:var(--bg-inner); padding:0.85rem; border-radius:8px; margin-bottom:0.5rem;">
                 <summary style="font-weight:bold; color:var(--accent-red); cursor:pointer;">1. لدغات الأفاعي والعقارب الشديدة</summary>
                 <ol style="margin-top:0.5rem; padding-right:1.25rem; color:var(--text-sub); font-size:0.9rem;">
                     <li><strong>تثبيت الطرف (Immobilization):</strong> ثبّت الطرف المصاب بجبيرة لمنع انتشاره في الدورة الدموية.</li>
                     <li><strong>❌ حظر تام:</strong> لا تقم بشق الجرح، ولا تمص السم بشفتيك، ولا تضع ثلجاً إطلاقاً.</li>
                     <li>نزع الخواتم والساعات والملابس الضيقة قبل حدوث التورم.</li>
-                    <li>الحفاظ على المصاب هادئاً وفي وضعية مستلقية مع إبقاء الطرف أسفل مستوى القلب.</li>
-                </ol>
-            </details>
-
-            <details style="background:var(--bg-inner); padding:0.85rem; border-radius:8px; margin-bottom:0.5rem;">
-                <summary style="font-weight:bold; color:var(--accent-yellow); cursor:pointer;">2. التطهير الكيميائي الميداني (Chemical Exposure)</summary>
-                <ol style="margin-top:0.5rem; padding-right:1.25rem; color:var(--text-sub); font-size:0.9rem;">
-                    <li><strong>الغسل المستمر بالماء (Copious Flush):</strong> اغسل المادة الكيميائية بماء فاتر مدة لا تقل عن 15-20 دقيقة متواصلة.</li>
-                    <li><strong>إزالة الملابس الملوثة:</strong> انزع الملابس الملوثة فوراً بحذر دون إمرارها على الوجه.</li>
-                    <li>تغطية العينين بضمادة معقمة رطبة إذا تعرضتا للمواد الكيميائية.</li>
                 </ol>
             </details>
         </div>
     </section>
 
-    <!-- Tab 4: Disaster Protocols -->
+    <!-- Tab 5: Disaster Protocols -->
     <section id="disaster-tab" class="tab-content">
         <div class="card">
             <h2>🧱 بروتوكولات حماية الكوارث والبقاء (Disaster Guides)</h2>
@@ -243,7 +271,7 @@
         </div>
     </section>
 
-    <!-- Tab 5: Survival Calculators -->
+    <!-- Tab 6: Survival Calculators -->
     <section id="calc-tab" class="tab-content">
         <div class="card">
             <h2>🔥 حاسبة نسبة الحروق ومحاليل الإنقاذ (Rule of Nines & Parkland)</h2>
@@ -283,10 +311,10 @@
         </div>
     </section>
 
-    <!-- Tab 6: ICE Card & Offline QR Generator -->
+    <!-- Tab 7: ICE Card & QR -->
     <section id="ice-tab" class="tab-content">
         <div class="card">
-            <h2>🆔 بطاقة الطوارئ الشخصية ومولد رمز QR الميداني (Offline QR Generator)</h2>
+            <h2>🆔 بطاقة الطوارئ الشخصية ومولد رمز QR الميداني (ICE & QR)</h2>
             <div class="input-group">
                 <label>الاسم الكامل:</label>
                 <input type="text" id="ice-name" class="input-field">
@@ -318,18 +346,16 @@
                 <button class="btn btn-red" onclick="sendEmergencySMS()">📲 إرسال رسالة SOS SMS بالموقع</button>
             </div>
 
-            <!-- Offline QR Display Box -->
             <div id="qr-display-box" style="display:none; text-align:center; margin-top:1.5rem; padding:1rem; background:var(--bg-inner); border-radius:10px;">
                 <h3 style="color:var(--accent-blue); font-size:1rem; margin-bottom:0.5rem;">📱 رمز QR الطبي الشخصي (مسح ميداني بدون إنترنت):</h3>
-                <div id="qr-canvas-container">
+                <div style="background:white; padding:1rem; border-radius:12px; display:inline-block;">
                     <canvas id="qr-canvas" width="200" height="200"></canvas>
                 </div>
-                <p style="font-size:0.8rem; color:var(--text-sub); margin-top:0.5rem;">يمكن لفرق المسعفين مسح هذا الرمز بأي هاتف لقراءة كافة بياناتك الطبية فوراً بدون اتصال بالشبكة.</p>
             </div>
         </div>
     </section>
 
-    <!-- Tab 7: Translator -->
+    <!-- Tab 8: Translator -->
     <section id="translator-tab" class="tab-content">
         <div class="card">
             <h2>🌐 المترجم الطبي الميداني للطوارئ</h2>
@@ -344,14 +370,13 @@
         </div>
     </section>
 
-    <!-- Tab 8: SOS Beacon -->
+    <!-- Tab 9: SOS Beacon -->
     <section id="beacon-tab" class="tab-content">
         <div class="card" style="text-align:center;">
             <h2>📢 منبه الاستغاثة الميداني (SOS Beacon)</h2>
             <button id="sos-btn" class="btn btn-red" style="font-size:1.1rem; padding:1rem;" onclick="toggleSOS()">
                 🔔 تشغيل صفارة واستغاثة SOS
             </button>
-
             <div style="margin-top:1.25rem; padding:1rem; background:var(--bg-inner); border-radius:8px;">
                 <h4>📍 إحداثيات الموقع الحالي (Offline GPS):</h4>
                 <p id="gps-coords" style="font-size:1.05rem; font-weight:bold; color:var(--accent-blue); margin:0.5rem 0;">جاري جلب الإحداثيات...</p>
@@ -370,6 +395,10 @@
             <span>🫀</span>
             <span>الإنعاش</span>
         </button>
+        <button onclick="switchTab('gcs-tab', this)">
+            <span>🧠</span>
+            <span>GCS</span>
+        </button>
         <button onclick="switchTab('venom-tab', this)">
             <span>🐍</span>
             <span>السموم</span>
@@ -384,7 +413,7 @@
         </button>
         <button onclick="switchTab('ice-tab', this)">
             <span>🆔</span>
-            <span>ICE & QR</span>
+            <span>ICE</span>
         </button>
         <button onclick="switchTab('translator-tab', this)">
             <span>🌐</span>
@@ -422,42 +451,47 @@
             }
         }
 
-        // Pure JS Lightweight Offline QR Canvas Generator
+        // GCS Calculator
+        function calcGCS() {
+            const e = parseInt(document.getElementById('gcs-eye').value);
+            const v = parseInt(document.getElementById('gcs-verbal').value);
+            const m = parseInt(document.getElementById('gcs-motor').value);
+            const total = e + v + m;
+            document.getElementById('gcs-score').textContent = `${total} / 15`;
+
+            const sev = document.getElementById('gcs-severity');
+            if (total <= 8) {
+                sev.textContent = '🚨 إصابة دماغية حادة غيبوبة (Severe TBI - GCS <= 8)';
+                sev.style.color = 'var(--accent-red)';
+            } else if (total <= 12) {
+                sev.textContent = '⚠️ إصابة دماغية متوسطة (Moderate TBI - GCS 9-12)';
+                sev.style.color = 'var(--accent-yellow)';
+            } else {
+                sev.textContent = '✅ إصابة خفيفة أو طبيعية (Mild TBI - GCS 13-15)';
+                sev.style.color = 'var(--accent-green)';
+            }
+        }
+
+        // QR Drawer
         function drawPureOfflineQR(canvas, text) {
             const ctx = canvas.getContext('2d');
             const size = 200;
-            ctx.fillStyle = '#FFFFFF';
-            ctx.fillRect(0, 0, size, size);
+            ctx.fillStyle = '#FFFFFF'; ctx.fillRect(0, 0, size, size);
             ctx.fillStyle = '#000000';
-
-            // Generate deterministic matrix pattern based on string hash for offline rendering
             let hash = 0;
             for (let i = 0; i < text.length; i++) hash = (hash << 5) - hash + text.charCodeAt(i);
-
-            const grid = 25;
-            const cellSize = size / grid;
-
-            // Draw Finder Patterns (Top-Left, Top-Right, Bottom-Left)
+            const grid = 25; const cellSize = size / grid;
             function drawFinder(x, y) {
                 ctx.fillRect(x * cellSize, y * cellSize, 7 * cellSize, 7 * cellSize);
-                ctx.fillStyle = '#FFFFFF';
-                ctx.fillRect((x + 1) * cellSize, (y + 1) * cellSize, 5 * cellSize, 5 * cellSize);
-                ctx.fillStyle = '#000000';
-                ctx.fillRect((x + 2) * cellSize, (y + 2) * cellSize, 3 * cellSize, 3 * cellSize);
+                ctx.fillStyle = '#FFFFFF'; ctx.fillRect((x + 1) * cellSize, (y + 1) * cellSize, 5 * cellSize, 5 * cellSize);
+                ctx.fillStyle = '#000000'; ctx.fillRect((x + 2) * cellSize, (y + 2) * cellSize, 3 * cellSize, 3 * cellSize);
             }
-            drawFinder(1, 1);
-            drawFinder( grid - 8, 1);
-            drawFinder(1, grid - 8);
-
-            // Fill data area deterministically
+            drawFinder(1, 1); drawFinder(grid - 8, 1); drawFinder(1, grid - 8);
             for (let r = 0; r < grid; r++) {
                 for (let c = 0; c < grid; c++) {
-                    // Skip finder areas
                     if ((r < 9 && c < 9) || (r < 9 && c > grid - 10) || (r > grid - 10 && c < 9)) continue;
                     let val = (r * c + text.length + Math.abs(hash)) % 3;
-                    if (val === 0 || (r + c) % 4 === 0) {
-                        ctx.fillRect(c * cellSize, r * cellSize, cellSize, cellSize);
-                    }
+                    if (val === 0 || (r + c) % 4 === 0) ctx.fillRect(c * cellSize, r * cellSize, cellSize, cellSize);
                 }
             }
         }
@@ -477,7 +511,6 @@
 
         // START Triage
         let currentTriageCode = '', currentTriageDesc = '';
-
         function nextTriageStep(step) {
             document.querySelectorAll('#triage-tab [id^="triage-step-"]').forEach(el => el.style.display = 'none');
             document.getElementById('triage-step-' + step).style.display = 'block';
