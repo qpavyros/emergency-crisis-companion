@@ -69,38 +69,40 @@
 <body>
 
     <header>
-        <h1>🚨 EmergencyKit PWA v5.2 Water</h1>
+        <h1>🚨 EmergencyKit PWA v5.3 Amputation</h1>
         <button onclick="toggleTacticalHUD()" class="btn btn-yellow" style="width:auto; padding:0.3rem 0.5rem; font-size:0.75rem; margin:0;">🖥️ HUD</button>
     </header>
 
-    <!-- Tab 0: Solar Still Desalination & Survival Filter Guide (Self-Evolving #12) -->
-    <section id="solarstill-tab" class="tab-content active">
+    <!-- Tab 0: Traumatic Amputation & Limb Salvage Protocol (Self-Evolving #13) -->
+    <section id="amputation-tab" class="tab-content active">
         <div class="card">
-            <h2>☀️ دليل المقطر الشمسي وتحلية مياه البحر الميدانية (Solar Still & Desalination)</h2>
-            <p style="color:var(--text-sub); font-size:0.85rem; margin-bottom:1rem;">تقنية استخلاص المياه النظيفة الصالحة للشرب من التربة أو مياه البحر بأشعة الشمس والمشمع.</p>
+            <h2>🦾 بروتوكول البتر الاصابي وحفظ الأجزاء المقطوعة (Traumatic Amputation Protocol)</h2>
+            <p style="color:var(--text-sub); font-size:0.85rem; margin-bottom:1rem;">إيقاف النزيف الشرياني الحاد وحفظ الطرف المبتور لزيادة نسبة نجاح إعادة التوصيل الجراحي.</p>
 
             <details style="background:var(--bg-inner); padding:0.85rem; border-radius:8px; margin-bottom:0.5rem;" open>
-                <summary style="font-weight:bold; color:var(--accent-blue); cursor:pointer;">1. خطوات بناء المقطر الشمسي الميداني (Solar Still Construction)</summary>
+                <summary style="font-weight:bold; color:var(--accent-red); cursor:pointer;">1. إيقاف النزيف من مكان البتر (Stump Bleeding Control)</summary>
                 <ol style="margin-top:0.5rem; padding-right:1.25rem; color:var(--text-sub); font-size:0.9rem;">
-                    <li>احفر حفرة بعمق 50 سم وعرض متر وتضع وعاء التجميع في المنتصف.</li>
-                    <li>غط الحفرة بمشمع بلاستيكي شفاف وثبّت الأطراف بالحجارة والتراب.</li>
-                    <li>ضع حصاة صغيرة فوق المشمع مباشرة فوق الوعاء لتوجيه قطرات التكثيف.</li>
-                    <li>الإنتاجية المتوقعة: 1 إلى 1.5 لتر ماء مقطر عذب يومياً.</li>
+                    <li>ثبّت عاصبة شريانية (Tourniquet) 5-7 سم فوق مكان البتر فوراً وشد المقبض حتى يتوقف النزيف.</li>
+                    <li>ضع ضمادة معقمة ضاغطة على مكان البتر المنفصل وسجل الوقت على جبهة المصاب.</li>
                 </ol>
             </details>
 
             <details style="background:var(--bg-inner); padding:0.85rem; border-radius:8px; margin-bottom:0.5rem;">
-                <summary style="font-weight:bold; color:var(--accent-yellow); cursor:pointer;">2. فلتر الفحم والرمل الطبقي (Charcoal & Sand Layered Filter)</summary>
-                <p style="font-size:0.85rem; color:var(--text-sub); margin-top:0.3rem;">ترتيب الطبقات من الأعلى للأسفل: حصى كبير -> رمل ناعم -> فحم نباتي مطحون -> قماش مرشح. الفحم يزيل السميات والروائح الكيميائية.</p>
+                <summary style="font-weight:bold; color:var(--accent-blue); cursor:pointer;">2. طريقة حفظ الجزء المبتور (Severed Limb Preservation)</summary>
+                <ol style="margin-top:0.5rem; padding-right:1.25rem; color:var(--text-sub); font-size:0.9rem;">
+                    <li>اشطف الجزء المبتور بمحلول ملحي معقم دون حك الأنسجة.</li>
+                    <li>لف الجزء المبتور بشاش رطب بمحلول ملحي وضعه داخل كيس بلاستيكي مغلق أحكاماً.</li>
+                    <li>ضع الكيس المغلق فوق حمام ثلجي (ماء وثلق). تحذير: لا تضع الطرف المبتور مباشرة في الثلج أو الماء إطلاقاً.</li>
+                </ol>
             </details>
         </div>
     </section>
 
     <!-- Bottom Navigation -->
     <nav>
-        <button class="active" onclick="switchTab('solarstill-tab', this)">
-            <span>☀️</span>
-            <span>المقطر الشمسي</span>
+        <button class="active" onclick="switchTab('amputation-tab', this)">
+            <span>🦾</span>
+            <span>البتر والحفظ</span>
         </button>
     </nav>
 
