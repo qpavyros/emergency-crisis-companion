@@ -99,7 +99,6 @@
         <div class="card">
             <h2>🩸 بروتوكول الإصابات والتكتيك الطبي M.A.R.C.H. Protocol</h2>
             <p style="color:var(--text-sub); font-size:0.85rem; margin-bottom:1rem;">البروتوكول العالمي لإنقاذ مصابي الإصابات البليغة والنزيف الشديد في أرض المعركة والكوارث (TCCC Standard).</p>
-            
             <div class="march-box" style="border-right-color:#ef4444;">
                 <h3 style="color:#ef4444;">M - Massive Bleeding (النزيف الشديد الشرياني)</h3>
                 <ul style="margin-top:0.4rem; padding-right:1.25rem; font-size:0.9rem; color:var(--text-sub);">
@@ -108,7 +107,6 @@
                     <li>سجل وقت وضع العاصبة فوراً على جبهة المصاب (مثال: T=14:30).</li>
                 </ul>
             </div>
-
             <div class="march-box" style="border-right-color:#eab308;">
                 <h3 style="color:#eab308;">A - Airway (مجرى الهواء والتنفس)</h3>
                 <ul style="margin-top:0.4rem; padding-right:1.25rem; font-size:0.9rem; color:var(--text-sub);">
@@ -117,35 +115,68 @@
                     <li>ضع المصاب فاقد الوعي في وضعية الإفاقة (Recovery Position).</li>
                 </ul>
             </div>
+        </div>
+    </section>
 
-            <div class="march-box" style="border-right-color:#38bdf8;">
-                <h3 style="color:#38bdf8;">R - Respiration (تنفس الصدر وإصابات الرئة)</h3>
-                <ul style="margin-top:0.4rem; padding-right:1.25rem; color:var(--text-sub); font-size:0.9rem;">
-                    <li>افحص وجود جروح نافذة بالصدر (Sucking Chest Wounds).</li>
-                    <li>ضع ضمادة لاصقة صمامية ذات اتجاه واحد (Chest Seal).</li>
-                    <li>راقب علامات استرواح الصدر التوترية (Tension Pneumothorax).</li>
-                </ul>
+    <!-- Tab 1: APGAR Newborn Assessment (Task 3) -->
+    <section id="apgar-tab" class="tab-content">
+        <div class="card">
+            <h2>👶 حاسبة تقييم حديثي الولادة (APGAR Newborn Score)</h2>
+            <p style="color:var(--text-sub); font-size:0.85rem; margin-bottom:1rem;">تقييم الوضع الصحي للمولود الجديد في الدقيقة 1 والدقيقة 5 بعد الولادة.</p>
+
+            <div class="input-group">
+                <label>1. لون الجلد (Appearance):</label>
+                <select id="apgar-a" class="input-field" onchange="calcAPGAR()">
+                    <option value="2">2 - وردي بالكامل (Pink completely)</option>
+                    <option value="1">1 - الجسم وردي والأطراف زرقاء (Acrocyanosis)</option>
+                    <option value="0">0 - أزرق أو شاحب بالكامل (Blue / Pale)</option>
+                </select>
             </div>
 
-            <div class="march-box" style="border-right-color:#22c55e;">
-                <h3 style="color:#22c55e;">C - Circulation (الدورة الدموية والصدمة)</h3>
-                <ul style="margin-top:0.4rem; padding-right:1.25rem; color:var(--text-sub); font-size:0.9rem;">
-                    <li>افحص النبض السقطري والدورة الدموية المحيطية.</li>
-                    <li>ثبّت كسور الحوض بضمادة الحوض (Pelvic Binder) لمنع النزيف الداخلي الصامت.</li>
-                </ul>
+            <div class="input-group">
+                <label>2. النبض ومعدل ضربات القلب (Pulse):</label>
+                <select id="apgar-p" class="input-field" onchange="calcAPGAR()">
+                    <option value="2">2 - أكثر من 100 نبضة/دقيقة (> 100 bpm)</option>
+                    <option value="1">1 - أقل من 100 نبضة/دقيقة (< 100 bpm)</option>
+                    <option value="0">0 - لا يوجد نبض (Absent)</option>
+                </select>
             </div>
 
-            <div class="march-box" style="border-right-color:#a855f7;">
-                <h3 style="color:#a855f7;">H - Hypothermia & Head (منع هبوط الحرارة وإصابات الرأس)</h3>
-                <ul style="margin-top:0.4rem; padding-right:1.25rem; color:var(--text-sub); font-size:0.9rem;">
-                    <li>عزل المصاب عن الأرض الباردة وتغطيته ببطانية حرارية (Emergency Foil Blanket).</li>
-                    <li>افحص درجة الوعي واستجابة الحدقة للضوء.</li>
-                </ul>
+            <div class="input-group">
+                <label>3. الاستجابة للمنبهات والسحب (Grimace):</label>
+                <select id="apgar-g" class="input-field" onchange="calcAPGAR()">
+                    <option value="2">2 - صراخ قوي وسعال وعطاس</option>
+                    <option value="1">1 - تكشيرة أو استجابة ضعيفة</option>
+                    <option value="0">0 - لا يوجد أي استجابة</option>
+                </select>
+            </div>
+
+            <div class="input-group">
+                <label>4. النشاط وحركة العضلات (Activity):</label>
+                <select id="apgar-act" class="input-field" onchange="calcAPGAR()">
+                    <option value="2">2 - حركة نشطة وانثناء الأطراف</option>
+                    <option value="1">1 - انثناء طفيف للأطراف</option>
+                    <option value="0">0 - ارتخاء كامل للعضلات (Flaccid)</option>
+                </select>
+            </div>
+
+            <div class="input-group">
+                <label>5. التنفس (Respiration):</label>
+                <select id="apgar-r" class="input-field" onchange="calcAPGAR()">
+                    <option value="2">2 - تنفس منتظم وصراخ قوي</option>
+                    <option value="1">1 - تنفس بطيء أو غير منتظم</option>
+                    <option value="0">0 - غياب التنفس (Apnea)</option>
+                </select>
+            </div>
+
+            <div id="apgar-result-box" style="background:var(--bg-inner); padding:1rem; border-radius:8px; text-align:center;">
+                <div>درجة APGAR الكلية: <strong id="apgar-score" style="font-size:1.4rem; color:var(--accent-blue);">10 / 10</strong></div>
+                <div id="apgar-status" style="margin-top:0.4rem; font-weight:bold; color:var(--accent-green);">حالة المولود ممتازة وطبيعية (Normal Status)</div>
             </div>
         </div>
     </section>
 
-    <!-- Tab 1: START & JumpSTART Pediatric Triage (Task 2) -->
+    <!-- Tab 2: START & JumpSTART Triage -->
     <section id="triage-tab" class="tab-content">
         <div class="card">
             <h2>🏥 نظام الفرز الطبي السريع (START & JumpSTART Pediatric Triage)</h2>
@@ -238,7 +269,7 @@
         </div>
     </section>
 
-    <!-- Tab 2: CPR & Audio Guidance -->
+    <!-- Tab 3: CPR & Audio Guidance -->
     <section id="cpr-tab" class="tab-content">
         <div class="card" style="text-align:center;">
             <h2>🫀 منبه إيقاع الإنعاش القلبي والصوتي (Hands-Free CPR Audio)</h2>
@@ -259,12 +290,11 @@
         </div>
     </section>
 
-    <!-- Tab 3: GCS & AVPU Neuro Scale -->
+    <!-- Tab 4: GCS & AVPU Neuro Scale -->
     <section id="gcs-tab" class="tab-content">
         <div class="card">
             <h2>🧠 حاسبة مقياس غلاسكو ودرجة الوعي (Glasgow Coma Scale - GCS)</h2>
             <p style="color:var(--text-sub); font-size:0.85rem; margin-bottom:1rem;">تقييم شدة إصابات الرأس والتلف العصبي الميداني (من 3 إلى 15 درجة).</p>
-            
             <div class="input-group">
                 <label>1. فتح العينين (Eye Opening - E):</label>
                 <select id="gcs-eye" class="input-field" onchange="calcGCS()">
@@ -274,7 +304,6 @@
                     <option value="1">1 - لا يوجد أي استجابة</option>
                 </select>
             </div>
-
             <div class="input-group">
                 <label>2. الاستجابة اللفظية (Verbal Response - V):</label>
                 <select id="gcs-verbal" class="input-field" onchange="calcGCS()">
@@ -285,7 +314,6 @@
                     <option value="1">1 - لا يوجد استجابة لفظية</option>
                 </select>
             </div>
-
             <div class="input-group">
                 <label>3. الاستجابة الحركية (Motor Response - M):</label>
                 <select id="gcs-motor" class="input-field" onchange="calcGCS()">
@@ -297,7 +325,6 @@
                     <option value="1">1 - لا يوجد حركة إطلاقاً</option>
                 </select>
             </div>
-
             <div id="gcs-result-box" style="background:var(--bg-inner); padding:1rem; border-radius:8px; text-align:center;">
                 <div>درجة GCS الكلية: <strong id="gcs-score" style="font-size:1.4rem; color:var(--accent-blue);">15 / 15</strong></div>
                 <div id="gcs-severity" style="margin-top:0.4rem; font-weight:bold; color:var(--accent-green);">إصابة خفيفة أو طبيعية (Mild TBI)</div>
@@ -305,37 +332,7 @@
         </div>
     </section>
 
-    <!-- Tab 4: Venom & Chemical Decontamination Protocols -->
-    <section id="venom-tab" class="tab-content">
-        <div class="card">
-            <h2>🐍 بروتوكول التعامل مع اللدغات والسموم الميداني (TCCC / WHO Venom Guide)</h2>
-            <details style="background:var(--bg-inner); padding:0.85rem; border-radius:8px; margin-bottom:0.5rem;">
-                <summary style="font-weight:bold; color:var(--accent-red); cursor:pointer;">1. لدغات الأفاعي والعقارب الشديدة</summary>
-                <ol style="margin-top:0.5rem; padding-right:1.25rem; color:var(--text-sub); font-size:0.9rem;">
-                    <li><strong>تثبيت الطرف (Immobilization):</strong> ثبّت الطرف المصاب بجبيرة لمنع انتشاره في الدورة الدموية.</li>
-                    <li><strong>❌ حظر تام:</strong> لا تقم بشق الجرح، ولا تمص السم بشفتيك، ولا تضع ثلجاً إطلاقاً.</li>
-                    <li>نزع الخواتم والساعات والملابس الضيقة قبل حدوث التورم.</li>
-                </ol>
-            </details>
-        </div>
-    </section>
-
-    <!-- Tab 5: Disaster Protocols -->
-    <section id="disaster-tab" class="tab-content">
-        <div class="card">
-            <h2>🧱 بروتوكولات حماية الكوارث والبقاء (Disaster Guides)</h2>
-            <details style="background:var(--bg-inner); padding:0.85rem; border-radius:8px; margin-bottom:0.5rem;">
-                <summary style="font-weight:bold; color:var(--accent-yellow); cursor:pointer;">🌋 الزلازل والانهيارات (Drop, Cover, Hold On)</summary>
-                <ol style="margin-top:0.5rem; padding-right:1.25rem; color:var(--text-sub); font-size:0.9rem;">
-                    <li><strong>انخفض (Drop):</strong> انزل فوراً على يديك وركبتيك لتجنب السقوط.</li>
-                    <li><strong>احتمِ (Cover):</strong> اختبئ تحت طاولة أو مكتب صلب، واحْمِ رأسك ورقبتك بصلابة.</li>
-                    <li><strong>تمسك (Hold On):</strong> تمسك بالطاولة حتى يتوقف الاهتزاز تماماً.</li>
-                </ol>
-            </details>
-        </div>
-    </section>
-
-    <!-- Tab 6: Survival Calculators -->
+    <!-- Tab 5: Survival Calculators -->
     <section id="calc-tab" class="tab-content">
         <div class="card">
             <h2>🔥 حاسبة نسبة الحروق ومحاليل الإنقاذ (Rule of Nines & Parkland)</h2>
@@ -375,7 +372,7 @@
         </div>
     </section>
 
-    <!-- Tab 7: ICE Card & QR -->
+    <!-- Tab 6: ICE Card & QR -->
     <section id="ice-tab" class="tab-content">
         <div class="card">
             <h2>🆔 بطاقة الطوارئ الشخصية ومولد رمز QR الميداني (ICE & QR)</h2>
@@ -419,7 +416,7 @@
         </div>
     </section>
 
-    <!-- Tab 8: Translator -->
+    <!-- Tab 7: Translator -->
     <section id="translator-tab" class="tab-content">
         <div class="card">
             <h2>🌐 المترجم الطبي الميداني للطوارئ</h2>
@@ -434,7 +431,7 @@
         </div>
     </section>
 
-    <!-- Tab 9: SOS Beacon -->
+    <!-- Tab 8: SOS Beacon -->
     <section id="beacon-tab" class="tab-content">
         <div class="card" style="text-align:center;">
             <h2>📢 منبه الاستغاثة الميداني (SOS Beacon)</h2>
@@ -455,6 +452,10 @@
             <span>🩸</span>
             <span>MARCH</span>
         </button>
+        <button onclick="switchTab('apgar-tab', this)">
+            <span>👶</span>
+            <span>APGAR</span>
+        </button>
         <button onclick="switchTab('triage-tab', this)">
             <span>🏥</span>
             <span>الفرز</span>
@@ -466,14 +467,6 @@
         <button onclick="switchTab('gcs-tab', this)">
             <span>🧠</span>
             <span>GCS</span>
-        </button>
-        <button onclick="switchTab('venom-tab', this)">
-            <span>🐍</span>
-            <span>السموم</span>
-        </button>
-        <button onclick="switchTab('disaster-tab', this)">
-            <span>🧱</span>
-            <span>الكوارث</span>
         </button>
         <button onclick="switchTab('calc-tab', this)">
             <span>🧮</span>
@@ -516,6 +509,29 @@
                 const utterance = new SpeechSynthesisUtterance(text);
                 utterance.lang = 'ar-SA';
                 window.speechSynthesis.speak(utterance);
+            }
+        }
+
+        // APGAR Calculator (Task 3)
+        function calcAPGAR() {
+            const a = parseInt(document.getElementById('apgar-a').value);
+            const p = parseInt(document.getElementById('apgar-p').value);
+            const g = parseInt(document.getElementById('apgar-g').value);
+            const act = parseInt(document.getElementById('apgar-act').value);
+            const r = parseInt(document.getElementById('apgar-r').value);
+            const total = a + p + g + act + r;
+
+            document.getElementById('apgar-score').textContent = `${total} / 10`;
+            const status = document.getElementById('apgar-status');
+            if (total >= 7) {
+                status.textContent = '✅ حالة المولود طبيعية وممتازة (Normal Status)';
+                status.style.color = 'var(--accent-green)';
+            } else if (total >= 4) {
+                status.textContent = '⚠️ تثبيط متوسط - يحتاج أوكسجين وتحفيز تنفس (Moderately Depressed)';
+                status.style.color = 'var(--accent-yellow)';
+            } else {
+                status.textContent = '🚨 تثبيط حاد جداً - يحتاج إنعاش حديثي ولادة فوري (Severely Depressed)';
+                status.style.color = 'var(--accent-red)';
             }
         }
 
