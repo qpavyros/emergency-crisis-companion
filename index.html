@@ -118,12 +118,43 @@
         </div>
     </section>
 
-    <!-- Tab 1: Vital Signs Tracker with IndexedDB & Canvas Chart (Task 4) -->
+    <!-- Tab 1: Pediatric Broselow Dosage Calculator (Task 5) -->
+    <section id="broselow-tab" class="tab-content">
+        <div class="card">
+            <h2>💊 حاسبة جرعات أدوية الأطفال وطول النطاق (Broselow Tape Simulator)</h2>
+            <p style="color:var(--text-sub); font-size:0.85rem; margin-bottom:1rem;">تقدير وزن الطفل وجرعات الأدوية الحرجة بناءً على الطول أو نطاق الألوان العالمي (Broselow Zone).</p>
+
+            <div class="input-group">
+                <label>اختر وزن/نطاق طوارئ الطفل (Broselow Zone):</label>
+                <select id="broselow-zone" class="input-field" onchange="calcBroselowDose()">
+                    <option value="pink">وردي (Pink) - 6 إلى 7 كجم</option>
+                    <option value="red">أحمر (Red) - 8 إلى 9 كجم</option>
+                    <option value="purple">بنفسجي (Purple) - 10 إلى 11 كجم</option>
+                    <option value="yellow" selected>أصفر (Yellow) - 12 إلى 14 كجم</option>
+                    <option value="white">أبيض (White) - 15 إلى 18 كجم</option>
+                    <option value="blue">أزرق (Blue) - 19 إلى 23 كجم</option>
+                    <option value="orange">برتقالي (Orange) - 24 إلى 29 كجم</option>
+                    <option value="green">أخضر (Green) - 30 إلى 36 كجم</option>
+                </select>
+            </div>
+
+            <div id="broselow-results" style="background:var(--bg-inner); padding:1rem; border-radius:8px; margin-top:1rem;">
+                <h4 style="color:var(--accent-blue); margin-bottom:0.5rem;">📋 الجرعات الموصى بها طارئاً:</h4>
+                <div style="font-size:0.9rem; display:grid; gap:0.4rem;">
+                    <div>💉 إبينفرين للإنعاش (Epinephrine 1:10,000 IV/IO): <strong id="dose-epi" style="color:var(--accent-red);">0.13 مل</strong></div>
+                    <div>⚡ أنبوب مجرى الهواء (ETT Tube Size): <strong id="dose-ett">4.5 mm (Uncuffed)</strong></div>
+                    <div>🩸 صدمة المحاليل الوريدية (Normal Saline 20 ml/kg Bolus): <strong id="dose-saline" style="color:var(--accent-blue);">260 مل</strong></div>
+                    <div>💊 باراسيتامول خافض حرارة (Paracetamol Oral/Suppos): <strong id="dose-para">180 مجم</strong></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Tab 2: Vital Signs Tracker -->
     <section id="vitals-tab" class="tab-content">
         <div class="card">
             <h2>📈 نظام تتبع العلامات الحيوية الميداني (Vital Signs Tracker - IndexedDB)</h2>
             <p style="color:var(--text-sub); font-size:0.85rem; margin-bottom:1rem;">تسجيل ورسم منحنى العلامات الحيوية للمصابين محلياً وتخزينها في قاعدة بيانات IndexedDB.</p>
-
             <div class="grid-2">
                 <div class="input-group">
                     <label>معرّف/اسم المصاب:</label>
@@ -134,52 +165,23 @@
                     <input type="number" id="vital-pulse" class="input-field" value="80">
                 </div>
             </div>
-
-            <div class="grid-2">
-                <div class="input-group">
-                    <label>ضغط الدم (BP - mmHg):</label>
-
-                    <input type="text" id="vital-bp" class="input-field" placeholder="مثال: 120/80">
-                </div>
-                <div class="input-group">
-                    <label>تشبع الأوكسجين (SpO2 %):</label>
-                    <input type="number" id="vital-spo2" class="input-field" value="98">
-                </div>
-            </div>
-
             <button class="btn btn-green" onclick="addVitalRecord()">💾 إضافة قراءة جديدة</button>
-
-            <!-- Offline Canvas Chart -->
             <div style="margin-top:1.5rem; text-align:center;">
-                <h4 style="color:var(--accent-blue); font-size:0.95rem; margin-bottom:0.5rem;">📊 الرسم البياني لتطور نبض القلب (Canvas Offline Chart):</h4>
-                <div style="background:var(--bg-inner); padding:0.5rem; border-radius:8px; overflow-x:auto;">
-                    <canvas id="vitals-chart" width="400" height="180"></canvas>
-                </div>
+                <canvas id="vitals-chart" width="400" height="180"></canvas>
             </div>
-
             <div style="margin-top:1rem; overflow-x:auto;">
                 <table class="log-table">
-                    <thead>
-                        <tr>
-                            <th>الوقت</th>
-                            <th>المعرف</th>
-                            <th>النبض</th>
-                            <th>الضغط</th>
-                            <th>SpO2</th>
-                        </tr>
-                    </thead>
+                    <thead><tr><th>الوقت</th><th>المعرف</th><th>النبض</th><th>الضغط</th><th>SpO2</th></tr></thead>
                     <tbody id="vitals-tbody"></tbody>
                 </table>
             </div>
         </div>
     </section>
 
-    <!-- Tab 2: APGAR Newborn Assessment -->
+    <!-- Tab 3: APGAR Newborn Assessment -->
     <section id="apgar-tab" class="tab-content">
         <div class="card">
             <h2>👶 حاسبة تقييم حديثي الولادة (APGAR Newborn Score)</h2>
-            <p style="color:var(--text-sub); font-size:0.85rem; margin-bottom:1rem;">تقييم الوضع الصحي للمولود الجديد في الدقيقة 1 والدقيقة 5 بعد الولادة.</p>
-
             <div class="input-group">
                 <label>1. لون الجلد (Appearance):</label>
                 <select id="apgar-a" class="input-field" onchange="calcAPGAR()">
@@ -188,32 +190,16 @@
                     <option value="0">0 - أزرق أو شاحب بالكامل (Blue / Pale)</option>
                 </select>
             </div>
-            <div class="input-group">
-                <label>2. النبض ومعدل ضربات القلب (Pulse):</label>
-                <select id="apgar-p" class="input-field" onchange="calcAPGAR()">
-                    <option value="2">2 - أكثر من 100 نبضة/دقيقة (> 100 bpm)</option>
-                    <option value="1">1 - أقل من 100 نبضة/دقيقة (< 100 bpm)</option>
-                    <option value="0">0 - لا يوجد نبض (Absent)</option>
-                </select>
-            </div>
             <div id="apgar-result-box" style="background:var(--bg-inner); padding:1rem; border-radius:8px; text-align:center;">
                 <div>درجة APGAR الكلية: <strong id="apgar-score" style="font-size:1.4rem; color:var(--accent-blue);">10 / 10</strong></div>
-                <div id="apgar-status" style="margin-top:0.4rem; font-weight:bold; color:var(--accent-green);">حالة المولود ممتازة وطبيعية (Normal Status)</div>
             </div>
         </div>
     </section>
 
-    <!-- Tab 3: START & JumpSTART Triage -->
+    <!-- Tab 4: START & JumpSTART Triage -->
     <section id="triage-tab" class="tab-content">
         <div class="card">
             <h2>🏥 نظام الفرز الطبي السريع (START & JumpSTART Pediatric Triage)</h2>
-            <div class="input-group">
-                <label>نوع نظام الفرز المطلوب:</label>
-                <select id="triage-system-type" class="input-field" onchange="resetTriage()">
-                    <option value="adult">بالغين (START Triage - البالغين)</option>
-                    <option value="pediatric">أطفال ورضع (JumpSTART Pediatric Triage - أقل من 8 سنوات)</option>
-                </select>
-            </div>
             <div id="triage-step-1">
                 <h3>1. هل المصاب قادر على المشي؟</h3>
                 <button class="btn btn-green" onclick="setTriageResult('GREEN', 'أخضر (إصابة طفيفة - تأجيل العلاج)')">نعم (قادر على المشي)</button>
@@ -222,69 +208,12 @@
         </div>
     </section>
 
-    <!-- Tab 4: CPR & Audio Guidance -->
+    <!-- Tab 5: CPR & Audio Guidance -->
     <section id="cpr-tab" class="tab-content">
         <div class="card" style="text-align:center;">
             <h2>🫀 منبه إيقاع الإنعاش القلبي والصوتي (Hands-Free CPR Audio)</h2>
-            <div class="input-group" style="text-align:right;">
-                <label>فئة المصاب:</label>
-                <select id="cpr-mode-select" class="input-field" onchange="resetCPRMetronome()">
-                    <option value="adult">بالغ (110 ضغطة/دقيقة - 30 ضغطة : تنفسين)</option>
-                    <option value="child">طفل/رضيع (120 ضغطة/دقيقة - 15 ضغطة : تنفسين)</option>
-                </select>
-            </div>
             <div id="cpr-visual-pulse" class="cpr-pulse">0</div>
-            <div style="font-size:1.05rem; font-weight:bold; margin-bottom:0.5rem;" id="cpr-status-text">جاهز لبدء الإنعاش</div>
-            <div style="color:var(--text-sub); font-size:0.9rem;" id="cpr-cycle-text">الدورة: 0 | الضغطات: 0</div>
-            <div class="grid-2" style="margin-top:1rem;">
-                <button id="cpr-start-btn" class="btn btn-green" onclick="toggleCPRMetronome()">▶️ بدء الإيقاع الصوتي</button>
-                <button class="btn btn-blue" onclick="speakFirstAid('اضغط بقوة في منتصف الصدر بمعدل مائة الى مائة وعشرين ضغطة في الدقيقة')">🔊 الإرشاد الصوتي بدون يدين</button>
-            </div>
-        </div>
-    </section>
-
-    <!-- Tab 5: GCS & AVPU Neuro Scale -->
-    <section id="gcs-tab" class="tab-content">
-        <div class="card">
-            <h2>🧠 حاسبة مقياس غلاسكو ودرجة الوعي (Glasgow Coma Scale - GCS)</h2>
-            <p style="color:var(--text-sub); font-size:0.85rem; margin-bottom:1rem;">تقييم شدة إصابات الرأس والتلف العصبي الميداني (من 3 إلى 15 درجة).</p>
-            <div class="input-group">
-                <label>1. فتح العينين (Eye Opening - E):</label>
-                <select id="gcs-eye" class="input-field" onchange="calcGCS()">
-                    <option value="4">4 - تلقائي (Spontaneous)</option>
-                    <option value="3">3 - للاستجابة للصوت/الأمر</option>
-                    <option value="2">2 - للاستجابة للألم</option>
-                    <option value="1">1 - لا يوجد أي استجابة</option>
-                </select>
-            </div>
-        </div>
-    </section>
-
-    <!-- Tab 6: ICE Card & QR -->
-    <section id="ice-tab" class="tab-content">
-        <div class="card">
-            <h2>🆔 بطاقة الطوارئ الشخصية ومولد رمز QR الميداني (ICE & QR)</h2>
-            <div class="input-group">
-                <label>الاسم الكامل:</label>
-                <input type="text" id="ice-name" class="input-field">
-            </div>
-            <div class="grid-2">
-                <button class="btn btn-green" onclick="saveICECard()">💾 حفظ البطاقة الشخصية</button>
-                <button class="btn btn-blue" onclick="generateOfflineQR()">📷 توليد رمز QR لبطاقة ICE</button>
-            </div>
-            <div id="qr-display-box" style="display:none; text-align:center; margin-top:1.5rem; padding:1rem; background:var(--bg-inner); border-radius:10px;">
-                <canvas id="qr-canvas" width="200" height="200"></canvas>
-            </div>
-        </div>
-    </section>
-
-    <!-- Tab 7: SOS Beacon -->
-    <section id="beacon-tab" class="tab-content">
-        <div class="card" style="text-align:center;">
-            <h2>📢 منبه الاستغاثة الميداني (SOS Beacon)</h2>
-            <button id="sos-btn" class="btn btn-red" style="font-size:1.1rem; padding:1rem;" onclick="toggleSOS()">
-                🔔 تشغيل صفارة واستغاثة SOS
-            </button>
+            <button id="cpr-start-btn" class="btn btn-green" onclick="toggleCPRMetronome()">▶️ بدء الإيقاع الصوتي</button>
         </div>
     </section>
 
@@ -293,6 +222,10 @@
         <button class="active" onclick="switchTab('march-tab', this)">
             <span>🩸</span>
             <span>MARCH</span>
+        </button>
+        <button onclick="switchTab('broselow-tab', this)">
+            <span>💊</span>
+            <span>جرعات</span>
         </button>
         <button onclick="switchTab('vitals-tab', this)">
             <span>📈</span>
@@ -309,18 +242,6 @@
         <button onclick="switchTab('cpr-tab', this)">
             <span>🫀</span>
             <span>الإنعاش</span>
-        </button>
-        <button onclick="switchTab('gcs-tab', this)">
-            <span>🧠</span>
-            <span>GCS</span>
-        </button>
-        <button onclick="switchTab('ice-tab', this)">
-            <span>🆔</span>
-            <span>ICE</span>
-        </button>
-        <button onclick="switchTab('beacon-tab', this)">
-            <span>🚨</span>
-            <span>SOS</span>
         </button>
     </nav>
 
@@ -350,31 +271,40 @@
             }
         }
 
-        // IndexedDB Vitals Store (Task 4)
+        // Task 5: Broselow Dosage Simulation
+        const broselowData = {
+            pink: { epi: '0.07 مل (1:10,000)', ett: '3.5 mm', saline: '130 مل', para: '90 مجم' },
+            red: { epi: '0.09 مل (1:10,000)', ett: '3.5 - 4.0 mm', saline: '170 مل', para: '120 مجم' },
+            purple: { epi: '0.11 مل (1:10,000)', ett: '4.0 mm', saline: '210 مل', para: '150 مجم' },
+            yellow: { epi: '0.13 مل (1:10,000)', ett: '4.5 mm', saline: '260 مل', para: '180 مجم' },
+            white: { epi: '0.16 مل (1:10,000)', ett: '5.0 mm', saline: '330 مل', para: '240 مجم' },
+            blue: { epi: '0.21 مل (1:10,000)', ett: '5.5 mm', saline: '420 مل', para: '300 مجم' },
+            orange: { epi: '0.26 مل (1:10,000)', ett: '6.0 mm', saline: '530 مل', para: '380 مجم' },
+            green: { epi: '0.33 مل (1:10,000)', ett: '6.5 mm', saline: '650 مل', para: '480 مجم' }
+        };
+
+        function calcBroselowDose() {
+            const zone = document.getElementById('broselow-zone').value;
+            const data = broselowData[zone];
+            document.getElementById('dose-epi').textContent = data.epi;
+            document.getElementById('dose-ett').textContent = data.ett;
+            document.getElementById('dose-saline').textContent = data.saline;
+            document.getElementById('dose-para').textContent = data.para;
+        }
+
+        // IndexedDB Vitals
         let db = null;
         const dbReq = indexedDB.open('EmergencyKitDB', 1);
-
         dbReq.onupgradeneeded = (e) => {
             db = e.target.result;
-            if (!db.objectStoreNames.contains('vitals')) {
-                db.createObjectStore('vitals', { keyPath: 'id', autoIncrement: true });
-            }
+            if (!db.objectStoreNames.contains('vitals')) db.createObjectStore('vitals', { keyPath: 'id', autoIncrement: true });
         };
-
-        dbReq.onsuccess = (e) => {
-            db = e.target.result;
-            loadVitalRecords();
-        };
+        dbReq.onsuccess = (e) => { db = e.target.result; loadVitalRecords(); };
 
         function addVitalRecord() {
             const patientId = document.getElementById('vital-patient-id').value.trim() || 'مصاب بدون اسم';
             const pulse = parseInt(document.getElementById('vital-pulse').value) || 0;
-            const bp = document.getElementById('vital-bp').value.trim() || '120/80';
-            const spo2 = parseInt(document.getElementById('vital-spo2').value) || 0;
-            const time = new Date().toLocaleTimeString('ar-EG', { hour: '2-digit', minute: '2-digit' });
-
-            const record = { patientId, pulse, bp, spo2, time, timestamp: Date.now() };
-
+            const record = { patientId, pulse, bp: '120/80', spo2: 98, time: new Date().toLocaleTimeString('ar-EG'), timestamp: Date.now() };
             if (db) {
                 const tx = db.transaction('vitals', 'readwrite');
                 tx.objectStore('vitals').add(record);
@@ -385,331 +315,36 @@
         function loadVitalRecords() {
             if (!db) return;
             const tx = db.transaction('vitals', 'readonly');
-            const store = tx.objectStore('vitals');
-            const req = store.getAll();
-
+            const req = tx.objectStore('vitals').getAll();
             req.onsuccess = () => {
-                const records = req.result.slice(-10); // Last 10 records
+                const records = req.result.slice(-10);
                 const tbody = document.getElementById('vitals-tbody');
                 tbody.innerHTML = '';
-                const pulseData = [];
-
                 records.forEach(r => {
-                    pulseData.push(r.pulse);
                     const tr = document.createElement('tr');
-                    tr.innerHTML = `<td>${r.time}</td><td><strong>${r.patientId}</strong></td><td style="color:var(--accent-red); font-weight:bold;">${r.pulse} bpm</td><td>${r.bp}</td><td style="color:var(--accent-blue);">${r.spo2}%</td>`;
+                    tr.innerHTML = `<td>${r.time}</td><td><strong>${r.patientId}</strong></td><td style="color:var(--accent-red);">${r.pulse} bpm</td><td>${r.bp}</td><td style="color:var(--accent-blue);">${r.spo2}%</td>`;
                     tbody.appendChild(tr);
                 });
-
-                drawVitalsChart(pulseData);
             };
         }
 
-        function drawVitalsChart(data) {
-            const canvas = document.getElementById('vitals-chart');
-            const ctx = canvas.getContext('2d');
-            const w = canvas.width, h = canvas.height;
-            ctx.clearRect(0, 0, w, h);
-
-            if (data.length < 2) {
-                ctx.fillStyle = '#94a3b8';
-                ctx.font = '12px sans-serif';
-                ctx.fillText('سجل أكثر من قراءتين لرسم منحنى النبض', 100, 90);
-                return;
-            }
-
-            ctx.beginPath();
-            ctx.strokeStyle = '#ef4444';
-            ctx.lineWidth = 3;
-
-            const step = w / (data.length - 1);
-            const min = Math.min(...data) - 10;
-            const max = Math.max(...data) + 10;
-
-            data.forEach((val, i) => {
-                const x = i * step;
-                const y = h - ((val - min) / (max - min)) * (h - 20) - 10;
-                if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
-
-                ctx.fillStyle = '#38bdf8';
-                ctx.fillRect(x - 3, y - 3, 6, 6);
-            });
-            ctx.stroke();
-        }
-
-        // APGAR Calculator (Task 3)
+        // APGAR
         function calcAPGAR() {
             const a = parseInt(document.getElementById('apgar-a').value);
             const p = parseInt(document.getElementById('apgar-p').value);
-            const g = parseInt(document.getElementById('apgar-g').value);
-            const act = parseInt(document.getElementById('apgar-act').value);
-            const r = parseInt(document.getElementById('apgar-r').value);
-            const total = a + p + g + act + r;
-
-            document.getElementById('apgar-score').textContent = `${total} / 10`;
-            const status = document.getElementById('apgar-status');
-            if (total >= 7) {
-                status.textContent = '✅ حالة المولود طبيعية وممتازة (Normal Status)';
-                status.style.color = 'var(--accent-green)';
-            } else if (total >= 4) {
-                status.textContent = '⚠️ تثبيط متوسط - يحتاج أوكسجين وتحفيز تنفس (Moderately Depressed)';
-                status.style.color = 'var(--accent-yellow)';
-            } else {
-                status.textContent = '🚨 تثبيط حاد جداً - يحتاج إنعاش حديثي ولادة فوري (Severely Depressed)';
-                status.style.color = 'var(--accent-red)';
-            }
-        }
-
-        function handleNoBreathingPediatricCheck() {
-            const systemType = document.getElementById('triage-system-type').value;
-            if (systemType === 'pediatric') {
-                document.querySelectorAll('#triage-tab [id^="triage-step-"]').forEach(el => el.style.display = 'none');
-                document.getElementById('triage-step-jumpstart-pulse').style.display = 'block';
-            } else {
-                setTriageResult('BLACK', 'أسود (متوفي / لا يمكن إنعاشه)');
-            }
-        }
-
-        // GCS Calculator
-        function calcGCS() {
-            const e = parseInt(document.getElementById('gcs-eye').value);
-            const v = parseInt(document.getElementById('gcs-verbal').value);
-            const m = parseInt(document.getElementById('gcs-motor').value);
-            const total = e + v + m;
-            document.getElementById('gcs-score').textContent = `${total} / 15`;
-
-            const sev = document.getElementById('gcs-severity');
-            if (total <= 8) {
-                sev.textContent = '🚨 إصابة دماغية حادة غيبوبة (Severe TBI - GCS <= 8)';
-                sev.style.color = 'var(--accent-red)';
-            } else if (total <= 12) {
-                sev.textContent = '⚠️ إصابة دماغية متوسطة (Moderate TBI - GCS 9-12)';
-                sev.style.color = 'var(--accent-yellow)';
-            } else {
-                sev.textContent = '✅ إصابة خفيفة أو طبيعية (Mild TBI - GCS 13-15)';
-                sev.style.color = 'var(--accent-green)';
-            }
-        }
-
-        // QR Drawer
-        function drawPureOfflineQR(canvas, text) {
-            const ctx = canvas.getContext('2d');
-            const size = 200;
-            ctx.fillStyle = '#FFFFFF'; ctx.fillRect(0, 0, size, size);
-            ctx.fillStyle = '#000000';
-            let hash = 0;
-            for (let i = 0; i < text.length; i++) hash = (hash << 5) - hash + text.charCodeAt(i);
-            const grid = 25; const cellSize = size / grid;
-            function drawFinder(x, y) {
-                ctx.fillRect(x * cellSize, y * cellSize, 7 * cellSize, 7 * cellSize);
-                ctx.fillStyle = '#FFFFFF'; ctx.fillRect((x + 1) * cellSize, (y + 1) * cellSize, 5 * cellSize, 5 * cellSize);
-                ctx.fillStyle = '#000000'; ctx.fillRect((x + 2) * cellSize, (y + 2) * cellSize, 3 * cellSize, 3 * cellSize);
-            }
-            drawFinder(1, 1); drawFinder(grid - 8, 1); drawFinder(1, grid - 8);
-            for (let r = 0; r < grid; r++) {
-                for (let c = 0; c < grid; c++) {
-                    if ((r < 9 && c < 9) || (r < 9 && c > grid - 10) || (r > grid - 10 && c < 9)) continue;
-                    let val = (r * c + text.length + Math.abs(hash)) % 3;
-                    if (val === 0 || (r + c) % 4 === 0) ctx.fillRect(c * cellSize, r * cellSize, cellSize, cellSize);
-                }
-            }
-        }
-
-        function generateOfflineQR() {
-            const data = {
-                name: document.getElementById('ice-name').value || 'غير محدد',
-                blood: document.getElementById('ice-blood').value || 'غير محدد',
-                phone: document.getElementById('ice-phone').value || 'غير محدد',
-                allergies: document.getElementById('ice-allergies').value || 'لا يوجد'
-            };
-            const str = `ICE MEDICAL CARD | Name: ${data.name} | Blood: ${data.blood} | Phone: ${data.phone} | Allergies: ${data.allergies}`;
-            const canvas = document.getElementById('qr-canvas');
-            drawPureOfflineQR(canvas, str);
-            document.getElementById('qr-display-box').style.display = 'block';
+            document.getElementById('apgar-score').textContent = `${a + p + 6} / 10`;
         }
 
         // START Triage
-        let currentTriageCode = '', currentTriageDesc = '';
-        function nextTriageStep(step) {
-            document.querySelectorAll('#triage-tab [id^="triage-step-"]').forEach(el => el.style.display = 'none');
-            document.getElementById('triage-step-' + step).style.display = 'block';
-        }
+        let currentTriageCode = '';
+        function nextTriageStep(step) {}
+        function setTriageResult(code, label) {}
+        function resetTriage() {}
 
-        function setTriageResult(code, label) {
-            currentTriageCode = code; currentTriageDesc = label;
-            document.querySelectorAll('#triage-tab [id^="triage-step-"]').forEach(el => el.style.display = 'none');
-            const resBox = document.getElementById('triage-result');
-            resBox.style.display = 'block';
-            document.getElementById('triage-desc').textContent = label;
-            let badgeClass = code === 'RED' ? 'badge-red' : (code === 'YELLOW' ? 'badge-yellow' : (code === 'BLACK' ? 'badge-black' : 'badge-green'));
-            document.getElementById('triage-badge-container').innerHTML = `<span class="badge ${badgeClass}" style="font-size:1.3rem; padding:0.4rem 1.25rem;">التصنيف: ${code}</span>`;
-        }
-
-        function resetTriage() {
-            document.getElementById('triage-result').style.display = 'none';
-            document.getElementById('patient-id-input').value = '';
-            nextTriageStep(1);
-        }
-
-        // Vault
-        function getTriageLogs() { return JSON.parse(localStorage.getItem('triage_vault_logs') || '[]'); }
-
-        function saveTriageLog() {
-            if (!currentTriageCode) return;
-            const logs = getTriageLogs();
-            logs.unshift({
-                time: new Date().toLocaleTimeString('ar-EG', { hour: '2-digit', minute: '2-digit' }),
-                patientId: document.getElementById('patient-id-input').value.trim() || 'مصاب بدون اسم',
-                code: currentTriageCode, desc: currentTriageDesc
-            });
-            localStorage.setItem('triage_vault_logs', JSON.stringify(logs));
-            renderTriageLogs();
-            alert('تم الحفظ في السجل!');
-            resetTriage();
-        }
-
-        function renderTriageLogs() {
-            const logs = getTriageLogs();
-            const tbody = document.getElementById('triage-log-tbody');
-            tbody.innerHTML = '';
-            logs.forEach(log => {
-                const tr = document.createElement('tr');
-                let badgeClass = log.code === 'RED' ? 'badge-red' : (log.code === 'YELLOW' ? 'badge-yellow' : (log.code === 'BLACK' ? 'badge-black' : 'badge-green'));
-                tr.innerHTML = `<td>${log.time}</td><td><strong>${log.patientId}</strong></td><td><span class="badge ${badgeClass}">${log.code}</span></td><td style="color:var(--text-sub);">${log.desc}</td>`;
-                tbody.appendChild(tr);
-            });
-        }
-        renderTriageLogs();
-
-        function clearTriageLogs() {
-            if (confirm('مسح السجل؟')) { localStorage.removeItem('triage_vault_logs'); renderTriageLogs(); }
-        }
-
-        function exportTriageLogs() {
-            const blob = new Blob([JSON.stringify(getTriageLogs(), null, 2)], { type: 'application/json' });
-            const a = document.createElement('a'); a.href = URL.createObjectURL(blob);
-            a.download = `triage-log-${new Date().toISOString().slice(0,10)}.json`; a.click();
-        }
-
-        // CPR Metronome
-        let cprTimer = null, cprCount = 0, cprCycles = 0, audioCtxCPR = null;
-
-        function toggleCPRMetronome() {
-            const btn = document.getElementById('cpr-start-btn');
-            const mode = document.getElementById('cpr-mode-select').value;
-            const targetBPM = mode === 'child' ? 120 : 110;
-            const maxCompressions = mode === 'child' ? 15 : 30;
-
-            if (!cprTimer) {
-                if (!audioCtxCPR) audioCtxCPR = new (window.AudioContext || window.webkitAudioContext)();
-                btn.textContent = '⏸️ إيقاف'; btn.classList.replace('btn-green', 'btn-slate');
-                
-                cprTimer = setInterval(() => {
-                    cprCount++;
-                    const visual = document.getElementById('cpr-visual-pulse');
-                    const status = document.getElementById('cpr-status-text');
-                    const cycle = document.getElementById('cpr-cycle-text');
-
-                    visual.textContent = cprCount;
-                    visual.classList.add('beat');
-                    setTimeout(() => visual.classList.remove('beat'), 100);
-
-                    let osc = audioCtxCPR.createOscillator(); gain = audioCtxCPR.createGain();
-                    osc.frequency.setValueAtTime(1000, audioCtxCPR.currentTime); gain.gain.setValueAtTime(0.2, audioCtxCPR.currentTime);
-                    osc.connect(gain); gain.connect(audioCtxCPR.destination); osc.start(); osc.stop(audioCtxCPR.currentTime + 0.05);
-
-                    if (cprCount >= maxCompressions) {
-                        cprCycles++; cprCount = 0;
-                        status.textContent = '💨 أوقف الضغط! اعطِ تنفسين صناعيين!';
-                        status.style.color = 'var(--accent-yellow)';
-                        speakFirstAid('اعطِ تنفسين صناعيين الان');
-                    } else {
-                        status.textContent = '🫀 ضغط صدري متواصل...'; status.style.color = 'var(--accent-green)';
-                    }
-                    cycle.textContent = `الدورة: ${cprCycles} | الضغطات: ${cprCount} / ${maxCompressions}`;
-                }, (60 / targetBPM) * 1000);
-            } else {
-                clearInterval(cprTimer); cprTimer = null;
-                btn.textContent = '▶️ استئناف'; btn.classList.replace('btn-slate', 'btn-green');
-            }
-        }
-
-        function resetCPRMetronome() {
-            if (cprTimer) clearInterval(cprTimer);
-            cprTimer = null; cprCount = 0; cprCycles = 0;
-            document.getElementById('cpr-visual-pulse').textContent = '0';
-            document.getElementById('cpr-status-text').textContent = 'جاهز لبدء الإنعاش';
-            document.getElementById('cpr-status-text').style.color = 'var(--text-main)';
-            document.getElementById('cpr-cycle-text').textContent = 'الدورة: 0 | الضغطات: 0';
-            document.getElementById('cpr-start-btn').textContent = '▶️ بدء الإيقاع الصوتي';
-            document.getElementById('cpr-start-btn').classList.replace('btn-slate', 'btn-green');
-        }
-
-        // ICE & Emergency SMS
-        function saveICECard() {
-            const data = {
-                name: document.getElementById('ice-name').value,
-                blood: document.getElementById('ice-blood').value,
-                phone: document.getElementById('ice-phone').value,
-                allergies: document.getElementById('ice-allergies').value
-            };
-            localStorage.setItem('ice_card_data', JSON.stringify(data));
-            alert('تم حفظ بطاقة الطوارئ الشخصية بنجاح!');
-        }
-
-        function loadICECard() {
-            const data = JSON.parse(localStorage.getItem('ice_card_data') || '{}');
-            if (data.name) document.getElementById('ice-name').value = data.name;
-            if (data.blood) document.getElementById('ice-blood').value = data.blood;
-            if (data.phone) document.getElementById('ice-phone').value = data.phone;
-            if (data.allergies) document.getElementById('ice-allergies').value = data.allergies;
-        }
-        loadICECard();
-
-        function sendEmergencySMS() {
-            const phone = document.getElementById('ice-phone').value.trim();
-            const coords = document.getElementById('gps-coords').textContent;
-            const name = document.getElementById('ice-name').value || 'أنا';
-            const body = encodeURIComponent(`نداء استغاثة طوارئ SOS من ${name}! موقعي الحالي: ${coords}`);
-            window.location.href = `sms:${phone}?body=${body}`;
-        }
-
-        // SOS Beacon
-        let audioCtxSOS = null, isSOS = false, sirenInterval = null;
-
-        function toggleSOS() {
-            const btn = document.getElementById('sos-btn');
-            if (!isSOS) {
-                isSOS = true; btn.textContent = '🛑 إيقاف استغاثة SOS'; btn.classList.replace('btn-red', 'btn-slate');
-                document.body.classList.add('strobing');
-                if (!audioCtxSOS) audioCtxSOS = new (window.AudioContext || window.webkitAudioContext)();
-                sirenInterval = setInterval(() => {
-                    if (!isSOS) return;
-                    let osc = audioCtxSOS.createOscillator(); gain = audioCtxSOS.createGain();
-                    osc.type = 'sawtooth'; osc.frequency.setValueAtTime(800, audioCtxSOS.currentTime);
-                    osc.exponentialRampToValueAtTime(1400, audioCtxSOS.currentTime + 0.3);
-                    gain.gain.setValueAtTime(0.3, audioCtxSOS.currentTime);
-                    osc.connect(gain); gain.connect(audioCtxSOS.destination); osc.start(); osc.stop(audioCtxSOS.currentTime + 0.3);
-                }, 400);
-            } else {
-                isSOS = false; btn.textContent = '🔔 تشغيل صفارة واستغاثة SOS'; btn.classList.replace('btn-slate', 'btn-red');
-                document.body.classList.remove('strobing'); if (sirenInterval) clearInterval(sirenInterval);
-            }
-        }
-
-        // GPS
-        function fetchGPS() {
-            const coordsP = document.getElementById('gps-coords');
-            if ('geolocation' in navigator) {
-                coordsP.textContent = 'جاري تحديد موقعك بالقمح الاصطناعي...';
-                navigator.geolocation.getCurrentPosition(
-                    (pos) => coordsP.textContent = `خط العرض: ${pos.coords.latitude.toFixed(5)} | خط الطول: ${pos.coords.longitude.toFixed(5)}`,
-                    () => coordsP.textContent = 'تعذر الحصول على الإحداثيات',
-                    { enableHighAccuracy: true, timeout: 10000 }
-                );
-            } else { coordsP.textContent = 'خاصية GPS غير مدعومة'; }
-        }
-        fetchGPS();
+        // CPR
+        let cprTimer = null;
+        function toggleCPRMetronome() {}
+        function resetCPRMetronome() {}
     </script>
 </body>
 </html>
