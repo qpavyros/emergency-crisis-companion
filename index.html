@@ -75,45 +75,50 @@
         </button>
     </header>
 
-    <!-- Tab 0: Morse Code Generator (Task 10) -->
-    <section id="morse-tab" class="tab-content active">
-        <div class="card">
-            <h2>📡 مولد إشارات مورس الضوئية (Morse Code Generator)</h2>
-            <p style="color:var(--text-sub); font-size:0.85rem; margin-bottom:1rem;">تحويل النصوص إلى ومضات ضوئية وصوتية بلغة مورس لإرسال إشارات استغاثة بعيدة المدى.</p>
+    <!-- Tab 0: Water Purification Timer (Task 11) -->
+    <section id="watertimer-tab" class="tab-content active">
+        <div class="card" style="text-align:center;">
+            <h2>💧 مؤقت تنقية المياه الميداني (Water Purification Timer)</h2>
+            <p style="color:var(--text-sub); font-size:0.85rem; margin-bottom:1rem;">حساب الوقت الدقيق لغلي المياه أو تفاعل الأقراص الكيميائية لقتل الميكروبات.</p>
 
-            <div class="input-group">
-                <label>النص المراد بثه بلغة مورس (Morse Message):</label>
-                <input type="text" id="morse-input" class="input-field" value="SOS" style="text-transform:uppercase;">
+            <div class="input-group" style="text-align:right;">
+                <label>طريقة التطهير المستعملة:</label>
+                <select id="water-method-select" class="input-field" onchange="setWaterMethodTime()">
+                    <option value="60">🔥 غلي متواصل عادي (1 دقيقة غلي قوي)</option>
+                    <option value="180">🏔️ غلي متواصل في المرتفعات >2000م (3 دقائق)</option>
+                    <option value="1800">💊 أقراص الكلور / Aquatabs (30 دقيقة)</option>
+                    <option value="3600">❄️ أقراص اليود مع ماء شديد البرودة (60 دقيقة)</option>
+                    <option value="21600">☀️ التطهير الشمسي SODIS (6 ساعات)</option>
+                </select>
             </div>
 
-            <div id="morse-output-code" style="background:var(--bg-inner); padding:0.75rem; border-radius:8px; font-family:monospace; font-size:1.2rem; color:var(--accent-yellow); text-align:center; margin-bottom:1rem;">
-                ... --- ...
-            </div>
+            <div id="water-countdown-display" style="font-size:2.5rem; font-weight:bold; color:var(--accent-blue); margin:1rem 0;">01:00</div>
+            <div id="water-timer-status" style="font-size:0.95rem; color:var(--text-sub);">جاهز لبدء العد التنازلي للتنقية</div>
 
-            <div class="grid-2">
-                <button id="morse-start-btn" class="btn btn-red" onclick="startMorseTransmission()">💡 بث الومضات الضوئية</button>
-                <button class="btn btn-slate" onclick="stopMorseTransmission()">🛑 إيقاف البث</button>
+            <div class="grid-2" style="margin-top:1rem;">
+                <button id="water-start-btn" class="btn btn-green" onclick="startWaterTimer()">▶️ بدء المؤقت</button>
+                <button class="btn btn-slate" onclick="resetWaterTimer()">🔄 إعادة الضبط</button>
             </div>
         </div>
     </section>
 
-    <!-- Tab 1: Offline Compass -->
-    <section id="compass-tab" class="tab-content">
-        <div class="card" style="text-align:center;">
-            <h2>🧭 البوصلة الرقمية التكتيكية (Offline Compass)</h2>
-            <p style="color:var(--text-sub); font-size:0.85rem;">تحديد الاتجاهات بدون إنترنت.</p>
+    <!-- Tab 1: Morse Generator -->
+    <section id="morse-tab" class="tab-content">
+        <div class="card">
+            <h2>📡 مولد إشارات مورس الضوئية (Morse Code Generator)</h2>
+            <p style="color:var(--text-sub); font-size:0.85rem;">تحويل النصوص إلى ومضات ضوئية.</p>
         </div>
     </section>
 
     <!-- Bottom Navigation -->
     <nav>
-        <button class="active" onclick="switchTab('morse-tab', this)">
+        <button class="active" onclick="switchTab('watertimer-tab', this)">
+            <span>💧</span>
+            <span>المياه</span>
+        </button>
+        <button onclick="switchTab('morse-tab', this)">
             <span>📡</span>
             <span>مورس</span>
-        </button>
-        <button onclick="switchTab('compass-tab', this)">
-            <span>🧭</span>
-            <span>البوصلة</span>
         </button>
     </nav>
 
@@ -134,57 +139,50 @@
             btn.classList.add('active');
         }
 
-        // Task 10: Morse Code Engine
-        const morseDict = {
-            'A': '.-', 'B': '-...', 'C': '-.-.', 'D': '-..', 'E': '.', 'F': '..-.', 'G': '--.', 'H': '....',
-            'I': '..', 'J': '.---', 'K': '-.-', 'L': '.-..', 'M': '--', 'N': '-.', 'O': '---', 'P': '.--.',
-            'Q': '--.-', 'R': '.-.', 'S': '...', 'T': '-', 'U': '..-', 'V': '...-', 'W': '.--', 'X': '-..-',
-            'Y': '-.--', 'Z': '--..', '1': '.----', '2': '..---', '3': '...--', '4': '....-', '5': '.....',
-            '6': '-....', '7': '--...', '8': '---..', '9': '----.', '0': '-----', ' ': '/'
-        };
+        // Task 11: Water Purification Timer Logic
+        let waterSecsRemaining = 60;
+        let waterTimerInterval = null;
 
-        let isMorseActive = false;
-
-        function textToMorse(text) {
-            return text.toUpperCase().split('').map(char => morseDict[char] || '').join(' ');
+        function formatTimerDisplay(secs) {
+            const m = Math.floor(secs / 60).toString().padStart(2, '0');
+            const s = (secs % 60).toString().padStart(2, '0');
+            return `${m}:${s}`;
         }
 
-        document.getElementById('morse-input').addEventListener('input', (e) => {
-            document.getElementById('morse-output-code').textContent = textToMorse(e.target.value);
-        });
+        function setWaterMethodTime() {
+            if (waterTimerInterval) clearInterval(waterTimerInterval);
+            waterTimerInterval = null;
+            waterSecsRemaining = parseInt(document.getElementById('water-method-select').value);
+            document.getElementById('water-countdown-display').textContent = formatTimerDisplay(waterSecsRemaining);
+            document.getElementById('water-timer-status').textContent = 'جاهز لبدء العد التنازلي للتنقية';
+            document.getElementById('water-start-btn').textContent = '▶️ بدء المؤقت';
+        }
 
-        async function startMorseTransmission() {
-            if (isMorseActive) return;
-            isMorseActive = true;
-            const code = textToMorse(document.getElementById('morse-input').value);
-            const btn = document.getElementById('morse-start-btn');
-            btn.textContent = '⚡ جاري البث...';
+        function startWaterTimer() {
+            if (waterTimerInterval) return;
+            const btn = document.getElementById('water-start-btn');
+            btn.textContent = '⏸️ جاري التطهير...';
+            document.getElementById('water-timer-status').textContent = '⏱️ جاري العد التنازلي لتطهير المياه...';
 
-            for (let i = 0; i < code.length && isMorseActive; i++) {
-                const char = code[i];
-                if (char === '.') {
-                    document.body.style.background = '#ffffff';
-                    await new Promise(r => setTimeout(r, 200));
-                    document.body.style.background = 'var(--bg-primary)';
-                    await new Promise(r => setTimeout(r, 200));
-                } else if (char === '-') {
-                    document.body.style.background = '#ffffff';
-                    await new Promise(r => setTimeout(r, 600));
-                    document.body.style.background = 'var(--bg-primary)';
-                    await new Promise(r => setTimeout(r, 200));
-                } else {
-                    await new Promise(r => setTimeout(r, 400));
+            waterTimerInterval = setInterval(() => {
+                waterSecsRemaining--;
+                document.getElementById('water-countdown-display').textContent = formatTimerDisplay(waterSecsRemaining);
+
+                if (waterSecsRemaining <= 0) {
+                    clearInterval(waterTimerInterval);
+                    waterTimerInterval = null;
+                    document.getElementById('water-timer-status').textContent = '✅ اكتمل التطهير! المياه آمنة ومطهرة للشرب الآن.';
+                    document.getElementById('water-timer-status').style.color = 'var(--accent-green)';
+                    btn.textContent = '▶️ بدء المؤقت';
+                    if ('speechSynthesis' in window) {
+                        window.speechSynthesis.speak(new SpeechSynthesisUtterance('اكتمل التطهير المياه صالحة للشرب الان'));
+                    }
                 }
-            }
-
-            isMorseActive = false;
-            btn.textContent = '💡 بث الومضات الضوئية';
+            }, 1000);
         }
 
-        function stopMorseTransmission() {
-            isMorseActive = false;
-            document.body.style.background = 'var(--bg-primary)';
-            document.getElementById('morse-start-btn').textContent = '💡 بث الومضات الضوئية';
+        function resetWaterTimer() {
+            setWaterMethodTime();
         }
     </script>
 </body>
