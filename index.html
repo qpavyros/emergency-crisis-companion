@@ -60,10 +60,6 @@
         .btn-yellow { background: var(--accent-yellow); color: black; }
         .btn-blue { background: var(--accent-blue); color: black; }
         .btn-slate { background: var(--accent-slate); color: white; }
-
-        .input-group { margin-bottom: 1rem; }
-        .input-group label { display: block; font-size: 0.85rem; margin-bottom: 0.4rem; color: var(--text-sub); }
-        .input-field { width: 100%; padding: 0.75rem; border-radius: 8px; background: var(--bg-inner); color: var(--text-main); border: 1px solid var(--border-color); font-size: 0.95rem; }
     </style>
 </head>
 <body>
@@ -75,46 +71,49 @@
         </button>
     </header>
 
-    <!-- Tab 0: Radiation Decay Calculator (Task 12) -->
-    <section id="radiation-tab" class="tab-content active">
+    <!-- Tab 0: Emergency Shelter Building Guide (Task 13) -->
+    <section id="shelter-tab" class="tab-content active">
         <div class="card">
-            <h2>☢️ حاسبة التحلل الإشعاعي (7/10 Radiation Decay Rule)</h2>
-            <p style="color:var(--text-sub); font-size:0.85rem; margin-bottom:1rem;">حساب هبوط الشدة الإشعاعية للغبار النووي بمرور الوقت لقاعدة 7/10 العالمية.</p>
+            <h2>⛺ دليل بناء الملاجئ الميدانية المؤقتة (Shelter Building Guide)</h2>
+            <p style="color:var(--text-sub); font-size:0.85rem; margin-bottom:1rem;">طرق بناء الملاجئ العازلة للحرارة والرياح للحماية من العوامل الجوية القاسية.</p>
 
-            <div class="input-group">
-                <label>معدل الإشعاع في الساعة الأولى (R/hr أو mSv/hr):</label>
-                <input type="number" id="rad-i1" class="input-field" value="100" oninput="calcRadiationDecay()">
-            </div>
+            <details style="background:var(--bg-inner); padding:0.85rem; border-radius:8px; margin-bottom:0.5rem;" open>
+                <summary style="font-weight:bold; color:var(--accent-blue); cursor:pointer;">1. مأوى الهرم بالأغصان (A-Frame Debris Hut)</summary>
+                <ol style="margin-top:0.5rem; padding-right:1.25rem; color:var(--text-sub); font-size:0.9rem;">
+                    <li>ثبّت خافضاً أفقياً رئيساً بطول أطول من جسمك بحوالي متر بين شجرتين أو دعامتين.</li>
+                    <li>ارصف أغصاناً متكئة على جانبي الخافض بزاوية 45 درجة لتشكيل هرم مثلث.</li>
+                    <li>غطّ الهرم بطبقة من أوراق الشجر الجافة أو العشب بسمك 60 سم على الأقل للعزل الحراري التام.</li>
+                </ol>
+            </details>
 
-            <div class="input-group">
-                <label>الزمن المنقضي منذ الانفجار/التسرب (بالساعات):</label>
-                <input type="number" id="rad-time" class="input-field" value="7" oninput="calcRadiationDecay()">
-            </div>
-
-            <div id="rad-result-box" style="background:var(--bg-inner); padding:1rem; border-radius:8px; text-align:center;">
-                <div>الشدة الإشعاعية المتوقعة الآن: <strong id="rad-current" style="font-size:1.3rem; color:var(--accent-yellow);">10 R/hr</strong></div>
-                <div id="rad-recommendation" style="font-size:0.85rem; margin-top:0.4rem; color:var(--text-sub);">انخفاض بنسبة 90% عن الساعة الأولى. الالتزام بالمألوج الخرساني مقترح.</div>
-            </div>
+            <details style="background:var(--bg-inner); padding:0.85rem; border-radius:8px; margin-bottom:0.5rem;">
+                <summary style="font-weight:bold; color:var(--accent-yellow); cursor:pointer;">2. مأوى الاتكاء الأحادي (Lean-To Tarp Shelter)</summary>
+                <ol style="margin-top:0.5rem; padding-right:1.25rem; color:var(--text-sub); font-size:0.9rem;">
+                    <li>اعقد مشمعاً (Tarp) أو بطانية حرارية بين جذعين أفقياً على ارتفاع متر ونصف.</li>
+                    <li>ثبّت الطرف السري في الأرض بعيداً عكس اتجاه الرياح السائدة.</li>
+                    <li>اشعل ناراً صغيرة أمام المأوى وراءها جدار عاكس للحرارة من الحجارة أو الأخشاب.</li>
+                </ol>
+            </details>
         </div>
     </section>
 
-    <!-- Tab 1: Water Purification Timer -->
-    <section id="watertimer-tab" class="tab-content">
+    <!-- Tab 1: Radiation Calculator -->
+    <section id="radiation-tab" class="tab-content">
         <div class="card">
-            <h2>💧 مؤقت تنقية المياه الميداني (Water Purification)</h2>
-            <p style="color:var(--text-sub); font-size:0.85rem;">حساب الوقت الدقيق لغلي المياه.</p>
+            <h2>☢️ حاسبة التحلل الإشعاعي (7/10 Rule)</h2>
+            <p style="color:var(--text-sub); font-size:0.85rem;">حساب هبوط الشدة الإشعاعية.</p>
         </div>
     </section>
 
     <!-- Bottom Navigation -->
     <nav>
-        <button class="active" onclick="switchTab('radiation-tab', this)">
+        <button class="active" onclick="switchTab('shelter-tab', this)">
+            <span>⛺</span>
+            <span>الملاجئ</span>
+        </button>
+        <button onclick="switchTab('radiation-tab', this)">
             <span>☢️</span>
             <span>إشعاع</span>
-        </button>
-        <button onclick="switchTab('watertimer-tab', this)">
-            <span>💧</span>
-            <span>المياه</span>
         </button>
     </nav>
 
@@ -134,26 +133,6 @@
             document.getElementById(tabId).classList.add('active');
             btn.classList.add('active');
         }
-
-        // Task 12: Radiation Decay Rule 7/10
-        function calcRadiationDecay() {
-            const I1 = parseFloat(document.getElementById('rad-i1').value) || 0;
-            const t = parseFloat(document.getElementById('rad-time').value) || 1;
-            
-            // Formula: I_t = I_1 * (t ^ -1.2)
-            const It = I1 * Math.pow(t, -1.2);
-            document.getElementById('rad-current').textContent = `${It.toFixed(2)} R/hr`;
-
-            const rec = document.getElementById('rad-recommendation');
-            if (t < 48) {
-                rec.textContent = '🚨 الشدة الإشعاعية عالية! البقاء داخل المأوى الخرساني المغلق ضروري ومؤكد.';
-                rec.style.color = 'var(--accent-red)';
-            } else {
-                rec.textContent = '✅ انخفاض كبير في الإشعاع. امكانية الإخلاء السريع بالحذر والملابس الواقية.';
-                rec.style.color = 'var(--accent-green)';
-            }
-        }
-        calcRadiationDecay();
     </script>
 </body>
 </html>
