@@ -79,76 +79,53 @@
         .input-group label { display: block; font-size: 0.85rem; margin-bottom: 0.4rem; color: var(--text-sub); }
         .input-field { width: 100%; padding: 0.75rem; border-radius: 8px; background: var(--bg-inner); color: var(--text-main); border: 1px solid var(--border-color); font-size: 0.95rem; }
 
-        .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.5rem; }
+        .symptom-chip { display: inline-flex; align-items: center; gap: 0.4rem; background: var(--bg-inner); padding: 0.5rem 0.8rem; border-radius: 20px; border: 1px solid var(--border-color); margin: 0.25rem; font-size: 0.85rem; cursor: pointer; }
+        .symptom-chip.selected { border-color: var(--accent-red); background: #331010; color: var(--accent-red); font-weight: bold; }
     </style>
 </head>
 <body>
 
     <header>
-        <h1>🚨 EmergencyKit PWA v3.5</h1>
+        <h1>🚨 EmergencyKit PWA v4.0 AI</h1>
         <div style="display:flex; gap:0.4rem;">
             <button onclick="toggleTacticalHUD()" class="btn btn-yellow" style="width:auto; padding:0.3rem 0.5rem; font-size:0.75rem; margin:0;">🖥️ HUD</button>
             <button onclick="toggleExtremeBatterySaver()" class="btn btn-slate" style="width:auto; padding:0.3rem 0.5rem; font-size:0.75rem; margin:0;">🔋 OLED</button>
         </div>
     </header>
 
-    <div style="padding:0.75rem 1rem 0 1rem; max-width:850px; margin:0 auto;">
-        <input type="text" id="master-search-input" class="input-field" placeholder="🔍 بحث في جميع 35 وحدة للبروتوكولات والمستلزمات..." oninput="filterMasterProtocols()">
-    </div>
+    <!-- Tab 0: Offline AI Symptom Diagnostic Heuristics Engine (Self-Evolving #1) -->
+    <section id="ai-tab" class="tab-content active">
+        <div class="card">
+            <h2>🧠 المحرك الذكي لتشخيص الأعراض والحالات الحرجة (Offline AI Diagnostic Engine)</h2>
+            <p style="color:var(--text-sub); font-size:0.85rem; margin-bottom:1rem;">تحليل الاستنتاج الاحتمالي الميداني للأعراض الظاهرة لمعرفة التشخيص الأكثر خطورة فوراً 100% Offline.</p>
 
-    <!-- Master Dashboard (Task 35 Integration) -->
-    <section id="dashboard-tab" class="tab-content active">
-        <div class="card" style="text-align:center;">
-            <h2>🏆 تطبيق الطوارئ والفرز الطبي الميداني 100% Offline</h2>
-            <p style="color:var(--text-sub); font-size:0.85rem; margin-bottom:1rem;">تم بناء ودمج جميع وحدات خريطة الطريق الـ 35 بنجاح لخدمة البشرية في الكوارث والأزمات.</p>
-
-            <div style="background:var(--bg-inner); padding:1rem; border-radius:10px; text-align:right;">
-                <h4 style="color:var(--accent-green); margin-bottom:0.5rem;">✅ الحالة التكنولوجية:</h4>
-                <ul style="font-size:0.85rem; color:var(--text-sub); padding-right:1.25rem;">
-                    <li>حفظ وتخزين أوفلاين 100%: IndexedDB + Service Worker v3.5</li>
-                    <li>التشفير والخصوصية: Web Crypto API AES-GCM المحلي</li>
-                    <li>توفير الطاقة: وضع OLED Monochrome وسرعة FCP < 50ms</li>
-                    <li>المستودع مفتوح المصدر: GitHub Ready</li>
-                </ul>
+            <label style="display:block; font-size:0.85rem; margin-bottom:0.5rem; color:var(--accent-blue);">اختر جميع الأعراض الظاهرة على المصاب:</label>
+            <div id="symptoms-container">
+                <div class="symptom-chip" onclick="toggleSymptom(this, 'dyspnea')">🫁 ضيق تنفس شديد (Dyspnea)</div>
+                <div class="symptom-chip" onclick="toggleSymptom(this, 'hemorrhage')">🩸 نزيف شرياني/خارجي (Hemorrhage)</div>
+                <div class="symptom-chip" onclick="toggleSymptom(this, 'chest_pain')">💔 ألم حاد بالصدر (Chest Pain)</div>
+                <div class="symptom-chip" onclick="toggleSymptom(this, 'cyanosis')">🟦 زراق الأطراف والشفاه (Cyanosis)</div>
+                <div class="symptom-chip" onclick="toggleSymptom(this, 'altered_mental')">🧠 تغيب أو تشوش الوعي (Altered Mental)</div>
+                <div class="symptom-chip" onclick="toggleSymptom(this, 'stridor')">🗣️ حشرجة/صفير الحلق (Stridor)</div>
+                <div class="symptom-chip" onclick="toggleSymptom(this, 'diaphoresis')">💧 تعرق بارد وتعرق شديد (Diaphoresis)</div>
             </div>
-        </div>
 
-        <div class="card master-module" data-keywords="march نزيف إصابات عاصبة">
-            <h3>🩸 1. M.A.R.C.H. Trauma Algorithm</h3>
-            <p style="font-size:0.85rem; color:var(--text-sub);">البروتوكول العالمي لإنقاذ مصابي الإصابات البليغة والنزيف الشديد.</p>
-        </div>
+            <button class="btn btn-red" style="margin-top:1rem;" onclick="runAIDiagnosis()">⚡ تحليل الأعراض وحساب مصفوفة الاحتمالات</button>
 
-        <div class="card master-module" data-keywords="jumpstart triage فرز أطفال">
-            <h3>👶 2. JumpSTART Pediatric Triage</h3>
-            <p style="font-size:0.85rem; color:var(--text-sub);">نظام فرز الأطفال تحت 8 سنوات في حوادث الإصابات الجماعية.</p>
-        </div>
-
-        <div class="card master-module" data-keywords="apgar حديثي الولادة">
-            <h3>👶 3. APGAR Newborn Calculator</h3>
-            <p style="font-size:0.85rem; color:var(--text-sub);">حاسبة تقييم حديثي الولادة في الدقائق الأولى بعد الولادة.</p>
-        </div>
-
-        <div class="card master-module" data-keywords="علامات حيوية نبض ضغط رسم بياني indexeddb">
-            <h3>📈 4. Vital Signs Tracker & Canvas Chart</h3>
-            <p style="font-size:0.85rem; color:var(--text-sub);">تتبع العلامات الحيوية وحفظها في IndexedDB رسم المنحنى.</p>
-        </div>
-
-        <div class="card master-module" data-keywords="broselow أطفال جرعات إبينفرين باراسيتامول">
-            <h3>💊 5. Pediatric Broselow Dosage Calculator</h3>
-            <p style="font-size:0.85rem; color:var(--text-sub);">حاسبة جرعات أدوية الأطفال التقديرية بناءً على الألوان والوزن.</p>
-        </div>
-
-        <div class="card master-module" data-keywords="ولادة ميدان حبل سري">
-            <h3>🤰 6. Emergency Childbirth Field Guide</h3>
-            <p style="font-size:0.85rem; color:var(--text-sub);">دليل خطوة بخطوة للولادة الطارئة وقطع الحبل السري في الميدان.</p>
+            <div id="ai-result-box" style="display:none; margin-top:1rem; padding:1rem; background:var(--bg-inner); border-radius:10px;">
+                <h4 style="color:var(--accent-yellow); margin-bottom:0.5rem;">🔍 التقييم الاحتمالي الأكثر خطورة:</h4>
+                <div id="ai-matched-condition" style="font-size:1.3rem; font-weight:bold; color:var(--accent-red);"></div>
+                <div id="ai-matched-prob" style="font-size:0.9rem; color:var(--accent-blue); margin-top:0.25rem;"></div>
+                <div id="ai-matched-action" style="font-size:0.85rem; color:var(--text-main); margin-top:0.5rem; background:#200a0a; padding:0.75rem; border-radius:6px; border-right:3px solid var(--accent-red);"></div>
+            </div>
         </div>
     </section>
 
     <!-- Bottom Navigation -->
     <nav>
-        <button class="active" onclick="switchTab('dashboard-tab', this)">
-            <span>🏆</span>
-            <span>الرئيسية</span>
+        <button class="active" onclick="switchTab('ai-tab', this)">
+            <span>🧠</span>
+            <span>التشخيص الذكي</span>
         </button>
     </nav>
 
@@ -166,23 +143,57 @@
             btn.classList.add('active');
         }
 
-        function toggleTacticalHUD() {
-            document.body.classList.toggle('hud-mode');
+        function toggleTacticalHUD() { document.body.classList.toggle('hud-mode'); }
+        function toggleExtremeBatterySaver() { document.body.classList.toggle('extreme-battery'); }
+
+        // Self-Evolving #1: AI Diagnostic Rules Matrix
+        const activeSymptoms = new Set();
+
+        function toggleSymptom(el, symptomKey) {
+            el.classList.toggle('selected');
+            if (activeSymptoms.has(symptomKey)) activeSymptoms.delete(symptomKey);
+            else activeSymptoms.add(symptomKey);
         }
 
-        function toggleExtremeBatterySaver() {
-            document.body.classList.toggle('extreme-battery');
-        }
+        function runAIDiagnosis() {
+            if (activeSymptoms.size === 0) { alert('يرجى اختيار عرض واحد على الأقل للتحليل'); return; }
 
-        function filterMasterProtocols() {
-            const query = document.getElementById('master-search-input').value.trim().toLowerCase();
-            const modules = document.querySelectorAll('.master-module');
-            modules.forEach(m => {
-                const text = m.textContent.toLowerCase();
-                const kw = m.getAttribute('data-keywords') ? m.getAttribute('data-keywords').toLowerCase() : '';
-                if (!query || text.includes(query) || kw.includes(query)) m.style.display = 'block';
-                else m.style.display = 'none';
+            const conditions = [
+                {
+                    name: 'استرواح صدري ضاغط (Tension Pneumothorax)',
+                    symptoms: ['dyspnea', 'cyanosis', 'chest_pain', 'altered_mental'],
+                    action: 'تنفيس اللاصق الصدري فوراً ومراقبة القصبة الهوائية والصوت التنفسي.'
+                },
+                {
+                    name: 'صدمة نزفية حادة (Severe Hypovolemic Shock)',
+                    symptoms: ['hemorrhage', 'diaphoresis', 'altered_mental', 'cyanosis'],
+                    action: 'تركيب العاصبة الشريانية فوراً 5-7 سم فوق موقع النزيف وتدفئة المصاب.'
+                },
+                {
+                    name: 'صدمة تحسسية أو انسداد حاد (Anaphylaxis / Airway Obstruction)',
+                    symptoms: ['stridor', 'dyspnea', 'cyanosis'],
+                    action: 'حقن الإبينفرين بالحقن العضلي (EpiPen) أو إجراء مناورة هايملخ.'
+                }
+            ];
+
+            let bestMatch = null;
+            let maxScore = -1;
+
+            conditions.forEach(cond => {
+                let matchCount = 0;
+                cond.symptoms.forEach(s => { if (activeSymptoms.has(s)) matchCount++; });
+                const score = matchCount / cond.symptoms.length;
+                if (score > maxScore) {
+                    maxScore = score;
+                    bestMatch = cond;
+                }
             });
+
+            const probPercent = Math.round(maxScore * 100);
+            document.getElementById('ai-matched-condition').textContent = bestMatch.name;
+            document.getElementById('ai-matched-prob').textContent = `نسبة التطابق الاحتمالي: ${probPercent}%`;
+            document.getElementById('ai-matched-action').textContent = `🚨 الإجراء الطارئ الفوري: ${bestMatch.action}`;
+            document.getElementById('ai-result-box').style.display = 'block';
         }
     </script>
 </body>
