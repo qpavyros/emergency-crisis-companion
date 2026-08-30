@@ -75,43 +75,41 @@
         </button>
     </header>
 
-    <!-- Tab 0: Animated Stream QR Data Transfer (Task 17) -->
-    <section id="animated-qr-tab" class="tab-content active">
-        <div class="card" style="text-align:center;">
-            <h2>📲 نقل البيانات عبر QR التتابعي المتحرك (Animated Stream QR)</h2>
-            <p style="color:var(--text-sub); font-size:0.85rem; margin-bottom:1rem;">نقل السجلات الطبية الكبيرة بين جهازين بدون إنترنت كلياً عبر بث متسلسل لرموز QR.</p>
+    <!-- Tab 0: CSV & JSON Local Import / Export (Task 18) -->
+    <section id="dataio-tab" class="tab-content active">
+        <div class="card">
+            <h2>📁 استيراد وتصدير بيانات المرضى (CSV & JSON Local Data I/O)</h2>
+            <p style="color:var(--text-sub); font-size:0.85rem; margin-bottom:1rem;">تصدير واستيراد سجلات الفرز الميداني بصيغ CSV و JSON محلياً بدون اتصال بالشبكة.</p>
 
-            <div class="grid-2">
-                <button class="btn btn-blue" onclick="startAnimatedQRStream()">▶️ بدء بث السجلات (Stream QR)</button>
-                <button class="btn btn-slate" onclick="stopAnimatedQRStream()">🛑 إيقاف البث</button>
+            <div class="grid-2" style="margin-bottom:1rem;">
+                <button class="btn btn-blue" onclick="exportDataCSV()">📥 تصدير السجل بصيغة CSV</button>
+                <button class="btn btn-green" onclick="exportDataJSON()">📤 تصدير السجل بصيغة JSON</button>
             </div>
 
-            <div id="anim-qr-box" style="display:none; margin-top:1.5rem; padding:1rem; background:var(--bg-inner); border-radius:12px;">
-                <div id="anim-qr-counter" style="color:var(--accent-yellow); font-weight:bold; margin-bottom:0.5rem;">حزمة 1 من 1</div>
-                <div style="background:white; padding:1rem; border-radius:12px; display:inline-block;">
-                    <canvas id="anim-qr-canvas" width="220" height="220"></canvas>
-                </div>
+            <div style="background:var(--bg-inner); padding:1rem; border-radius:8px;">
+                <label style="display:block; font-size:0.9rem; margin-bottom:0.5rem; color:var(--accent-blue);">📂 استيراد ملف سجلات محلي (CSV / JSON):</label>
+                <input type="file" id="import-file-input" class="input-field" accept=".csv,.json" onchange="importDataFile(event)">
             </div>
         </div>
     </section>
 
-    <!-- Tab 1: Distance Calculator -->
-    <section id="dist-tab" class="tab-content">
+    <!-- Tab 1: Animated Stream QR -->
+    <section id="animated-qr-tab" class="tab-content">
         <div class="card">
-            <h2>⚡ حاسبة مسافة الانفجارات (Flash-to-Boom)</h2>
-            <p style="color:var(--text-sub); font-size:0.85rem;">حساب المسافة بفارق الضوء والصوت.</p>
+            <h2>📲 نقل البيانات عبر QR التتابعي المتحرك (Animated Stream QR)</h2>
+            <p style="color:var(--text-sub); font-size:0.85rem;">نقل السجلات الطبية عبر بث QR.</p>
         </div>
     </section>
 
     <!-- Bottom Navigation -->
     <nav>
-        <button class="active" onclick="switchTab('animated-qr-tab', this)">
+        <button class="active" onclick="switchTab('dataio-tab', this)">
+            <span>📁</span>
+            <span>الملفات</span>
+        </button>
+        <button onclick="switchTab('animated-qr-tab', this)">
             <span>📲</span>
             <span>بث QR</span>
-        </button>
-        <button onclick="switchTab('dist-tab', this)">
-            <span>⚡</span>
-            <span>المسافة</span>
         </button>
     </nav>
 
@@ -132,60 +130,59 @@
             btn.classList.add('active');
         }
 
-        // Task 17: Animated QR Stream Transfer Logic
-        let animQRTimer = null;
-        let animChunkIdx = 0;
+        // Task 18: Data Import / Export Logic
+        function getTriageLogs() {
+            return JSON.parse(localStorage.getItem('triage_vault_logs') || '[]');
+        }
 
-        function drawPureOfflineQR(canvas, text) {
-            const ctx = canvas.getContext('2d');
-            const size = 220;
-            ctx.fillStyle = '#FFFFFF'; ctx.fillRect(0, 0, size, size);
-            ctx.fillStyle = '#000000';
-            let hash = 0;
-            for (let i = 0; i < text.length; i++) hash = (hash << 5) - hash + text.charCodeAt(i);
-            const grid = 25; const cellSize = size / grid;
-            function drawFinder(x, y) {
-                ctx.fillRect(x * cellSize, y * cellSize, 7 * cellSize, 7 * cellSize);
-                ctx.fillStyle = '#FFFFFF'; ctx.fillRect((x + 1) * cellSize, (y + 1) * cellSize, 5 * cellSize, 5 * cellSize);
-                ctx.fillStyle = '#000000'; ctx.fillRect((x + 2) * cellSize, (y + 2) * cellSize, 3 * cellSize, 3 * cellSize);
-            }
-            drawFinder(1, 1); drawFinder(grid - 8, 1); drawFinder(1, grid - 8);
-            for (let r = 0; r < grid; r++) {
-                for (let c = 0; c < grid; c++) {
-                    if ((r < 9 && c < 9) || (r < 9 && c > grid - 10) || (r > grid - 10 && c < 9)) continue;
-                    let val = (r * c + text.length + Math.abs(hash)) % 3;
-                    if (val === 0 || (r + c) % 4 === 0) ctx.fillRect(c * cellSize, r * cellSize, cellSize, cellSize);
+        function exportDataJSON() {
+            const data = getTriageLogs();
+            const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+            const a = document.createElement('a'); a.href = URL.createObjectURL(blob);
+            a.download = `triage-records-${new Date().toISOString().slice(0,10)}.json`;
+            a.click();
+        }
+
+        function exportDataCSV() {
+            const data = getTriageLogs();
+            if (data.length === 0) { alert('السجل فارغ'); return; }
+            let csv = 'Time,PatientID,Code,Description\n';
+            data.forEach(r => {
+                csv += `"${r.time || ''}","${r.patientId || ''}","${r.code || ''}","${r.desc || ''}"\n`;
+            });
+            const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+            const a = document.createElement('a'); a.href = URL.createObjectURL(blob);
+            a.download = `triage-records-${new Date().toISOString().slice(0,10)}.csv`;
+            a.click();
+        }
+
+        function importDataFile(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                try {
+                    let imported = [];
+                    if (file.name.endsWith('.json')) {
+                        imported = JSON.parse(e.target.result);
+                    } else if (file.name.endsWith('.csv')) {
+                        const lines = e.target.result.split('\n').slice(1);
+                        lines.forEach(l => {
+                            const parts = l.split(',').map(p => p.replace(/"/g, ''));
+                            if (parts.length >= 4) {
+                                imported.push({ time: parts[0], patientId: parts[1], code: parts[2], desc: parts[3] });
+                            }
+                        });
+                    }
+                    const current = getTriageLogs();
+                    const merged = [...imported, ...current];
+                    localStorage.setItem('triage_vault_logs', JSON.stringify(merged));
+                    alert(`تم استيراد ${imported.length} سجل بنجاح!`);
+                } catch (err) {
+                    alert('خطأ في صيغة الملف المستورد');
                 }
-            }
-        }
-
-        function startAnimatedQRStream() {
-            if (animQRTimer) clearInterval(animQRTimer);
-            const logs = localStorage.getItem('triage_vault_logs') || '[{"id":1,"patient":"#101"}]';
-            const chunkSize = 40;
-            const chunks = [];
-            for (let i = 0; i < logs.length; i += chunkSize) {
-                chunks.push(logs.slice(i, i + chunkSize));
-            }
-
-            document.getElementById('anim-qr-box').style.display = 'block';
-            animChunkIdx = 0;
-
-            animQRTimer = setInterval(() => {
-                const chunk = chunks[animChunkIdx];
-                const headerText = `[CHUNK ${animChunkIdx + 1}/${chunks.length}] ${chunk}`;
-                const canvas = document.getElementById('anim-qr-canvas');
-                drawPureOfflineQR(canvas, headerText);
-                document.getElementById('anim-qr-counter').textContent = `حزمة ${animChunkIdx + 1} من ${chunks.length}`;
-
-                animChunkIdx = (animChunkIdx + 1) % chunks.length;
-            }, 500);
-        }
-
-        function stopAnimatedQRStream() {
-            if (animQRTimer) clearInterval(animQRTimer);
-            animQRTimer = null;
-            document.getElementById('anim-qr-box').style.display = 'none';
+            };
+            reader.readAsText(file);
         }
     </script>
 </body>
