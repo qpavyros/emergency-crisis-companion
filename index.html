@@ -69,39 +69,39 @@
 <body>
 
     <header>
-        <h1>🚨 EmergencyKit PWA v5.6 i18n</h1>
-        <div style="display:flex; gap:0.4rem; align-items:center;">
-            <select id="i18n-lang-select" onchange="changeAppLanguage(this.value)" style="background:#0f172a; color:white; border:1px solid #334155; border-radius:6px; padding:0.25rem 0.4rem; font-size:0.8rem;">
-                <option value="ar">العربية (AR)</option>
-                <option value="en">English (EN)</option>
-                <option value="fr">Français (FR)</option>
-                <option value="es">Español (ES)</option>
-                <option value="de">Deutsch (DE)</option>
-                <option value="tr">Türkçe (TR)</option>
-                <option value="pt">Português (PT)</option>
-            </select>
-            <button onclick="toggleTacticalHUD()" class="btn btn-yellow" style="width:auto; padding:0.3rem 0.5rem; font-size:0.75rem; margin:0;">🖥️ HUD</button>
-        </div>
+        <h1>🚨 EmergencyKit PWA v5.7 TCCC</h1>
+        <button onclick="toggleTacticalHUD()" class="btn btn-yellow" style="width:auto; padding:0.3rem 0.5rem; font-size:0.75rem; margin:0;">🖥️ HUD</button>
     </header>
 
-    <!-- Tab 0: Multi-Lingual Expansion Engine (Self-Evolving #16) -->
-    <section id="i18n-tab" class="tab-content active">
+    <!-- Tab 0: TCCC Prolonged Field Care Burn Rule of Tens (Self-Evolving #17) -->
+    <section id="tcccburn-tab" class="tab-content active">
         <div class="card">
-            <h2 id="i18n-title">🌐 دعم اللغات العالمية (Expanded i18n Engine: 11 Languages)</h2>
-            <p id="i18n-desc" style="color:var(--text-sub); font-size:0.85rem; margin-bottom:1rem;">تم التوسع في المحرك متعدد اللغات لإضافة التركية والبرتغالية للاستخدام العالمي أوفلاين.</p>
+            <h2>🔥 حاسبة المحاليل الميدانية للحروق التكتيكية (TCCC Rule of Tens)</h2>
+            <p style="color:var(--text-sub); font-size:0.85rem; margin-bottom:1rem;">قاعدة العشرة (Rule of Tens) المعتمدة من الجيش الأمريكي TCCC للإنعاش السائلي السريع في الرعاية الميدانية المطولة.</p>
 
-            <div style="background:var(--bg-inner); padding:1rem; border-radius:10px; text-align:center;">
-                <h3 id="i18n-status-title" style="color:var(--accent-blue);">اللغة الحالية: العربية</h3>
-                <p id="i18n-status-msg" style="font-size:0.9rem; color:var(--text-sub); margin-top:0.4rem;">التطبيق مدعوم بـ 11 لغة عالمية 100% أوفلاين.</p>
+            <div class="input-group">
+                <label>نسبة الحرق الإجمالية (% TBSA Burn):</label>
+                <input type="number" id="tccc-tbsa" class="input-field" value="30" oninput="calcTCCCRuleOfTens()">
+            </div>
+
+            <div class="input-group">
+                <label>وزن المصاب (كجم):</label>
+                <input type="number" id="tccc-weight" class="input-field" value="70" oninput="calcTCCCRuleOfTens()">
+            </div>
+
+            <div id="tccc-result-box" style="background:var(--bg-inner); padding:1rem; border-radius:10px;">
+                <h4 style="color:var(--accent-red); margin-bottom:0.5rem;">💧 سرعة المحاليل الوريدية الفورية (Lactated Ringer's IV Rate):</h4>
+                <div style="font-size:1.4rem; font-weight:bold; color:var(--accent-yellow);" id="tccc-rate-ml">300 مل / الساعة</div>
+                <div style="font-size:0.85rem; color:var(--accent-blue); margin-top:0.3rem;" id="tccc-rate-drops">معدل التنقيط: 100 قطرة / دقيقة (جهاز نقط 20 قطرة/مل)</div>
             </div>
         </div>
     </section>
 
     <!-- Bottom Navigation -->
     <nav>
-        <button class="active" onclick="switchTab('i18n-tab', this)">
-            <span>🌐</span>
-            <span id="nav-lang">اللغة</span>
+        <button class="active" onclick="switchTab('tcccburn-tab', this)">
+            <span>🔥</span>
+            <span>حروق TCCC</span>
         </button>
     </nav>
 
@@ -121,28 +121,25 @@
 
         function toggleTacticalHUD() { document.body.classList.toggle('hud-mode'); }
 
-        // Self-Evolving #16: Multi-lingual i18n Expansion (AR, EN, FR, ES, DE, TR, PT)
-        const i18nDict = {
-            ar: { dir: 'rtl', title: '🌐 دعم اللغات العالمية (i18n)', desc: 'تم التوسع في المحرك متعدد اللغات أوفلاين.', statusTitle: 'اللغة الحالية: العربية', statusMsg: 'التطبيق مدعوم بـ 11 لغة أوفلاين.', navLang: 'اللغة' },
-            en: { dir: 'ltr', title: '🌐 Expanded i18n Engine (11 Languages)', desc: 'Multi-lingual engine supports Turkish & Portuguese offline.', statusTitle: 'Current Language: English', statusMsg: 'App supports 11 global languages offline.', navLang: 'Language' },
-            tr: { dir: 'ltr', title: '🌐 Genişletilmiş i18n Motoru (11 Dil)', desc: 'Türkçe ve Portekizce çevrimdışı desteği.', statusTitle: 'Mevcut Dil: Türkçe', statusMsg: 'Uygulama 11 dili çevrimdışı destekler.', navLang: 'Dil' },
-            pt: { dir: 'ltr', title: '🌐 Motor i18n Expandido (11 Idiomas)', desc: 'Suporte multilíngue para turco e português offline.', statusTitle: 'Idioma Atual: Português', statusMsg: 'O aplicativo suporta 11 idiomas offline.', navLang: 'Idioma' }
-        };
+        // Self-Evolving #17: TCCC Rule of Tens Calculation
+        function calcTCCCRuleOfTens() {
+            const tbsa = parseFloat(document.getElementById('tccc-tbsa').value) || 0;
+            const w = parseFloat(document.getElementById('tccc-weight').value) || 70;
+            
+            // Base rate = % TBSA * 10 ml/hr (for 40-80kg)
+            let rate = tbsa * 10;
+            if (w > 80) {
+                const extraKg = w - 80;
+                const extraTen = Math.floor(extraKg / 10);
+                rate += extraTen * 100;
+            }
 
-        function changeAppLanguage(lang) {
-            const t = i18nDict[lang] || i18nDict.ar;
-            const root = document.getElementById('html-root');
-            root.setAttribute('lang', lang);
-            root.setAttribute('dir', t.dir);
+            const dropsPerMin = Math.round((rate * 20) / 60);
 
-            document.getElementById('i18n-title').textContent = t.title;
-            document.getElementById('i18n-desc').textContent = t.desc;
-            document.getElementById('i18n-status-title').textContent = t.statusTitle;
-            document.getElementById('i18n-status-msg').textContent = t.statusMsg;
-            document.getElementById('nav-lang').textContent = t.navLang;
-
-            localStorage.setItem('app_lang', lang);
+            document.getElementById('tccc-rate-ml').textContent = `${rate} مل / الساعة`;
+            document.getElementById('tccc-rate-drops').textContent = `معدل التنقيط: ${dropsPerMin} قطرة / دقيقة (جهاز نقط 20 gtt/ml)`;
         }
+        calcTCCCRuleOfTens();
     </script>
 </body>
 </html>
