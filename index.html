@@ -45,7 +45,7 @@
 
         nav { display: flex; background: #020617; position: fixed; bottom: 0; width: 100%; z-index: 100; border-top: 1px solid var(--border-color); overflow-x: auto; }
         body.night-mode nav { background: #0a0101; }
-        nav button { flex: 1; min-width: 45px; padding: 0.6rem 0.1rem; background: none; border: none; color: var(--text-sub); font-size: 0.62rem; cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 0.2rem; white-space: nowrap; }
+        nav button { flex: 1; min-width: 42px; padding: 0.6rem 0.1rem; background: none; border: none; color: var(--text-sub); font-size: 0.6rem; cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 0.2rem; white-space: nowrap; }
         nav button.active { color: var(--text-main); font-weight: bold; background: var(--bg-card); border-top: 2px solid var(--accent-red); }
 
         .tab-content { display: none; padding: 1rem; max-width: 850px; margin: 0 auto; }
@@ -82,6 +82,8 @@
         .log-table th { color: var(--accent-blue); }
 
         .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; }
+        
+        .march-box { background: var(--bg-inner); border-right: 4px solid var(--accent-red); padding: 1rem; border-radius: 8px; margin-bottom: 0.75rem; }
     </style>
 </head>
 <body>
@@ -93,8 +95,59 @@
         </button>
     </header>
 
+    <!-- Tab 0: M.A.R.C.H. Trauma Algorithm (Task 1) -->
+    <section id="march-tab" class="tab-content active">
+        <div class="card">
+            <h2>🩸 بروتوكول الإصابات والتكتيك الطبي M.A.R.C.H. Protocol</h2>
+            <p style="color:var(--text-sub); font-size:0.85rem; margin-bottom:1rem;">البروتوكول العالمي لإنقاذ مصابي الإصابات البليغة والنزيف الشديد في أرض المعركة والكوارث (TCCC Standard).</p>
+            
+            <div class="march-box" style="border-right-color:#ef4444;">
+                <h3 style="color:#ef4444;">M - Massive Bleeding (النزيف الشديد الشرياني)</h3>
+                <ul style="margin-top:0.4rem; padding-right:1.25rem; font-size:0.9rem; color:var(--text-sub);">
+                    <li>ركّب العاصبة (Tourniquet) فوراً 5-7 سم فوق موقع النزيف الشديد في الأطراف.</li>
+                    <li>شد المقبض حتى يتوقف النزيف والنبض الشرياني تماماً.</li>
+                    <li>سجل وقت وضع العاصبة فوراً على جبهة المصاب (مثال: T=14:30).</li>
+                </ul>
+            </div>
+
+            <div class="march-box" style="border-right-color:#eab308;">
+                <h3 style="color:#eab308;">A - Airway (مجرى الهواء والتنفس)</h3>
+                <ul style="margin-top:0.4rem; padding-right:1.25rem; font-size:0.9rem; color:var(--text-sub);">
+                    <li>افحص انسداد مجرى الهواء بالدم أو القيء أو اللسان.</li>
+                    <li>استخدم حركة رفع الذقن وتثبيت الرقبة (Chin Lift / Jaw Thrust).</li>
+                    <li>ضع المصاب فاقد الوعي في وضعية الإفاقة (Recovery Position).</li>
+                </ul>
+            </div>
+
+            <div class="march-box" style="border-right-color:#38bdf8;">
+                <h3 style="color:#38bdf8;">R - Respiration (تنفس الصدر وإصابات الرئة)</h3>
+                <ul style="margin-top:0.4rem; padding-right:1.25rem; color:var(--text-sub); font-size:0.9rem;">
+                    <li>افحص وجود جروح نافذة بالصدر (Sucking Chest Wounds).</li>
+                    <li>ضع ضمادة لاصقة صمامية ذات اتجاه واحد (Chest Seal).</li>
+                    <li>راقب علامات استرواح الصدر التوترية (Tension Pneumothorax).</li>
+                </ul>
+            </div>
+
+            <div class="march-box" style="border-right-color:#22c55e;">
+                <h3 style="color:#22c55e;">C - Circulation (الدورة الدموية والصدمة)</h3>
+                <ul style="margin-top:0.4rem; padding-right:1.25rem; color:var(--text-sub); font-size:0.9rem;">
+                    <li>افحص النبض السقطري والدورة الدموية المحيطية.</li>
+                    <li>ثبّت كسور الحوض بضمادة الحوض (Pelvic Binder) لمنع النزيف الداخلي الصامت.</li>
+                </ul>
+            </div>
+
+            <div class="march-box" style="border-right-color:#a855f7;">
+                <h3 style="color:#a855f7;">H - Hypothermia & Head (منع هبوط الحرارة وإصابات الرأس)</h3>
+                <ul style="margin-top:0.4rem; padding-right:1.25rem; color:var(--text-sub); font-size:0.9rem;">
+                    <li>عزل المصاب عن الأرض الباردة وتغطيته ببطانية حرارية (Emergency Foil Blanket).</li>
+                    <li>افحص درجة الوعي واستجابة الحدقة للضوء.</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
     <!-- Tab 1: START Triage -->
-    <section id="triage-tab" class="tab-content active">
+    <section id="triage-tab" class="tab-content">
         <div class="card">
             <h2>🏥 نظام الفرز الطبي السريع (START Triage)</h2>
             <p style="color:var(--text-sub); font-size:0.85rem; margin-bottom:1rem;">تصنيف المصابين ميدانياً في حالات الكوارث والإصابات الجماعية خلال 60 ثانية.</p>
@@ -387,7 +440,11 @@
 
     <!-- Bottom Navigation -->
     <nav>
-        <button class="active" onclick="switchTab('triage-tab', this)">
+        <button class="active" onclick="switchTab('march-tab', this)">
+            <span>🩸</span>
+            <span>MARCH</span>
+        </button>
+        <button onclick="switchTab('triage-tab', this)">
             <span>🏥</span>
             <span>الفرز</span>
         </button>
