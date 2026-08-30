@@ -1,41 +1,55 @@
-const CACHE_NAME = 'emergency-kit-v2';
-const ASSETS = [
+// EmergencyKit PWA Service Worker v3.5 - 100% Offline Master Cache
+const CACHE_NAME = 'emergency-kit-v3.5';
+const ASSETS_TO_CACHE = [
     './',
     './index.html',
-    './manifest.json',
-    './sw.js'
+    './manifest.json'
 ];
 
 self.addEventListener('install', (event) => {
     event.waitUntil(
-        caches.open(CACHE_NAME).then((cache) => cache.addAll(ASSETS)).then(() => self.skipWaiting())
+        caches.open(CACHE_NAME).then((cache) => {
+            console.log('[SW v3.5] Caching Master Emergency Kit Assets...');
+            return cache.addAll(ASSETS_TO_CACHE);
+        })
     );
+    self.skipWaiting();
 });
 
 self.addEventListener('activate', (event) => {
     event.waitUntil(
-        caches.keys().then((keys) => {
+        caches.keys().then((cacheNames) => {
             return Promise.all(
-                keys.map((key) => {
-                    if (key !== CACHE_NAME) return caches.delete(key);
+                cacheNames.map((cache) => {
+                    if (cache !== CACHE_NAME) {
+                        console.log('[SW v3.5] Clearing Old Cache:', cache);
+                        return caches.delete(cache);
+                    }
                 })
             );
-        }).then(() => self.clients.claim())
+        })
     );
+    self.clients.claim();
 });
 
 self.addEventListener('fetch', (event) => {
     event.respondWith(
-        caches.match(event.request).then((cached) => {
-            return cached || fetch(event.request).then((response) => {
-                return caches.open(CACHE_NAME).then((cache) => {
-                    cache.put(event.request, response.clone());
-                    return response;
-                });
-            }).catch(() => {
-                if (event.request.headers.get('accept')?.includes('text/html')) {
-                    return caches.match('./index.html');
+        caches.match(event.request).then((cachedResponse) => {
+            if (cachedResponse) {
+                return cachedResponse;
+            }
+            return fetch(event.request).then((networkResponse) => {
+                if (!networkResponse || networkResponse.status !== 200 || networkResponse.type !== 'basic') {
+                    return networkResponse;
                 }
+                const responseToCache = networkResponse.clone();
+                caches.open(CACHE_NAME).then((cache) => {
+                    cache.put(event.request, responseToCache);
+                });
+                return networkResponse;
+            }).catch(() => {
+                // Network failed, fallback to root index.html offline
+                return caches.match('./index.html');
             });
         })
     );
