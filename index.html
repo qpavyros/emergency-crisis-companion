@@ -69,41 +69,44 @@
         <button onclick="toggleTacticalHUD()" class="btn btn-yellow" style="width:auto; padding:0.3rem 0.6rem; font-size:0.8rem; margin:0;">🖥️ HUD</button>
     </header>
 
-    <!-- Tab 0: CBRN Chemical Decontamination Protocol (Task 32) -->
-    <section id="cbrn-tab" class="tab-content active">
+    <!-- Tab 0: Crush Injury & Compartment Syndrome Guide (Task 33) -->
+    <section id="crush-tab" class="tab-content active">
         <div class="card">
-            <h2>☣️ بروتوكول التطهير الكيميائي الميداني (CBRN Chemical Decon)</h2>
-            <p style="color:var(--text-sub); font-size:0.85rem; margin-bottom:1rem;">إرشادات الإزالة الفورية للملوثات الكيميائية والغازات السامة في المناطق الملوثة.</p>
+            <h2>🏗️ متلازمة الهرس والضغط الميداني (Crush Syndrome Protocol)</h2>
+            <p style="color:var(--text-sub); font-size:0.85rem; margin-bottom:1rem;">إسعافات ضحايا الأنقاض والمحصورين لفترات طويلة لتجنب التوقف القلبي المفاجئ عند رفع الأنقاض.</p>
 
             <details style="background:var(--bg-inner); padding:0.85rem; border-radius:8px; margin-bottom:0.5rem;" open>
-                <summary style="font-weight:bold; color:var(--accent-red); cursor:pointer;">1. خلع الملابس الملوثة فوراً (Strip Off Clothes)</summary>
-                <p style="font-size:0.85rem; color:var(--text-sub); margin-top:0.3rem;">نزع وغسل الملابس الخارجية فوراً يزيل حوالي 80% إلى 90% من المواد الكيميائية السائلة والغازية الملتصقة بالمصاب.</p>
+                <summary style="font-weight:bold; color:var(--accent-red); cursor:pointer;">1. الإنعاش السائلي قبل رفع الأنقاض (Pre-Extrication Hydration)</summary>
+                <p style="font-size:0.85rem; color:var(--text-sub); margin-top:0.3rem;">إذا كان الطرف محصوراً لأكثر من ساعتين، يجب إعطاء محاليل ملحية وريدية قبل رفع وزن الأنقاض لمنع التوقف القلبي بسبب ارتفاع البوتاسيوم وتسمم البول المتدفق.</p>
             </details>
 
             <details style="background:var(--bg-inner); padding:0.85rem; border-radius:8px; margin-bottom:0.5rem;">
-                <summary style="font-weight:bold; color:var(--accent-blue); cursor:pointer;">2. الغسل الفوري بالماء الجاري (Copious Water Flush)</summary>
-                <p style="font-size:0.85rem; color:var(--text-sub); margin-top:0.3rem;">شطف الجلد والعينين بماء جاري غزير لمدة 15 دقيقة متواصلة لإزالة بقايا الأحماض والمواد الكاوية.</p>
+                <summary style="font-weight:bold; color:var(--accent-yellow); cursor:pointer;">2. علامات متلازمة الحجرة الفخذية (Compartment Syndrome)</summary>
+                <ul style="margin-top:0.5rem; padding-right:1.25rem; color:var(--text-sub); font-size:0.9rem;">
+                    <li>ألم شديد جداً غير متناسب مع الإصابة الظاهرة.</li>
+                    <li>تصلب خشب العضلات، خدران الأنسجة، وانعدام النبض الطرفي.</li>
+                </ul>
             </details>
         </div>
     </section>
 
-    <!-- Tab 1: Frostbite Guide -->
-    <section id="frostbite-tab" class="tab-content">
+    <!-- Tab 1: CBRN Decon -->
+    <section id="cbrn-tab" class="tab-content">
         <div class="card">
-            <h2>❄️ دليل عضات البرد (Frostbite & Hypothermia)</h2>
-            <p style="color:var(--text-sub); font-size:0.85rem;">إسعافات تجمد الأطراف وهبوط الحرارة.</p>
+            <h2>☣️ بروتوكول التطهير الكيميائي الميداني (CBRN Decon)</h2>
+            <p style="color:var(--text-sub); font-size:0.85rem;">إزالة الملوثات الكيميائية.</p>
         </div>
     </section>
 
     <!-- Bottom Navigation -->
     <nav>
-        <button class="active" onclick="switchTab('cbrn-tab', this)">
+        <button class="active" onclick="switchTab('crush-tab', this)">
+            <span>🏗️</span>
+            <span>الهرس</span>
+        </button>
+        <button onclick="switchTab('cbrn-tab', this)">
             <span>☣️</span>
             <span>الكيميائي</span>
-        </button>
-        <button onclick="switchTab('frostbite-tab', this)">
-            <span>❄️</span>
-            <span>البرد</span>
         </button>
     </nav>
 
