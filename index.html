@@ -69,48 +69,41 @@
         <button onclick="toggleTacticalHUD()" class="btn btn-yellow" style="width:auto; padding:0.3rem 0.6rem; font-size:0.8rem; margin:0;">🖥️ HUD</button>
     </header>
 
-    <!-- Tab 0: Frostbite & Hypothermia Protocol (Task 31) -->
-    <section id="frostbite-tab" class="tab-content active">
+    <!-- Tab 0: CBRN Chemical Decontamination Protocol (Task 32) -->
+    <section id="cbrn-tab" class="tab-content active">
         <div class="card">
-            <h2>❄️ دليل عضات البرد وانخفاض الحرارة (Frostbite & Hypothermia)</h2>
-            <p style="color:var(--text-sub); font-size:0.85rem; margin-bottom:1rem;">إسعافات تجمد الأطراف وهبوط حرارة الجسم الشديد في الطقس المتجمد.</p>
+            <h2>☣️ بروتوكول التطهير الكيميائي الميداني (CBRN Chemical Decon)</h2>
+            <p style="color:var(--text-sub); font-size:0.85rem; margin-bottom:1rem;">إرشادات الإزالة الفورية للملوثات الكيميائية والغازات السامة في المناطق الملوثة.</p>
 
             <details style="background:var(--bg-inner); padding:0.85rem; border-radius:8px; margin-bottom:0.5rem;" open>
-                <summary style="font-weight:bold; color:var(--accent-blue); cursor:pointer;">1. إعادة التدفئة السريعة لعضات البرد (Frostbite Rewarming)</summary>
-                <ol style="margin-top:0.5rem; padding-right:1.25rem; color:var(--text-sub); font-size:0.9rem;">
-                    <li>انقل المصاب فوراً إلى مكان دافئ واستبدل الملابس المبتلة بأخرى جافة.</li>
-                    <li>اغمر الطرف المتجمد في ماء دافئ درجة حرارته (37°C إلى 39°C) لمدة 30 دقيقة.</li>
-                    <li>تحذير: لا تدلك الأنسجة المتجمدة بالثلج إطلاقاً ولا تعرضها للحارة المباشرة الجافة.</li>
-                </ol>
+                <summary style="font-weight:bold; color:var(--accent-red); cursor:pointer;">1. خلع الملابس الملوثة فوراً (Strip Off Clothes)</summary>
+                <p style="font-size:0.85rem; color:var(--text-sub); margin-top:0.3rem;">نزع وغسل الملابس الخارجية فوراً يزيل حوالي 80% إلى 90% من المواد الكيميائية السائلة والغازية الملتصقة بالمصاب.</p>
             </details>
 
             <details style="background:var(--bg-inner); padding:0.85rem; border-radius:8px; margin-bottom:0.5rem;">
-                <summary style="font-weight:bold; color:var(--accent-yellow); cursor:pointer;">2. إسعافات انخفاض الحرارة الحاد (Severe Hypothermia)</summary>
-                <ul style="margin-top:0.5rem; padding-right:1.25rem; color:var(--text-sub); font-size:0.9rem;">
-                    <li>لف المصاب ببطانيات حرارية عازلة من الرأس إلى القدمين.</li>
-                    <li>ضع أكياس تدفئة دافئة في مناطق المركز (تحت الإبطين والمغبن/الرقبة).</li>
-                </ul>
+                <summary style="font-weight:bold; color:var(--accent-blue); cursor:pointer;">2. الغسل الفوري بالماء الجاري (Copious Water Flush)</summary>
+                <p style="font-size:0.85rem; color:var(--text-sub); margin-top:0.3rem;">شطف الجلد والعينين بماء جاري غزير لمدة 15 دقيقة متواصلة لإزالة بقايا الأحماض والمواد الكاوية.</p>
             </details>
         </div>
     </section>
 
-    <!-- Tab 1: Snakebite Guide -->
-    <section id="venom-tab" class="tab-content">
+    <!-- Tab 1: Frostbite Guide -->
+    <section id="frostbite-tab" class="tab-content">
         <div class="card">
-            <h2>🐍 بروتوكول لدغات الأفاعي والعقارب (WHO Snakebite)</h2>
-            <p style="color:var(--text-sub); font-size:0.85rem;">البروتوكول الطبي العالمي المعتمد.</p>
+            <h2>❄️ دليل عضات البرد (Frostbite & Hypothermia)</h2>
+            <p style="color:var(--text-sub); font-size:0.85rem;">إسعافات تجمد الأطراف وهبوط الحرارة.</p>
         </div>
     </section>
 
     <!-- Bottom Navigation -->
     <nav>
-        <button class="active" onclick="switchTab('frostbite-tab', this)">
+        <button class="active" onclick="switchTab('cbrn-tab', this)">
+            <span>☣️</span>
+            <span>الكيميائي</span>
+        </button>
+        <button onclick="switchTab('frostbite-tab', this)">
             <span>❄️</span>
             <span>البرد</span>
-        </button>
-        <button onclick="switchTab('venom-tab', this)">
-            <span>🐍</span>
-            <span>السموم</span>
         </button>
     </nav>
 
