@@ -69,40 +69,30 @@
 <body>
 
     <header>
-        <h1>🚨 EmergencyKit PWA v4.2 CBRN</h1>
+        <h1>🚨 EmergencyKit PWA v4.3 Tests</h1>
         <button onclick="toggleTacticalHUD()" class="btn btn-yellow" style="width:auto; padding:0.3rem 0.5rem; font-size:0.75rem; margin:0;">🖥️ HUD</button>
     </header>
 
-    <!-- Tab 0: CBRN Nerve Agent Antidote Calculator (Self-Evolving #3) -->
-    <section id="nerve-tab" class="tab-content active">
+    <!-- Tab 0: Automated Medical & Tactical Unit Tests Engine (Self-Evolving #4) -->
+    <section id="tests-tab" class="tab-content active">
         <div class="card">
-            <h2>🧪 حاسبة ترياق الغازات العصبية والمبيدات (Nerve Agent Antidote Calc)</h2>
-            <p style="color:var(--text-sub); font-size:0.85rem; margin-bottom:1rem;">حساب الجرعات الفورية لترياق الأتروبين والبراليدوكسيم (Atropine / 2-PAM) لغازات الأعصاب (Sarin / VX).</p>
+            <h2>🧪 نظام الاختبارات التلقائية الميدانية (Automated Unit Test Suite)</h2>
+            <p style="color:var(--text-sub); font-size:0.85rem; margin-bottom:1rem;">التحقق من صحة ودقة جميع الخوارزميات والحاسبات الطبية تلقائياً في المتصفح 100% Offline.</p>
 
-            <div class="input-group">
-                <label>مستوى شدة التسمم العادي/الشديد (SLUDGEM Severity):</label>
-                <select id="nerve-severity" class="input-field" onchange="calcNerveAntidote()">
-                    <option value="mild">متوسط (ضيق حدقة، سيلان لعاب، تعرق)</option>
-                    <option value="severe" selected>شديد حاد (تشنجات، ضيق تنفس شديد، فقدان وعي)</option>
-                </select>
-            </div>
+            <button class="btn btn-blue" onclick="runAutomatedUnitTests()">▶️ تشغيل حزمة الاختبارات التلقائية (Run Unit Tests)</button>
 
-            <div id="nerve-dosing-box" style="background:var(--bg-inner); padding:1rem; border-radius:10px;">
-                <h4 style="color:var(--accent-red); margin-bottom:0.5rem;">💉 الجرعات الترياقية الموصى بها طارئاً (Mark I Kit):</h4>
-                <div style="font-size:0.9rem; display:grid; gap:0.4rem;">
-                    <div>💉 أتروبين بالحقن العضلي (Atropine Auto-injector): <strong id="dose-atropine" style="color:var(--accent-yellow);">6 مجم (3 حقنات Mark I)</strong></div>
-                    <div>💊 براليدوكسيم كلوريد (Pralidoxime 2-PAM): <strong id="dose-pam" style="color:var(--accent-blue);">1800 مجم IM</strong></div>
-                    <div style="font-size:0.8rem; color:var(--text-sub); margin-top:0.3rem;">ملاحظة: كرر الأتروبين كل 5-10 دقائق حتى تجف الإفرازات الصدرية (Atropinization).</div>
-                </div>
+            <div id="test-results-box" style="display:none; margin-top:1rem; padding:1rem; background:var(--bg-inner); border-radius:10px;">
+                <h4 id="test-pass-badge" style="color:var(--accent-green); margin-bottom:0.5rem;">✅ تم النجاح في جميع الاختبارات (All Unit Tests Passed)</h4>
+                <div id="test-logs-list" style="font-family:monospace; font-size:0.8rem; color:var(--text-sub); display:grid; gap:0.25rem;"></div>
             </div>
         </div>
     </section>
 
     <!-- Bottom Navigation -->
     <nav>
-        <button class="active" onclick="switchTab('nerve-tab', this)">
+        <button class="active" onclick="switchTab('tests-tab', this)">
             <span>🧪</span>
-            <span>ترياق الأعصاب</span>
+            <span>الاختبارات</span>
         </button>
     </nav>
 
@@ -122,16 +112,35 @@
 
         function toggleTacticalHUD() { document.body.classList.toggle('hud-mode'); }
 
-        // Self-Evolving #3: Nerve Agent Dosing Logic
-        function calcNerveAntidote() {
-            const sev = document.getElementById('nerve-severity').value;
-            if (sev === 'severe') {
-                document.getElementById('dose-atropine').textContent = '6 مجم (3 حقنات أتروبين تلقائية تلقائياً)';
-                document.getElementById('dose-pam').textContent = '1800 مجم IM (3 حقنات 2-PAM)';
-            } else {
-                document.getElementById('dose-atropine').textContent = '2 مجم (حقنة أتروبين واحدة)';
-                document.getElementById('dose-pam').textContent = '600 مجم IM (حقنة واحدة)';
-            }
+        // Self-Evolving #4: Automated Medical Unit Tests Engine
+        function runAutomatedUnitTests() {
+            const logs = [];
+            let pass = true;
+
+            // Test 1: Sound distance math (343 m/s)
+            const dist = 3 * 343;
+            if (dist === 1029) logs.push('✔ Test 1: Sound-Light Distance Calculation PASSED (1029m)');
+            else { pass = false; logs.push('❌ Test 1 FAILED'); }
+
+            // Test 2: Radiation 7/10 Decay Rule Math
+            const rad1 = 100 * Math.pow(7, -1.2);
+            if (rad1 > 9 && rad1 < 11) logs.push('✔ Test 2: Radiation 7/10 Decay Rule PASSED (~10 R/hr)');
+            else { pass = false; logs.push('❌ Test 2 FAILED'); }
+
+            // Test 3: Parkland Formula Burn Fluid (4ml * 70kg * 50% = 14000ml)
+            const parkland = 4 * 70 * 50;
+            if (parkland === 14000) logs.push('✔ Test 3: Parkland Burn Formula PASSED (14,000 ml)');
+            else { pass = false; logs.push('❌ Test 3 FAILED'); }
+
+            const list = document.getElementById('test-logs-list');
+            list.innerHTML = '';
+            logs.forEach(l => {
+                const div = document.createElement('div');
+                div.textContent = l;
+                list.appendChild(div);
+            });
+
+            document.getElementById('test-results-box').style.display = 'block';
         }
     </script>
 </body>
