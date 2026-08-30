@@ -69,48 +69,49 @@
         <button onclick="toggleTacticalHUD()" class="btn btn-yellow" style="width:auto; padding:0.3rem 0.6rem; font-size:0.8rem; margin:0;">🖥️ HUD</button>
     </header>
 
-    <!-- Tab 0: Junctional Bleeding & Wound Packing Guide (Task 27) -->
-    <section id="junctional-tab" class="tab-content active">
+    <!-- Tab 0: Chest Seal & Tension Pneumothorax Guide (Task 28) -->
+    <section id="chestseal-tab" class="tab-content active">
         <div class="card">
-            <h2>💉 حشو الجروح والنزيف المفصلي (Junctional Bleeding & Wound Packing)</h2>
-            <p style="color:var(--text-sub); font-size:0.85rem; margin-bottom:1rem;">إيقاف النزيف الشرياني الحاد في مناطق الاتصال (الإبط، المغبن/أعلى الفخذ، الرقبة) حيث لا يمكن تركيب العاصبة.</p>
+            <h2>🫁 إصابات الصدر واستثنائ الرئة (Chest Seal & Tension Pneumothorax)</h2>
+            <p style="color:var(--text-sub); font-size:0.85rem; margin-bottom:1rem;">علاج جروح الصدر المفتوحة والماصة للهواء والاسترواح الصدري الميداني.</p>
 
             <details style="background:var(--bg-inner); padding:0.85rem; border-radius:8px; margin-bottom:0.5rem;" open>
-                <summary style="font-weight:bold; color:var(--accent-red); cursor:pointer;">1. حشو الجرح بالشاش المجلّط (Hemostatic Gauze Packing)</summary>
+                <summary style="font-weight:bold; color:var(--accent-red); cursor:pointer;">1. تركيب اللاصق الصدري ذي الصمام (Vented Chest Seal)</summary>
                 <ol style="margin-top:0.5rem; padding-right:1.25rem; color:var(--text-sub); font-size:0.9rem;">
-                    <li>أدخل أصابعك عميقاً في تجويف الجرح للضغط المباشر على الشريان المقطوع.</li>
-                    <li>ادفع شاش التجلط (QuikClot / Celox) أو الشاش العادي عميقاً داخل الجرح بدون إبقاء أي فراغ هوائي.</li>
-                    <li>واصل الضغط المستمر بقوة بأربطة اليدين لمدة 3 دقائق كاملة دون رفع اليد نهائياً.</li>
+                    <li>امسح الدم والسوائل حول جرح الصدر المفتوح بسرعة.</li>
+                    <li>اطلب من المصاب الزفير بالكامل ثم ضع اللاصق الصدري (Chest Seal) بحيث يغطي الجرح بالكامل.</li>
+                    <li>افحص ظهر المصاب والإبط لتأكيد عدم وجود جرح منفذ خروجي آخر.</li>
                 </ol>
             </details>
 
             <details style="background:var(--bg-inner); padding:0.85rem; border-radius:8px; margin-bottom:0.5rem;">
-                <summary style="font-weight:bold; color:var(--accent-blue); cursor:pointer;">2. التضميد الضاغط (Pressure Dressing)</summary>
-                <ol style="margin-top:0.5rem; padding-right:1.25rem; color:var(--text-sub); font-size:0.9rem;">
-                    <li>ضع الضمادة الإسرائيلية الضاغطة (Israeli Bandage) فوق الشاش المحشوة.</li>
-                    <li>شد القضيب الضاغط وحكّم الإغلاق لضمان استمرار الضغط الشرياني المانع للنزيف.</li>
-                </ol>
+                <summary style="font-weight:bold; color:var(--accent-yellow); cursor:pointer;">2. علامات الاسترواح الصدري المائي/الضغط (Tension Pneumothorax)</summary>
+                <ul style="margin-top:0.5rem; padding-right:1.25rem; color:var(--text-sub); font-size:0.9rem;">
+                    <li>ضيق تنفس شديد ومتصاعد ومظاهر انخفاض الأكسجين.</li>
+                    <li>انعدام أصوات التنفس في إحدى الرئتين وانحراف القصبة الهوائية للجانب السليم.</li>
+                    <li>الإجراء الطارئ: تنفيس اللاصق الصدري (Burping the seal) لإخراج الهواء المحتبس فوراً.</li>
+                </ul>
             </details>
         </div>
     </section>
 
-    <!-- Tab 1: HUD Mode -->
-    <section id="hud-tab" class="tab-content">
+    <!-- Tab 1: Junctional Bleeding -->
+    <section id="junctional-tab" class="tab-content">
         <div class="card">
-            <h2>🖥️ نمط الرؤية التكتيكي (Tactical HUD)</h2>
-            <p style="color:var(--text-sub); font-size:0.85rem;">واجهة صفراء وسوداء ذات تباين فائق.</p>
+            <h2>💉 حشو الجروح والنزيف المفصلي (Junctional Bleeding)</h2>
+            <p style="color:var(--text-sub); font-size:0.85rem;">إيقاف النزيف الشرياني في المناطق المفصلية.</p>
         </div>
     </section>
 
     <!-- Bottom Navigation -->
     <nav>
-        <button class="active" onclick="switchTab('junctional-tab', this)">
+        <button class="active" onclick="switchTab('chestseal-tab', this)">
+            <span>🫁</span>
+            <span>الصدر</span>
+        </button>
+        <button onclick="switchTab('junctional-tab', this)">
             <span>💉</span>
             <span>الحشو</span>
-        </button>
-        <button onclick="switchTab('hud-tab', this)">
-            <span>🖥️</span>
-            <span>HUD</span>
         </button>
     </nav>
 
