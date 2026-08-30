@@ -71,49 +71,49 @@
         </button>
     </header>
 
-    <!-- Tab 0: Emergency Shelter Building Guide (Task 13) -->
-    <section id="shelter-tab" class="tab-content active">
+    <!-- Tab 0: Friction Fire Starting Guide (Task 14) -->
+    <section id="fire-tab" class="tab-content active">
         <div class="card">
-            <h2>⛺ دليل بناء الملاجئ الميدانية المؤقتة (Shelter Building Guide)</h2>
-            <p style="color:var(--text-sub); font-size:0.85rem; margin-bottom:1rem;">طرق بناء الملاجئ العازلة للحرارة والرياح للحماية من العوامل الجوية القاسية.</p>
+            <h2>🔥 دليل إشعال النيران البدائي والتكتيكي (Fire Starting Guide)</h2>
+            <p style="color:var(--text-sub); font-size:0.85rem; margin-bottom:1rem;">طرق توليد شرار الجمر وإشعال النار بدون كبريت أو ولاعات تقليدية.</p>
 
             <details style="background:var(--bg-inner); padding:0.85rem; border-radius:8px; margin-bottom:0.5rem;" open>
-                <summary style="font-weight:bold; color:var(--accent-blue); cursor:pointer;">1. مأوى الهرم بالأغصان (A-Frame Debris Hut)</summary>
+                <summary style="font-weight:bold; color:var(--accent-red); cursor:pointer;">1. طريقة المحفار القوسي (Bow Drill Method)</summary>
                 <ol style="margin-top:0.5rem; padding-right:1.25rem; color:var(--text-sub); font-size:0.9rem;">
-                    <li>ثبّت خافضاً أفقياً رئيساً بطول أطول من جسمك بحوالي متر بين شجرتين أو دعامتين.</li>
-                    <li>ارصف أغصاناً متكئة على جانبي الخافض بزاوية 45 درجة لتشكيل هرم مثلث.</li>
-                    <li>غطّ الهرم بطبقة من أوراق الشجر الجافة أو العشب بسمك 60 سم على الأقل للعزل الحراري التام.</li>
+                    <li>جهّز قوساً خشبياً منحنائاً مربوطاً بحبل قوي، ومغزلاً خشبياً مستقيماً، وقاعدة خشبية لينة.</li>
+                    <li>احفر تجويفاً صغيراً في القاعدة واقطع حزّاً مثلثاً بجانبه لجمع مسحوق الفحم.</li>
+                    <li>حرّك القوس للأمام والخلف بسرعة متزايدة حتى يتصاعد الدخان وتتكون جمرة سوداء متوهجة.</li>
+                    <li>انقل الجمرة بحذر إلى عش الهشيم الجاف (Tinder Nest) وانفخ عليها برفق حتى تشتعل.</li>
                 </ol>
             </details>
 
             <details style="background:var(--bg-inner); padding:0.85rem; border-radius:8px; margin-bottom:0.5rem;">
-                <summary style="font-weight:bold; color:var(--accent-yellow); cursor:pointer;">2. مأوى الاتكاء الأحادي (Lean-To Tarp Shelter)</summary>
+                <summary style="font-weight:bold; color:var(--accent-yellow); cursor:pointer;">2. شرار قضيب الفيرو أو الصوان (Ferro Rod / Flint)</summary>
                 <ol style="margin-top:0.5rem; padding-right:1.25rem; color:var(--text-sub); font-size:0.9rem;">
-                    <li>اعقد مشمعاً (Tarp) أو بطانية حرارية بين جذعين أفقياً على ارتفاع متر ونصف.</li>
-                    <li>ثبّت الطرف السري في الأرض بعيداً عكس اتجاه الرياح السائدة.</li>
-                    <li>اشعل ناراً صغيرة أمام المأوى وراءها جدار عاكس للحرارة من الحجارة أو الأخشاب.</li>
+                    <li>ضع قضيب الصوان ملاصقاً تماماً لألياف الهشيم الجاف (قشر الشجر/القطن).</li>
+                    <li>احكّ شفرة السكين بقوة وزاوية 45 درجة لتوليد شرار حراري (3000°C).</li>
                 </ol>
             </details>
         </div>
     </section>
 
-    <!-- Tab 1: Radiation Calculator -->
-    <section id="radiation-tab" class="tab-content">
+    <!-- Tab 1: Shelter Guide -->
+    <section id="shelter-tab" class="tab-content">
         <div class="card">
-            <h2>☢️ حاسبة التحلل الإشعاعي (7/10 Rule)</h2>
-            <p style="color:var(--text-sub); font-size:0.85rem;">حساب هبوط الشدة الإشعاعية.</p>
+            <h2>⛺ دليل بناء الملاجئ الميدانية المؤقتة (Shelter Building)</h2>
+            <p style="color:var(--text-sub); font-size:0.85rem;">طرق بناء الملاجئ العازلة للحرارة.</p>
         </div>
     </section>
 
     <!-- Bottom Navigation -->
     <nav>
-        <button class="active" onclick="switchTab('shelter-tab', this)">
+        <button class="active" onclick="switchTab('fire-tab', this)">
+            <span>🔥</span>
+            <span>النار</span>
+        </button>
+        <button onclick="switchTab('shelter-tab', this)">
             <span>⛺</span>
             <span>الملاجئ</span>
-        </button>
-        <button onclick="switchTab('radiation-tab', this)">
-            <span>☢️</span>
-            <span>إشعاع</span>
         </button>
     </nav>
 
