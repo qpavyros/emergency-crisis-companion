@@ -75,41 +75,43 @@
         </button>
     </header>
 
-    <!-- Tab 0: CSV & JSON Local Import / Export (Task 18) -->
-    <section id="dataio-tab" class="tab-content active">
-        <div class="card">
-            <h2>📁 استيراد وتصدير بيانات المرضى (CSV & JSON Local Data I/O)</h2>
-            <p style="color:var(--text-sub); font-size:0.85rem; margin-bottom:1rem;">تصدير واستيراد سجلات الفرز الميداني بصيغ CSV و JSON محلياً بدون اتصال بالشبكة.</p>
+    <!-- Tab 0: Audio Notes Recorder & IndexedDB Storage (Task 19) -->
+    <section id="audio-tab" class="tab-content active">
+        <div class="card" style="text-align:center;">
+            <h2>🎙️ مسجل الملاحظات الصوتية الميدانية (Audio Notes Vault)</h2>
+            <p style="color:var(--text-sub); font-size:0.85rem; margin-bottom:1rem;">تسجيل ملاحظات صوتية لحالة المصابين وتخزينها محلياً في IndexedDB.</p>
 
-            <div class="grid-2" style="margin-bottom:1rem;">
-                <button class="btn btn-blue" onclick="exportDataCSV()">📥 تصدير السجل بصيغة CSV</button>
-                <button class="btn btn-green" onclick="exportDataJSON()">📤 تصدير السجل بصيغة JSON</button>
+            <div id="audio-timer-status" style="font-size:1.1rem; font-weight:bold; color:var(--accent-blue); margin-bottom:0.5rem;">جاهز للتسجيل</div>
+
+            <div class="grid-2">
+                <button id="rec-start-btn" class="btn btn-red" onclick="startAudioRecord()">🎙️ بدء التسجيل الصوتي</button>
+                <button id="rec-stop-btn" class="btn btn-slate" onclick="stopAudioRecord()" disabled>🛑 إيقاف وحفظ</button>
             </div>
 
-            <div style="background:var(--bg-inner); padding:1rem; border-radius:8px;">
-                <label style="display:block; font-size:0.9rem; margin-bottom:0.5rem; color:var(--accent-blue);">📂 استيراد ملف سجلات محلي (CSV / JSON):</label>
-                <input type="file" id="import-file-input" class="input-field" accept=".csv,.json" onchange="importDataFile(event)">
+            <div style="margin-top:1.5rem; text-align:right;">
+                <h4 style="color:var(--accent-blue); margin-bottom:0.5rem;">🎧 التسجيلات المحفوظة محلياً:</h4>
+                <div id="audio-memos-list"></div>
             </div>
         </div>
     </section>
 
-    <!-- Tab 1: Animated Stream QR -->
-    <section id="animated-qr-tab" class="tab-content">
+    <!-- Tab 1: Data IO -->
+    <section id="dataio-tab" class="tab-content">
         <div class="card">
-            <h2>📲 نقل البيانات عبر QR التتابعي المتحرك (Animated Stream QR)</h2>
-            <p style="color:var(--text-sub); font-size:0.85rem;">نقل السجلات الطبية عبر بث QR.</p>
+            <h2>📁 استيراد وتصدير بيانات المرضى (CSV & JSON Data)</h2>
+            <p style="color:var(--text-sub); font-size:0.85rem;">تصدير واستيراد سجلات الفرز.</p>
         </div>
     </section>
 
     <!-- Bottom Navigation -->
     <nav>
-        <button class="active" onclick="switchTab('dataio-tab', this)">
+        <button class="active" onclick="switchTab('audio-tab', this)">
+            <span>🎙️</span>
+            <span>صوتيات</span>
+        </button>
+        <button onclick="switchTab('dataio-tab', this)">
             <span>📁</span>
             <span>الملفات</span>
-        </button>
-        <button onclick="switchTab('animated-qr-tab', this)">
-            <span>📲</span>
-            <span>بث QR</span>
         </button>
     </nav>
 
@@ -130,59 +132,79 @@
             btn.classList.add('active');
         }
 
-        // Task 18: Data Import / Export Logic
-        function getTriageLogs() {
-            return JSON.parse(localStorage.getItem('triage_vault_logs') || '[]');
-        }
+        // Task 19: MediaRecorder & IndexedDB Logic
+        let mediaRecorder = null;
+        let audioChunks = [];
+        let audioDb = null;
 
-        function exportDataJSON() {
-            const data = getTriageLogs();
-            const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
-            const a = document.createElement('a'); a.href = URL.createObjectURL(blob);
-            a.download = `triage-records-${new Date().toISOString().slice(0,10)}.json`;
-            a.click();
-        }
+        const req = indexedDB.open('EmergencyKitAudioDB', 1);
+        req.onupgradeneeded = (e) => {
+            audioDb = e.target.result;
+            if (!audioDb.objectStoreNames.contains('memos')) {
+                audioDb.createObjectStore('memos', { keyPath: 'id', autoIncrement: true });
+            }
+        };
+        req.onsuccess = (e) => {
+            audioDb = e.target.result;
+            loadAudioMemos();
+        };
 
-        function exportDataCSV() {
-            const data = getTriageLogs();
-            if (data.length === 0) { alert('السجل فارغ'); return; }
-            let csv = 'Time,PatientID,Code,Description\n';
-            data.forEach(r => {
-                csv += `"${r.time || ''}","${r.patientId || ''}","${r.code || ''}","${r.desc || ''}"\n`;
-            });
-            const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
-            const a = document.createElement('a'); a.href = URL.createObjectURL(blob);
-            a.download = `triage-records-${new Date().toISOString().slice(0,10)}.csv`;
-            a.click();
-        }
+        async function startAudioRecord() {
+            if (!navigator.mediaDevices) { alert('الميكروفون غير مدعوم في جهازك'); return; }
+            const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+            mediaRecorder = new MediaRecorder(stream);
+            audioChunks = [];
 
-        function importDataFile(event) {
-            const file = event.target.files[0];
-            if (!file) return;
-            const reader = new FileReader();
-            reader.onload = (e) => {
-                try {
-                    let imported = [];
-                    if (file.name.endsWith('.json')) {
-                        imported = JSON.parse(e.target.result);
-                    } else if (file.name.endsWith('.csv')) {
-                        const lines = e.target.result.split('\n').slice(1);
-                        lines.forEach(l => {
-                            const parts = l.split(',').map(p => p.replace(/"/g, ''));
-                            if (parts.length >= 4) {
-                                imported.push({ time: parts[0], patientId: parts[1], code: parts[2], desc: parts[3] });
-                            }
-                        });
-                    }
-                    const current = getTriageLogs();
-                    const merged = [...imported, ...current];
-                    localStorage.setItem('triage_vault_logs', JSON.stringify(merged));
-                    alert(`تم استيراد ${imported.length} سجل بنجاح!`);
-                } catch (err) {
-                    alert('خطأ في صيغة الملف المستورد');
-                }
+            mediaRecorder.ondataavailable = (e) => audioChunks.push(e.data);
+            mediaRecorder.onstop = () => {
+                const blob = new Blob(audioChunks, { type: 'audio/webm' });
+                saveAudioMemo(blob);
             };
-            reader.readAsText(file);
+
+            mediaRecorder.start();
+            document.getElementById('audio-timer-status').textContent = '🔴 جاري التسجيل الصوتي...';
+            document.getElementById('rec-start-btn').disabled = true;
+            document.getElementById('rec-stop-btn').disabled = false;
+        }
+
+        function stopAudioRecord() {
+            if (mediaRecorder && mediaRecorder.state !== 'inactive') {
+                mediaRecorder.stop();
+                document.getElementById('audio-timer-status').textContent = '✅ تم الحفظ!';
+                document.getElementById('rec-start-btn').disabled = false;
+                document.getElementById('rec-stop-btn').disabled = true;
+            }
+        }
+
+        function saveAudioMemo(blob) {
+            if (!audioDb) return;
+            const tx = audioDb.transaction('memos', 'readwrite');
+            const memo = {
+                time: new Date().toLocaleTimeString('ar-EG'),
+                blob: blob
+            };
+            tx.objectStore('memos').add(memo);
+            tx.oncomplete = () => loadAudioMemos();
+        }
+
+        function loadAudioMemos() {
+            if (!audioDb) return;
+            const tx = audioDb.transaction('memos', 'readonly');
+            const req = tx.objectStore('memos').getAll();
+            req.onsuccess = () => {
+                const container = document.getElementById('audio-memos-list');
+                container.innerHTML = '';
+                req.result.forEach(m => {
+                    const div = document.createElement('div');
+                    div.style.cssText = 'background:var(--bg-inner); padding:0.75rem; border-radius:8px; margin-top:0.5rem; display:flex; align-items:center; justify-content:space-between;';
+                    const audioUrl = URL.createObjectURL(m.blob);
+                    div.innerHTML = `
+                        <span style="font-size:0.85rem; color:var(--accent-blue);">تسجيل (${m.time})</span>
+                        <audio src="${audioUrl}" controls style="height:30px; max-width:200px;"></audio>
+                    `;
+                    container.appendChild(div);
+                });
+            };
         }
     </script>
 </body>
