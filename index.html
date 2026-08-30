@@ -61,27 +61,10 @@
         .btn-blue { background: var(--accent-blue); color: black; }
         .btn-slate { background: var(--accent-slate); color: white; }
 
-        .badge { padding: 0.25rem 0.75rem; border-radius: 9999px; font-weight: bold; font-size: 0.85rem; display: inline-block; }
-        .badge-red { background: #ef4444; color: white; }
-        .badge-yellow { background: #eab308; color: black; }
-        .badge-green { background: #22c55e; color: white; }
-        .badge-black { background: #000000; color: white; border: 1px solid #475569; }
-
         .input-group { margin-bottom: 1rem; }
         .input-group label { display: block; font-size: 0.85rem; margin-bottom: 0.4rem; color: var(--text-sub); }
         .input-field { width: 100%; padding: 0.75rem; border-radius: 8px; background: var(--bg-inner); color: var(--text-main); border: 1px solid var(--border-color); font-size: 0.95rem; }
 
-        .cpr-pulse { width: 90px; height: 90px; border-radius: 50%; background: var(--accent-red); margin: 1rem auto; display: flex; align-items: center; justify-content: center; font-size: 1.8rem; font-weight: bold; transition: transform 0.1s; }
-        .cpr-pulse.beat { transform: scale(1.2); box-shadow: 0 0 25px var(--accent-red); }
-
-        @keyframes strobe { 0%, 100% { background: #ef4444; } 50% { background: #000000; } }
-        .strobing { animation: strobe 0.3s infinite; }
-
-        .log-table { width: 100%; border-collapse: collapse; margin-top: 1rem; font-size: 0.85rem; }
-        .log-table th, .log-table td { padding: 0.5rem; text-align: right; border-bottom: 1px solid var(--border-color); }
-        .log-table th { color: var(--accent-blue); }
-
-        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; }
         .march-box { background: var(--bg-inner); border-right: 4px solid var(--accent-red); padding: 1rem; border-radius: 8px; margin-bottom: 0.75rem; }
     </style>
 </head>
@@ -94,154 +77,78 @@
         </button>
     </header>
 
-    <!-- Tab 0: M.A.R.C.H. Trauma Algorithm (Task 1) -->
-    <section id="march-tab" class="tab-content active">
+    <!-- Tab 0: Emergency Childbirth Guide (Task 6) -->
+    <section id="birth-tab" class="tab-content active">
+        <div class="card">
+            <h2>🤰 دليل الولادة الطارئة في الميدان (Field Emergency Childbirth)</h2>
+            <p style="color:var(--text-sub); font-size:0.85rem; margin-bottom:1rem;">إرشادات خطوة بخطوة لإجراء الولادة الطارئة في الظروف الميدانية الصعبة بدون إنترنت.</p>
+
+            <details style="background:var(--bg-inner); padding:0.85rem; border-radius:8px; margin-bottom:0.5rem;" open>
+                <summary style="font-weight:bold; color:var(--accent-blue); cursor:pointer;">المرحلة 1: التحضير الميداني والتطهير</summary>
+                <ol style="margin-top:0.5rem; padding-right:1.25rem; color:var(--text-sub); font-size:0.9rem;">
+                    <li>اجعل الأم تتمدد على ظهرها أو على جانبها الأيسر مع ثني الركبتين.</li>
+                    <li>اغسل يديك بماء وصابون أو معقم الكحول وقوم بتغطية مكان الولادة بقطع قماش نظيفة.</li>
+                    <li>جهّز خيوطاً معقمة وشفرة قاطع معقمة ومنشفة دافئة لتجفيف الطفل فوراً.</li>
+                </ol>
+            </details>
+
+            <details style="background:var(--bg-inner); padding:0.85rem; border-radius:8px; margin-bottom:0.5rem;">
+                <summary style="font-weight:bold; color:var(--accent-yellow); cursor:pointer;">المرحلة 2: خروج رأس المولود والدفع</summary>
+                <ol style="margin-top:0.5rem; padding-right:1.25rem; color:var(--text-sub); font-size:0.9rem;">
+                    <li>اسند رأس الطفل برفق أثناء الخروج دون سحبه أو شده إطلاقاً.</li>
+                    <li>تأكد من عدم وجود الحبل السري ملفوفاً حول رقبة المولود (إذا كان ملفوفاً مرره بحذر فوق الرأس).</li>
+                    <li>اسند الكتف العلوي ثم الكتف السفلي حتى يكتمل خروج الجسم.</li>
+                </ol>
+            </details>
+
+            <details style="background:var(--bg-inner); padding:0.85rem; border-radius:8px; margin-bottom:0.5rem;">
+                <summary style="font-weight:bold; color:var(--accent-green); cursor:pointer;">المرحلة 3: العناية بالمولود وقطع الحبل السري</summary>
+                <ol style="margin-top:0.5rem; padding-right:1.25rem; color:var(--text-sub); font-size:0.9rem;">
+                    <li>جفف المولود فوراً بمنشفة دافئة وضعه على صدر الأم (جلد لجلد) لحفظ الحرارة.</li>
+                    <li>اربط الحبل السري بخيط معقم في موضعين: الأول على بعد 10 سم من سرة المولود، والثاني على بعد 15 سم.</li>
+                    <li>اقطع الحبل السري بالمقص المعقم بين الرباطين بحذر شديد.</li>
+                </ol>
+            </details>
+        </div>
+    </section>
+
+    <!-- Tab 1: M.A.R.C.H. Trauma Algorithm -->
+    <section id="march-tab" class="tab-content">
         <div class="card">
             <h2>🩸 بروتوكول الإصابات والتكتيك الطبي M.A.R.C.H. Protocol</h2>
-            <p style="color:var(--text-sub); font-size:0.85rem; margin-bottom:1rem;">البروتوكول العالمي لإنقاذ مصابي الإصابات البليغة والنزيف الشديد في أرض المعركة والكوارث (TCCC Standard).</p>
-            <div class="march-box" style="border-right-color:#ef4444;">
-                <h3 style="color:#ef4444;">M - Massive Bleeding (النزيف الشديد الشرياني)</h3>
-                <ul style="margin-top:0.4rem; padding-right:1.25rem; font-size:0.9rem; color:var(--text-sub);">
-                    <li>ركّب العاصبة (Tourniquet) فوراً 5-7 سم فوق موقع النزيف الشديد في الأطراف.</li>
-                    <li>شد المقبض حتى يتوقف النزيف والنبض الشرياني تماماً.</li>
-                    <li>سجل وقت وضع العاصبة فوراً على جبهة المصاب (مثال: T=14:30).</li>
-                </ul>
-            </div>
-            <div class="march-box" style="border-right-color:#eab308;">
-                <h3 style="color:#eab308;">A - Airway (مجرى الهواء والتنفس)</h3>
-                <ul style="margin-top:0.4rem; padding-right:1.25rem; font-size:0.9rem; color:var(--text-sub);">
-                    <li>افحص انسداد مجرى الهواء بالدم أو القيء أو اللسان.</li>
-                    <li>استخدم حركة رفع الذقن وتثبيت الرقبة (Chin Lift / Jaw Thrust).</li>
-                    <li>ضع المصاب فاقد الوعي في وضعية الإفاقة (Recovery Position).</li>
-                </ul>
+            <div class="march-box">
+                <h3>M - Massive Bleeding</h3>
+                <p>ركّب العاصبة (Tourniquet) فوراً 5-7 سم فوق موقع النزيف الشديد في الأطراف.</p>
             </div>
         </div>
     </section>
 
-    <!-- Tab 1: Pediatric Broselow Dosage Calculator (Task 5) -->
+    <!-- Tab 2: Pediatric Broselow Dosage Calculator -->
     <section id="broselow-tab" class="tab-content">
         <div class="card">
-            <h2>💊 حاسبة جرعات أدوية الأطفال وطول النطاق (Broselow Tape Simulator)</h2>
-            <p style="color:var(--text-sub); font-size:0.85rem; margin-bottom:1rem;">تقدير وزن الطفل وجرعات الأدوية الحرجة بناءً على الطول أو نطاق الألوان العالمي (Broselow Zone).</p>
-
+            <h2>💊 حاسبة جرعات أدوية الأطفال وطول النطاق (Broselow Tape)</h2>
             <div class="input-group">
-                <label>اختر وزن/نطاق طوارئ الطفل (Broselow Zone):</label>
+                <label>اختر نطاق الطوارئ:</label>
                 <select id="broselow-zone" class="input-field" onchange="calcBroselowDose()">
-                    <option value="pink">وردي (Pink) - 6 إلى 7 كجم</option>
-                    <option value="red">أحمر (Red) - 8 إلى 9 كجم</option>
-                    <option value="purple">بنفسجي (Purple) - 10 إلى 11 كجم</option>
-                    <option value="yellow" selected>أصفر (Yellow) - 12 إلى 14 كجم</option>
-                    <option value="white">أبيض (White) - 15 إلى 18 كجم</option>
-                    <option value="blue">أزرق (Blue) - 19 إلى 23 كجم</option>
-                    <option value="orange">برتقالي (Orange) - 24 إلى 29 كجم</option>
-                    <option value="green">أخضر (Green) - 30 إلى 36 كجم</option>
+                    <option value="yellow">أصفر (Yellow) - 12 إلى 14 كجم</option>
                 </select>
             </div>
-
-            <div id="broselow-results" style="background:var(--bg-inner); padding:1rem; border-radius:8px; margin-top:1rem;">
-                <h4 style="color:var(--accent-blue); margin-bottom:0.5rem;">📋 الجرعات الموصى بها طارئاً:</h4>
-                <div style="font-size:0.9rem; display:grid; gap:0.4rem;">
-                    <div>💉 إبينفرين للإنعاش (Epinephrine 1:10,000 IV/IO): <strong id="dose-epi" style="color:var(--accent-red);">0.13 مل</strong></div>
-                    <div>⚡ أنبوب مجرى الهواء (ETT Tube Size): <strong id="dose-ett">4.5 mm (Uncuffed)</strong></div>
-                    <div>🩸 صدمة المحاليل الوريدية (Normal Saline 20 ml/kg Bolus): <strong id="dose-saline" style="color:var(--accent-blue);">260 مل</strong></div>
-                    <div>💊 باراسيتامول خافض حرارة (Paracetamol Oral/Suppos): <strong id="dose-para">180 مجم</strong></div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Tab 2: Vital Signs Tracker -->
-    <section id="vitals-tab" class="tab-content">
-        <div class="card">
-            <h2>📈 نظام تتبع العلامات الحيوية الميداني (Vital Signs Tracker - IndexedDB)</h2>
-            <p style="color:var(--text-sub); font-size:0.85rem; margin-bottom:1rem;">تسجيل ورسم منحنى العلامات الحيوية للمصابين محلياً وتخزينها في قاعدة بيانات IndexedDB.</p>
-            <div class="grid-2">
-                <div class="input-group">
-                    <label>معرّف/اسم المصاب:</label>
-                    <input type="text" id="vital-patient-id" class="input-field" placeholder="مثال: مصاب #101">
-                </div>
-                <div class="input-group">
-                    <label>نبض القلب (Pulse - bpm):</label>
-                    <input type="number" id="vital-pulse" class="input-field" value="80">
-                </div>
-            </div>
-            <button class="btn btn-green" onclick="addVitalRecord()">💾 إضافة قراءة جديدة</button>
-            <div style="margin-top:1.5rem; text-align:center;">
-                <canvas id="vitals-chart" width="400" height="180"></canvas>
-            </div>
-            <div style="margin-top:1rem; overflow-x:auto;">
-                <table class="log-table">
-                    <thead><tr><th>الوقت</th><th>المعرف</th><th>النبض</th><th>الضغط</th><th>SpO2</th></tr></thead>
-                    <tbody id="vitals-tbody"></tbody>
-                </table>
-            </div>
-        </div>
-    </section>
-
-    <!-- Tab 3: APGAR Newborn Assessment -->
-    <section id="apgar-tab" class="tab-content">
-        <div class="card">
-            <h2>👶 حاسبة تقييم حديثي الولادة (APGAR Newborn Score)</h2>
-            <div class="input-group">
-                <label>1. لون الجلد (Appearance):</label>
-                <select id="apgar-a" class="input-field" onchange="calcAPGAR()">
-                    <option value="2">2 - وردي بالكامل (Pink completely)</option>
-                    <option value="1">1 - الجسم وردي والأطراف زرقاء (Acrocyanosis)</option>
-                    <option value="0">0 - أزرق أو شاحب بالكامل (Blue / Pale)</option>
-                </select>
-            </div>
-            <div id="apgar-result-box" style="background:var(--bg-inner); padding:1rem; border-radius:8px; text-align:center;">
-                <div>درجة APGAR الكلية: <strong id="apgar-score" style="font-size:1.4rem; color:var(--accent-blue);">10 / 10</strong></div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Tab 4: START & JumpSTART Triage -->
-    <section id="triage-tab" class="tab-content">
-        <div class="card">
-            <h2>🏥 نظام الفرز الطبي السريع (START & JumpSTART Pediatric Triage)</h2>
-            <div id="triage-step-1">
-                <h3>1. هل المصاب قادر على المشي؟</h3>
-                <button class="btn btn-green" onclick="setTriageResult('GREEN', 'أخضر (إصابة طفيفة - تأجيل العلاج)')">نعم (قادر على المشي)</button>
-                <button class="btn btn-red" onclick="nextTriageStep(2)">لا (غير قادر على المشي)</button>
-            </div>
-        </div>
-    </section>
-
-    <!-- Tab 5: CPR & Audio Guidance -->
-    <section id="cpr-tab" class="tab-content">
-        <div class="card" style="text-align:center;">
-            <h2>🫀 منبه إيقاع الإنعاش القلبي والصوتي (Hands-Free CPR Audio)</h2>
-            <div id="cpr-visual-pulse" class="cpr-pulse">0</div>
-            <button id="cpr-start-btn" class="btn btn-green" onclick="toggleCPRMetronome()">▶️ بدء الإيقاع الصوتي</button>
         </div>
     </section>
 
     <!-- Bottom Navigation -->
     <nav>
-        <button class="active" onclick="switchTab('march-tab', this)">
+        <button class="active" onclick="switchTab('birth-tab', this)">
+            <span>🤰</span>
+            <span>الولادة</span>
+        </button>
+        <button onclick="switchTab('march-tab', this)">
             <span>🩸</span>
             <span>MARCH</span>
         </button>
         <button onclick="switchTab('broselow-tab', this)">
             <span>💊</span>
             <span>جرعات</span>
-        </button>
-        <button onclick="switchTab('vitals-tab', this)">
-            <span>📈</span>
-            <span>العلامات</span>
-        </button>
-        <button onclick="switchTab('apgar-tab', this)">
-            <span>👶</span>
-            <span>APGAR</span>
-        </button>
-        <button onclick="switchTab('triage-tab', this)">
-            <span>🏥</span>
-            <span>الفرز</span>
-        </button>
-        <button onclick="switchTab('cpr-tab', this)">
-            <span>🫀</span>
-            <span>الإنعاش</span>
         </button>
     </nav>
 
@@ -254,7 +161,6 @@
             document.body.classList.toggle('night-mode');
             localStorage.setItem('night_mode', document.body.classList.contains('night-mode') ? 'true' : 'false');
         }
-        if (localStorage.getItem('night_mode') === 'true') document.body.classList.add('night-mode');
 
         function switchTab(tabId, btn) {
             document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
@@ -263,88 +169,7 @@
             btn.classList.add('active');
         }
 
-        function speakFirstAid(text) {
-            if ('speechSynthesis' in window) {
-                const utterance = new SpeechSynthesisUtterance(text);
-                utterance.lang = 'ar-SA';
-                window.speechSynthesis.speak(utterance);
-            }
-        }
-
-        // Task 5: Broselow Dosage Simulation
-        const broselowData = {
-            pink: { epi: '0.07 مل (1:10,000)', ett: '3.5 mm', saline: '130 مل', para: '90 مجم' },
-            red: { epi: '0.09 مل (1:10,000)', ett: '3.5 - 4.0 mm', saline: '170 مل', para: '120 مجم' },
-            purple: { epi: '0.11 مل (1:10,000)', ett: '4.0 mm', saline: '210 مل', para: '150 مجم' },
-            yellow: { epi: '0.13 مل (1:10,000)', ett: '4.5 mm', saline: '260 مل', para: '180 مجم' },
-            white: { epi: '0.16 مل (1:10,000)', ett: '5.0 mm', saline: '330 مل', para: '240 مجم' },
-            blue: { epi: '0.21 مل (1:10,000)', ett: '5.5 mm', saline: '420 مل', para: '300 مجم' },
-            orange: { epi: '0.26 مل (1:10,000)', ett: '6.0 mm', saline: '530 مل', para: '380 مجم' },
-            green: { epi: '0.33 مل (1:10,000)', ett: '6.5 mm', saline: '650 مل', para: '480 مجم' }
-        };
-
-        function calcBroselowDose() {
-            const zone = document.getElementById('broselow-zone').value;
-            const data = broselowData[zone];
-            document.getElementById('dose-epi').textContent = data.epi;
-            document.getElementById('dose-ett').textContent = data.ett;
-            document.getElementById('dose-saline').textContent = data.saline;
-            document.getElementById('dose-para').textContent = data.para;
-        }
-
-        // IndexedDB Vitals
-        let db = null;
-        const dbReq = indexedDB.open('EmergencyKitDB', 1);
-        dbReq.onupgradeneeded = (e) => {
-            db = e.target.result;
-            if (!db.objectStoreNames.contains('vitals')) db.createObjectStore('vitals', { keyPath: 'id', autoIncrement: true });
-        };
-        dbReq.onsuccess = (e) => { db = e.target.result; loadVitalRecords(); };
-
-        function addVitalRecord() {
-            const patientId = document.getElementById('vital-patient-id').value.trim() || 'مصاب بدون اسم';
-            const pulse = parseInt(document.getElementById('vital-pulse').value) || 0;
-            const record = { patientId, pulse, bp: '120/80', spo2: 98, time: new Date().toLocaleTimeString('ar-EG'), timestamp: Date.now() };
-            if (db) {
-                const tx = db.transaction('vitals', 'readwrite');
-                tx.objectStore('vitals').add(record);
-                tx.oncomplete = () => loadVitalRecords();
-            }
-        }
-
-        function loadVitalRecords() {
-            if (!db) return;
-            const tx = db.transaction('vitals', 'readonly');
-            const req = tx.objectStore('vitals').getAll();
-            req.onsuccess = () => {
-                const records = req.result.slice(-10);
-                const tbody = document.getElementById('vitals-tbody');
-                tbody.innerHTML = '';
-                records.forEach(r => {
-                    const tr = document.createElement('tr');
-                    tr.innerHTML = `<td>${r.time}</td><td><strong>${r.patientId}</strong></td><td style="color:var(--accent-red);">${r.pulse} bpm</td><td>${r.bp}</td><td style="color:var(--accent-blue);">${r.spo2}%</td>`;
-                    tbody.appendChild(tr);
-                });
-            };
-        }
-
-        // APGAR
-        function calcAPGAR() {
-            const a = parseInt(document.getElementById('apgar-a').value);
-            const p = parseInt(document.getElementById('apgar-p').value);
-            document.getElementById('apgar-score').textContent = `${a + p + 6} / 10`;
-        }
-
-        // START Triage
-        let currentTriageCode = '';
-        function nextTriageStep(step) {}
-        function setTriageResult(code, label) {}
-        function resetTriage() {}
-
-        // CPR
-        let cprTimer = null;
-        function toggleCPRMetronome() {}
-        function resetCPRMetronome() {}
+        function calcBroselowDose() {}
     </script>
 </body>
 </html>
