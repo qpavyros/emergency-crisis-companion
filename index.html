@@ -69,43 +69,36 @@
 <body>
 
     <header>
-        <h1>🚨 EmergencyKit PWA v6.0 i18n</h1>
-        <div style="display:flex; gap:0.4rem; align-items:center;">
-            <select id="i18n-lang-select" onchange="changeAppLanguage(this.value)" style="background:#0f172a; color:white; border:1px solid #334155; border-radius:6px; padding:0.25rem 0.4rem; font-size:0.8rem;">
-                <option value="ar">العربية (AR)</option>
-                <option value="en">English (EN)</option>
-                <option value="fr">Français (FR)</option>
-                <option value="es">Español (ES)</option>
-                <option value="de">Deutsch (DE)</option>
-                <option value="it">Italiano (IT)</option>
-                <option value="ru">Русский (RU)</option>
-                <option value="ja">日本語 (JA)</option>
-                <option value="zh">中文 (ZH)</option>
-                <option value="ko">한국어 (KO)</option>
-                <option value="hi">हिन्दी (HI)</option>
-            </select>
-            <button onclick="toggleTacticalHUD()" class="btn btn-yellow" style="width:auto; padding:0.3rem 0.5rem; font-size:0.75rem; margin:0;">🖥️ HUD</button>
-        </div>
+        <h1>🚨 EmergencyKit PWA v6.1 Surgical</h1>
+        <button onclick="toggleTacticalHUD()" class="btn btn-yellow" style="width:auto; padding:0.3rem 0.5rem; font-size:0.75rem; margin:0;">🖥️ HUD</button>
     </header>
 
-    <!-- Tab 0: Multi-Lingual Expansion Engine (Self-Evolving #20) -->
-    <section id="i18n-tab" class="tab-content active">
+    <!-- Tab 0: Emergency Surgical Cricothyroidotomy Protocol (Self-Evolving #21) -->
+    <section id="crico-tab" class="tab-content active">
         <div class="card">
-            <h2 id="i18n-title">🌐 دعم اللغات العالمية (Expanded i18n Engine: 13 Languages)</h2>
-            <p id="i18n-desc" style="color:var(--text-sub); font-size:0.85rem; margin-bottom:1rem;">تم التوسع في المحرك متعدد اللغات لإضافة الكورية والهندية للاستخدام العالمي أوفلاين.</p>
+            <h2>🔪 بروتوكول فتح مجرى الهواء الجراحي الطارئ (Surgical Cricothyroidotomy)</h2>
+            <p style="color:var(--text-sub); font-size:0.85rem; margin-bottom:1rem;">الإجراء الجراحي الميداني الأخير لإعادة التنفس عند انسداد مجرى الهواء الكامل وعدم إمكانية التنبيب.</p>
 
-            <div style="background:var(--bg-inner); padding:1rem; border-radius:10px; text-align:center;">
-                <h3 id="i18n-status-title" style="color:var(--accent-blue);">اللغة الحالية: العربية</h3>
-                <p id="i18n-status-msg" style="font-size:0.9rem; color:var(--text-sub); margin-top:0.4rem;">التطبيق مدعوم بـ 13 لغة عالمية 100% أوفلاين.</p>
-            </div>
+            <details style="background:var(--bg-inner); padding:0.85rem; border-radius:8px; margin-bottom:0.5rem;" open>
+                <summary style="font-weight:bold; color:var(--accent-red); cursor:pointer;">1. تحديد الغشاء الحلقي الدرقي (Landmark Identification)</summary>
+                <p style="font-size:0.85rem; color:var(--text-sub); margin-top:0.3rem;">تحسس الغضروف الدرقي (تفاحة آدم) والغضروف الحلقي أسفله مباشرة، الفراغ اللين بينهما هو الغشاء الحلقي الدرقي (Cricothyroid Membrane).</p>
+            </details>
+
+            <details style="background:var(--bg-inner); padding:0.85rem; border-radius:8px; margin-bottom:0.5rem;">
+                <summary style="font-weight:bold; color:var(--accent-blue); cursor:pointer;">2. التثبيت والأنبوب الجراحي (Scalpel-Bougie-Tube Technique)</summary>
+                <ol style="margin-top:0.5rem; padding-right:1.25rem; color:var(--text-sub); font-size:0.9rem;">
+                    <li>اعمل شقاً أفقياً بالمشرط بطول 1.5 سم فوق الغشاء، وأدخل الإبهام أو البوجي (Bougie) مباشرة.</li>
+                    <li>مرر أنبوب تنفس قياس 6.0 mm وتثبيته ونفخ الكفة بالهواء فوراً لتأمين مجرى الهواء.</li>
+                </ol>
+            </details>
         </div>
     </section>
 
     <!-- Bottom Navigation -->
     <nav>
-        <button class="active" onclick="switchTab('i18n-tab', this)">
-            <span>🌐</span>
-            <span id="nav-lang">اللغة</span>
+        <button class="active" onclick="switchTab('crico-tab', this)">
+            <span>🔪</span>
+            <span>الفتح الجراحي</span>
         </button>
     </nav>
 
@@ -124,29 +117,6 @@
         }
 
         function toggleTacticalHUD() { document.body.classList.toggle('hud-mode'); }
-
-        // Self-Evolving #20: Multi-lingual i18n Expansion (AR, EN, FR, ES, DE, IT, RU, JA, ZH, KO, HI)
-        const i18nDict = {
-            ar: { dir: 'rtl', title: '🌐 دعم اللغات العالمية (i18n)', desc: 'تم التوسع في المحرك متعدد اللغات أوفلاين.', statusTitle: 'اللغة الحالية: العربية', statusMsg: 'التطبيق مدعوم بـ 13 لغة أوفلاين.', navLang: 'اللغة' },
-            en: { dir: 'ltr', title: '🌐 Expanded i18n Engine (13 Languages)', desc: 'Multi-lingual engine supports Korean & Hindi offline.', statusTitle: 'Current Language: English', statusMsg: 'App supports 13 global languages offline.', navLang: 'Language' },
-            ko: { dir: 'ltr', title: '🌐 다국어 지원 엔진 (13개 언어)', desc: '한국어 및 힌디어 오프라인 지원.', statusTitle: '현재 언어: 한국어', statusMsg: '앱은 오프라인에서 13개 언어를 지원합니다.', navLang: '언어' },
-            hi: { dir: 'ltr', title: '🌐 बहुभाषी इंजन (13 भाषाएं)', desc: 'कोरियाई और हिंदी ऑफ़लाइन सहायता।', statusTitle: 'वर्तमान भाषा: हिंदी', statusMsg: 'ऐप ऑफ़लाइन 13 भाषाओं का समर्थन करता है।', navLang: 'भाषा' }
-        };
-
-        function changeAppLanguage(lang) {
-            const t = i18nDict[lang] || i18nDict.ar;
-            const root = document.getElementById('html-root');
-            root.setAttribute('lang', lang);
-            root.setAttribute('dir', t.dir);
-
-            document.getElementById('i18n-title').textContent = t.title;
-            document.getElementById('i18n-desc').textContent = t.desc;
-            document.getElementById('i18n-status-title').textContent = t.statusTitle;
-            document.getElementById('i18n-status-msg').textContent = t.statusMsg;
-            document.getElementById('nav-lang').textContent = t.navLang;
-
-            localStorage.setItem('app_lang', lang);
-        }
     </script>
 </body>
 </html>
